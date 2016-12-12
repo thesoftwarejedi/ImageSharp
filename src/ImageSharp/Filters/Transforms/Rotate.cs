@@ -24,7 +24,7 @@ namespace ImageSharp
             where TColor : struct, IPackedPixel<TPacked>
             where TPacked : struct
         {
-            return Rotate(source, degrees, true);
+            return Rotate(source, degrees, false);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace ImageSharp
             where TColor : struct, IPackedPixel<TPacked>
             where TPacked : struct
         {
-            return Rotate(source, (float)rotateType, false);
+            return Rotate(source, (float)rotateType, true);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace ImageSharp
             where TColor : struct, IPackedPixel<TPacked>
             where TPacked : struct
         {
-            RotateProcessor<TColor, TPacked> processor = new RotateProcessor<TColor, TPacked> { Angle = degrees, Expand = expand };
+            RotateProcessor2<TColor, TPacked> processor = new RotateProcessor2<TColor, TPacked>(new TriangleResampler(), source.Bounds, degrees) { Expand = expand };
             return source.Process(source.Bounds, processor);
         }
     }

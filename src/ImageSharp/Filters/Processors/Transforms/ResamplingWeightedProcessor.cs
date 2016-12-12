@@ -54,9 +54,9 @@ namespace ImageSharp.Processors
         public int Height { get; }
 
         /// <summary>
-        /// Gets the resize rectangle.
+        /// Gets or sets the resize rectangle.
         /// </summary>
-        public Rectangle ResizeRectangle { get; }
+        public Rectangle ResizeRectangle { get; protected set; }
 
         /// <summary>
         /// Gets or sets the horizontal weights.
