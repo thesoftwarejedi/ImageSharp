@@ -6,7 +6,7 @@ using ImageSharp.Formats;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ImageSharp.Tests.Formats.Jpg
+namespace ImageSharp.Tests
 {
     public class JpegTests
     {
@@ -17,62 +17,43 @@ namespace ImageSharp.Tests.Formats.Jpg
 
         public JpegTests(ITestOutputHelper output)
         {
-            Output = output;
+            this.Output = output;
         }
-
-        protected string CreateTestOutputFile(string fileName)
-        {
-            if (!Directory.Exists(TestOutputDirectory))
-            {
-                Directory.CreateDirectory(TestOutputDirectory);
-            }
-
-            //string id = Guid.NewGuid().ToString().Substring(0, 4);
-
-            string ext = Path.GetExtension(fileName);
-            fileName = Path.GetFileNameWithoutExtension(fileName);
-
-            return $"{TestOutputDirectory}/{fileName}{ext}";
-        }
-
-        protected Stream CreateOutputStream(string fileName)
-        {
-            fileName = CreateTestOutputFile(fileName);
-            Output?.WriteLine("Opened for write: "+fileName);
-            return File.OpenWrite(fileName);
-        }
-
-        public static IEnumerable<object[]> AllJpegFiles
-            => TestImages.Jpeg.All.Select(file => new object[] {TestFile.Create(file)});
+        public static IEnumerable<string> AllJpegFiles => TestImages.Jpeg.All;
 
         [Theory]
-        [MemberData(nameof(AllJpegFiles))]
-        public void OpenJpeg_SaveBmp(TestFile file)
+        [WithFileCollection(nameof(AllJpegFiles), PixelTypes.Color | PixelTypes.StandardImageClass | PixelTypes.Argb)]
+        public void OpenJpeg_SaveBmp<TColor>(TestImageProvider<TColor> provider)
+            where TColor : struct, IPackedPixel, IEquatable<TColor>
         {
-            string bmpFileName = file.FileNameWithoutExtension + ".bmp";
+            var image = provider.GetImage();
 
-            var image = file.CreateImage();
-                
-            using (var outputStream = CreateOutputStream(bmpFileName))
-            {
-                image.Save(outputStream, new BmpFormat());
-            }
+            provider.Utility.SaveTestOutputFile(image, "bmp");
         }
 
-        public static IEnumerable<object[]> AllBmpFiles
-            => TestImages.Bmp.All.Select(file => new object[] { TestFile.Create(file) });
+
+        public static IEnumerable<string> AllBmpFiles => TestImages.Bmp.All;
 
         [Theory]
-        [MemberData(nameof(AllBmpFiles))]
-        public void OpenBmp_SaveJpeg(TestFile file)
+        [WithFileCollection(nameof(AllBmpFiles), PixelTypes.Color | PixelTypes.StandardImageClass | PixelTypes.Argb, JpegSubsample.Ratio420, 75)]
+        [WithFileCollection(nameof(AllBmpFiles), PixelTypes.Color | PixelTypes.StandardImageClass | PixelTypes.Argb, JpegSubsample.Ratio444, 75)]
+        public void OpenBmp_SaveJpeg<TColor>(TestImageProvider<TColor> provider, JpegSubsample subSample, int quality)
+           where TColor : struct, IPackedPixel, IEquatable<TColor>
         {
-            string jpegPath = file.FileNameWithoutExtension + ".jpeg";
+            var image = provider.GetImage();
 
-            var image = file.CreateImage();
+            var utility = provider.Utility;
+            utility.TestName += "_" + subSample + "_Q" + quality;
 
-            using (var outputStream = CreateOutputStream(jpegPath))
+            using (var outputStream = File.OpenWrite(utility.GetTestOutputFileName("jpg")))
             {
-                image.Save(outputStream, new JpegFormat());
+                var encoder = new JpegEncoder()
+                {
+                    Subsample = subSample,
+                    Quality = quality
+                };
+
+                image.Save(outputStream, encoder);
             }
         }
     }

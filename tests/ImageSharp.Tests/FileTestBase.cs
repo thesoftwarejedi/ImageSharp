@@ -6,12 +6,11 @@
 namespace ImageSharp.Tests
 {
     using System.Collections.Generic;
-    using System.IO;
 
     /// <summary>
     /// The test base class for reading and writing to files.
     /// </summary>
-    public abstract class FileTestBase
+    public abstract class FileTestBase : TestBase
     {
         /// <summary>
         /// The collection of image files to test against.
@@ -45,23 +44,5 @@ namespace ImageSharp.Tests
             // TestFile.Create(TestImages.Gif.Cheers),
             // TestFile.Create(TestImages.Gif.Giphy) // Perf: Enable for local testing only
         };
-
-        protected string CreateOutputDirectory(string path, params string[] pathParts)
-        {
-            var postFix = "";
-            if (pathParts != null && pathParts.Length > 0)
-            {
-                postFix  = "/" + string.Join("/", pathParts);
-            }
-
-            path = "TestOutput/" + path + postFix;
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            return path;
-        }
     }
 }
