@@ -18,10 +18,10 @@ branches:
     - master
     - coverity_scan
 
-# script:
-#  - cd src/ImageSharp/
-#  - dotnet restore
-#  - dotnet build -c Release
+script:
+ - cd src/ImageSharp/
+ - dotnet restore
+ - dotnet build -c Release
 
 env:
   global:
