@@ -15,8 +15,8 @@ namespace ImageSharp.Processing.Processors
     public class PolaroidProcessor<TColor> : ColorMatrixFilter<TColor>
         where TColor : struct, IPackedPixel, IEquatable<TColor>
     {
-        private static TColor veryDarkOrange = ColorBuilder<TColor>.FromRGB(102, 34, 0);
-        private static TColor lightOrange = ColorBuilder<TColor>.FromRGBA(255, 153, 102, 178);
+        private static TColor veryDarkOrange = ColorConverter<TColor>.FromRGB(102, 34, 0);
+        private static TColor lightOrange = ColorConverter<TColor>.FromRGBA(255, 153, 102, 178);
 
         /// <inheritdoc/>
         public override Matrix4x4 Matrix => new Matrix4x4()

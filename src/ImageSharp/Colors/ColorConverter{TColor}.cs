@@ -1,4 +1,4 @@
-﻿// <copyright file="ColorBuilder{TColor}.cs" company="James Jackson-South">
+﻿// <copyright file="ColorConverter{TColor}.cs" company="James Jackson-South">
 // Copyright (c) James Jackson-South and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
@@ -6,15 +6,35 @@
 namespace ImageSharp
 {
     using System;
+    using System.Buffers;
     using System.Globalization;
 
     /// <summary>
     /// A set of named colors mapped to the provided Color space.
     /// </summary>
     /// <typeparam name="TColor">The type of the color.</typeparam>
-    public static class ColorBuilder<TColor>
+    public static class ColorConverter<TColor>
         where TColor : struct, IPackedPixel, IEquatable<TColor>
     {
+        /// <summary>
+        /// returns the hexidecimal version of this color in format that can be read by <see cref="FromHex(string)"/>.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>The hex representation of this color.</returns>
+        public static string ToHex(TColor color)
+        {
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(4);
+            try
+            {
+                color.ToXyzwBytes(buffer, 0);
+                return ToHexFromXyzw(buffer);
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
+            }
+        }
+
         /// <summary>
         /// Creates a new <typeparamref name="TColor"/> representation from the string representing a color.
         /// </summary>
@@ -45,6 +65,41 @@ namespace ImageSharp
         }
 
         /// <summary>
+        /// returns the string reperesentation of this color as usable with we application.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>The web representation of this color.</returns>
+        public static string ToWeb(TColor color)
+        {
+            string webColor = NamedColors<TColor>.FindName(color);
+
+            if (webColor != null)
+            {
+                return webColor;
+            }
+
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(4);
+            try
+            {
+                color.ToXyzwBytes(buffer, 0);
+
+                if (buffer[3] == 255)
+                {
+                    return "#" + ToHexFromXyzw(buffer).Substring(0, 6);
+                }
+                else
+                {
+                    // has an alpha channel use rgba
+                    return $"rgba({buffer[0]}, {buffer[1]}, {buffer[2]}, {buffer[3] / 255f})";
+                }
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
+            }
+        }
+
+        /// <summary>
         /// Creates a new <typeparamref name="TColor"/> representation from standard RGB bytes with 100% opacity.
         /// </summary>
         /// <param name="red">The red intensity.</param>
@@ -71,6 +126,15 @@ namespace ImageSharp
             TColor color = default(TColor);
             color.PackFromBytes(red, green, blue, alpha);
             return color;
+        }
+
+        private static string ToHexFromXyzw(byte[] buffer)
+        {
+            uint hexOrder = (uint)(buffer[0] << 24 |
+                buffer[1] << 16 |
+                buffer[2] << 8 |
+                buffer[3] << 0);
+            return hexOrder.ToString("X8");
         }
 
         /// <summary>

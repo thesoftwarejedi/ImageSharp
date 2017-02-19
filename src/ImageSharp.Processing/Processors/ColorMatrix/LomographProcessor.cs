@@ -15,7 +15,7 @@ namespace ImageSharp.Processing.Processors
     public class LomographProcessor<TColor> : ColorMatrixFilter<TColor>
         where TColor : struct, IPackedPixel, IEquatable<TColor>
     {
-        private static readonly TColor VeryDarkGreen = ColorBuilder<TColor>.FromRGBA(0, 10, 0, 255);
+        private static readonly TColor VeryDarkGreen = ColorConverter<TColor>.FromRGBA(0, 10, 0, 255);
 
         /// <inheritdoc/>
         public override Matrix4x4 Matrix => new Matrix4x4()

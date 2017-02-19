@@ -242,7 +242,7 @@ namespace ImageSharp
         /// </returns>
         public static Color FromHex(string hex)
         {
-            return ColorBuilder<Color>.FromHex(hex);
+            return ColorConverter<Color>.FromHex(hex);
         }
 
         /// <inheritdoc/>
