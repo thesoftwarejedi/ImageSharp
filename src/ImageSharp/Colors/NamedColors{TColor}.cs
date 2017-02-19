@@ -19,6 +19,7 @@ namespace ImageSharp
 #pragma warning disable SA1202
         // note this use be new'ed up before the Calls to RegisterNamedColor.
         private static readonly ConcurrentDictionary<TColor, string> NameLookup = new ConcurrentDictionary<TColor, string>();
+        private static readonly ConcurrentDictionary<string, TColor> ColorLookup = new ConcurrentDictionary<string, TColor>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Represents a <see cref="Color"/> matching the W3C definition that has an hex value of #F0F8FF.
@@ -734,6 +735,26 @@ namespace ImageSharp
         /// <summary>
         /// Finds the wellknown name that this color represents.
         /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="color">The color.</param>
+        /// <returns>
+        /// The true if the color is known; otherwise [false].
+        /// </returns>
+        public static bool TryFindColor(string name, out TColor color)
+        {
+            if (ColorLookup.ContainsKey(name))
+            {
+                color = ColorLookup[name];
+                return true;
+            }
+
+            color = default(TColor);
+            return false;
+        }
+
+        /// <summary>
+        /// Finds the wellknown name that this color represents.
+        /// </summary>
         /// <param name="color">The color.</param>
         /// <returns>The name of the color if known; otherwise [null].</returns>
         public static string FindName(TColor color)
@@ -776,6 +797,7 @@ namespace ImageSharp
         {
             TColor color = ColorConverter<TColor>.FromRGBA(r, g, b, a);
             NameLookup.AddOrUpdate(color, name, (c, n) => n);
+            ColorLookup.AddOrUpdate(name, color, (n, c) => c);
 
             return color;
         }
