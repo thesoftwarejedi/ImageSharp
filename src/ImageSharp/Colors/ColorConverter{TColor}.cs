@@ -213,7 +213,7 @@ namespace ImageSharp
             }
 
             TColor result;
-            if (ColorConstants<TColor>.TryFindColor(webColor, out result))
+            if (NamedColors<TColor>.TryFindColor(webColor, out result))
             {
                 return result;
             }
