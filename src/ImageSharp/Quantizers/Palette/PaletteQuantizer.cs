@@ -7,6 +7,7 @@ namespace ImageSharp.Quantizers
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Encapsulates methods to create a quantized image based upon the given palette.
@@ -43,18 +44,7 @@ namespace ImageSharp.Quantizers
         {
             if (palette == null)
             {
-                Color[] constants = ColorConstants.WebSafeColors;
-                TColor[] safe = new TColor[constants.Length + 1];
-
-                for (int i = 0; i < constants.Length; i++)
-                {
-                    constants[i].ToXyzwBytes(this.pixelBuffer, 0);
-                    TColor packed = default(TColor);
-                    packed.PackFromBytes(this.pixelBuffer[0], this.pixelBuffer[1], this.pixelBuffer[2], this.pixelBuffer[3]);
-                    safe[i] = packed;
-                }
-
-                this.colors = safe;
+                this.colors = NamedColors<TColor>.WebSafeColors.ToArray();
             }
             else
             {

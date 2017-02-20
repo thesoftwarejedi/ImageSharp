@@ -77,7 +77,7 @@ namespace ImageSharp
             if (format == WebStringFormat.Name)
             {
                 // do name seperately as it doesn't require extracting the bytes
-                return NamedColors<TColor>.FindName(color);
+                return NamedColors<TColor>.FindWebSafeName(color);
             }
 
             byte[] buffer = ArrayPool<byte>.Shared.Rent(4);
@@ -99,7 +99,7 @@ namespace ImageSharp
         /// <returns>The web representation of this color.</returns>
         public static string ToWeb(TColor color)
         {
-            string webColor = NamedColors<TColor>.FindName(color);
+            string webColor = NamedColors<TColor>.FindWebSafeName(color);
 
             if (webColor != null)
             {
@@ -213,7 +213,7 @@ namespace ImageSharp
             }
 
             TColor result;
-            if (NamedColors<TColor>.TryFindColor(webColor, out result))
+            if (ColorConstants<TColor>.TryFindColor(webColor, out result))
             {
                 return result;
             }
