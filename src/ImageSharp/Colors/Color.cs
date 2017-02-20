@@ -264,7 +264,6 @@ namespace ImageSharp
 
         /// <summary>
         /// Converts the value of this instance to a representation best used on the web.
-        /// It first tries to convert it to a web name, 
         /// </summary>
         /// <returns>A web string representation of the value.</returns>
         public string ToWeb()

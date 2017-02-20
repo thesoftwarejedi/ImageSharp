@@ -12,6 +12,7 @@ namespace ImageSharp
     /// <summary>
     /// Provides useful color definitions.
     /// </summary>
+    /// <typeparam name="TColor">The type of the color.</typeparam>
     public static class ColorConstants<TColor>
         where TColor : struct, IPackedPixel, IEquatable<TColor>
     {
@@ -24,7 +25,6 @@ namespace ImageSharp
         /// Gets a collection of named, web safe, colors as defined in the CSS Color Module Level 4.
         /// </summary>
         public static TColor[] WebSafeColors => SafeColors.Value;
-
 
         /// <summary>
         /// Determines whether the specified color has a wellknown name.

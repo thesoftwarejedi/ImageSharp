@@ -44,7 +44,7 @@ namespace ImageSharp.Quantizers
         {
             if (palette == null)
             {
-                this.colors = NamedColors<TColor>.WebSafeColors.ToArray();
+                this.colors = ColorConstants<TColor>.WebSafeColors;
             }
             else
             {
