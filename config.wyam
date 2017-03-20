@@ -1,4 +1,5 @@
 #recipe Docs
-Settings[Keys.Host] = "imagesharp.org";
-Settings[Keys.Title] = "Image Sharp";
+Settings[Keys.Host] = "imagesharp.net";
+Settings[Keys.Title] = "ImageSharp";
+Settings[DocsKeys.Logo] = "/assets/img/imagesharp-logo.svg";
 FileSystem.OutputPath = "./docs";
