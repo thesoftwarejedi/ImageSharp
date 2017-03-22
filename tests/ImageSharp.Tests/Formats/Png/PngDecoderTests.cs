@@ -24,9 +24,7 @@ namespace ImageSharp.Tests
 
             using (Image image = testFile.CreateImage(options))
             {
-                Assert.Equal(1, image.MetaData.Properties.Count);
-                Assert.Equal("Software", image.MetaData.Properties[0].Name);
-                Assert.Equal("paint.net 4.0.6", image.MetaData.Properties[0].Value);
+                Assert.Equal("paint.net 4.0.6", image.MetaData.GetValue(ImagePropertyTag.Software));
             }
         }
 
@@ -42,7 +40,8 @@ namespace ImageSharp.Tests
 
             using (Image image = testFile.CreateImage(options))
             {
-                Assert.Equal(0, image.MetaData.Properties.Count);
+                //Assert.Equal(0, image.MetaData.Properties.Count);
+                throw new System.NotImplementedException();
             }
         }
 
@@ -58,8 +57,9 @@ namespace ImageSharp.Tests
 
             using (Image image = testFile.CreateImage(options))
             {
-                Assert.Equal(1, image.MetaData.Properties.Count);
-                Assert.Equal("潓瑦慷敲", image.MetaData.Properties[0].Name);
+                //Assert.Equal(1, image.MetaData.Properties.Count);
+                //Assert.Equal("潓瑦慷敲", image.MetaData.Properties[0].Name);
+                throw new System.NotImplementedException();
             }
         }
     }

@@ -15,28 +15,29 @@ namespace ImageSharp.Tests
         [Fact]
         public void ConstructorImageMetaData()
         {
-            ImageMetaData metaData = new ImageMetaData();
+            //ImageMetaData metaData = new ImageMetaData();
 
-            ExifProfile exifProfile = new ExifProfile();
-            ImageProperty imageProperty = new ImageProperty("name", "value");
+            //ExifProfile exifProfile = new ExifProfile();
+            //ImageProperty imageProperty = new ImageProperty("name", "value");
 
-            metaData.ExifProfile = exifProfile;
-            metaData.FrameDelay = 42;
-            metaData.HorizontalResolution = 4;
-            metaData.VerticalResolution = 2;
-            metaData.Properties.Add(imageProperty);
-            metaData.Quality = 24;
-            metaData.RepeatCount = 1;
+            //metaData.ExifProfile = exifProfile;
+            //metaData.FrameDelay = 42;
+            //metaData.HorizontalResolution = 4;
+            //metaData.VerticalResolution = 2;
+            //metaData.Properties.Add(imageProperty);
+            //metaData.Quality = 24;
+            //metaData.RepeatCount = 1;
 
-            ImageMetaData clone = new ImageMetaData(metaData);
+            //ImageMetaData clone = new ImageMetaData(metaData);
 
-            Assert.Equal(exifProfile.ToByteArray(), clone.ExifProfile.ToByteArray());
-            Assert.Equal(42, clone.FrameDelay);
-            Assert.Equal(4, clone.HorizontalResolution);
-            Assert.Equal(2, clone.VerticalResolution);
-            Assert.Equal(imageProperty, clone.Properties[0]);
-            Assert.Equal(24, clone.Quality);
-            Assert.Equal(1, clone.RepeatCount);
+            //Assert.Equal(exifProfile.ToByteArray(), clone.ExifProfile.ToByteArray());
+            //Assert.Equal(42, clone.FrameDelay);
+            //Assert.Equal(4, clone.HorizontalResolution);
+            //Assert.Equal(2, clone.VerticalResolution);
+            //Assert.Equal(imageProperty, clone.Properties[0]);
+            //Assert.Equal(24, clone.Quality);
+            //Assert.Equal(1, clone.RepeatCount);
+            throw new System.NotImplementedException();
         }
 
         [Fact]
@@ -74,19 +75,20 @@ namespace ImageSharp.Tests
         [Fact]
         public void SyncProfiles()
         {
-            ExifProfile exifProfile = new ExifProfile();
-            exifProfile.SetValue(ExifTag.XResolution, new Rational(200));
-            exifProfile.SetValue(ExifTag.YResolution, new Rational(300));
+            //ExifProfile exifProfile = new ExifProfile();
+            //exifProfile.SetValue(ExifTag.XResolution, new Rational(200));
+            //exifProfile.SetValue(ExifTag.YResolution, new Rational(300));
 
-            Image image = new Image(1, 1);
-            image.MetaData.ExifProfile = exifProfile;
-            image.MetaData.HorizontalResolution = 400;
-            image.MetaData.VerticalResolution = 500;
+            //Image image = new Image(1, 1);
+            //image.MetaData.ExifProfile = exifProfile;
+            //image.MetaData.HorizontalResolution = 400;
+            //image.MetaData.VerticalResolution = 500;
 
-            image.MetaData.SyncProfiles();
+            //image.MetaData.SyncProfiles();
 
-            Assert.Equal(400, ((Rational)image.MetaData.ExifProfile.GetValue(ExifTag.XResolution).Value).ToDouble());
-            Assert.Equal(500, ((Rational)image.MetaData.ExifProfile.GetValue(ExifTag.YResolution).Value).ToDouble());
+            //Assert.Equal(400, ((Rational)image.MetaData.ExifProfile.GetValue(ExifTag.XResolution).Value).ToDouble());
+            //Assert.Equal(500, ((Rational)image.MetaData.ExifProfile.GetValue(ExifTag.YResolution).Value).ToDouble());
+            throw new System.NotImplementedException();
         }
     }
 }

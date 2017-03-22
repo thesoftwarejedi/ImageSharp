@@ -7,21 +7,21 @@ namespace ImageSharp.MetaData.Properties
     using System.Text;
 
     /// <summary>
-    /// Represents a comment
+    /// Represents a the software
     /// </summary>
-    internal class UserCommentPropertyTag : ImagePropertyTag<string>
+    internal class SoftwarePropertyTag : ImagePropertyTag<string>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserCommentPropertyTag"/> class.
+        /// Initializes a new instance of the <see cref="SoftwarePropertyTag"/> class.
         /// </summary>
-        internal UserCommentPropertyTag()
-            : base("User Comments", false)
+        internal SoftwarePropertyTag()
+            : base("Software", false)
         {
         }
 
         internal override IEnumerable<string> ReadMetaDataValue(ExifProfile profile)
         {
-            ExifValue val = profile.GetValue(ExifTag.UserComment);
+            ExifValue val = profile.GetValue(ExifTag.Software);
             if (val != null && val.Value != null && val.Value is string)
             {
                 yield return val.Value.ToString();
@@ -30,7 +30,7 @@ namespace ImageSharp.MetaData.Properties
 
         internal override void SetMetaDataValue(ImageProperty<string> value, ExifProfile profile)
         {
-            profile.SetValue(ExifTag.UserComment, value.TypedValue);
+            profile.SetValue(ExifTag.Software, value.TypedValue);
         }
     }
 }

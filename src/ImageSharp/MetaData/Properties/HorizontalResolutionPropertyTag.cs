@@ -5,6 +5,7 @@ namespace ImageSharp.MetaData.Properties
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using ImageSharp.Formats;
 
     /// <summary>
     /// Represents a horizontal resolution
@@ -19,15 +20,7 @@ namespace ImageSharp.MetaData.Properties
         {
         }
 
-        /// <inheritdoc />
-        internal override IEnumerable<ExifValue> ConvertToExifValues(double resolution)
-        {
-            Rational val = new Rational(resolution, false);
-            yield return ExifValue.Create(ExifTag.XResolution, val);
-        }
-
-        /// <inheritdoc />
-        internal override IEnumerable<double> CreateTypedFromExifProfile(ExifProfile profile)
+        internal override IEnumerable<double> ReadMetaDataValue(ExifProfile profile)
         {
             ExifValue val = profile.GetValue(ExifTag.XResolution);
             if (val != null && val.Value is Rational)
@@ -35,6 +28,21 @@ namespace ImageSharp.MetaData.Properties
                 Rational rat = (Rational)val.Value;
                 yield return rat.ToDouble();
             }
+        }
+
+        internal override void SetMetaDataValue(ImageProperty<double> value, ExifProfile profile)
+        {
+            profile.SetValue(ExifTag.XResolution, new Rational(value.TypedValue, false));
+        }
+
+        internal override IEnumerable<double> ReadMetaDataValue(PngMetaData profile)
+        {
+            yield return profile.HorizontalResolution;
+        }
+
+        internal override void SetMetaDataValue(ImageProperty<double> value, PngMetaData profile)
+        {
+            profile.HorizontalResolution = value.TypedValue;
         }
     }
 }

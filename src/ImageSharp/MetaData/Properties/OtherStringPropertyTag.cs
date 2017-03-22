@@ -10,15 +10,15 @@ namespace ImageSharp.MetaData.Properties
     /// <summary>
     /// Represents a comment
     /// </summary>
-    internal class OtherPropertyTag : ImagePropertyTag<string>
+    internal class OtherStringPropertyTag : ImagePropertyTag<string>
     {
-        static Dictionary<string, OtherPropertyTag> cache = new Dictionary<string, OtherPropertyTag>();
+        static Dictionary<string, OtherStringPropertyTag> cache = new Dictionary<string, OtherStringPropertyTag>();
         private readonly string tagName;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OtherPropertyTag"/> class.
+        /// Initializes a new instance of the <see cref="OtherStringPropertyTag"/> class.
         /// </summary>
-        internal OtherPropertyTag(string name)
+        private OtherStringPropertyTag(string name)
             : base($"Other - " + name, true)
         {
             this.tagName = name;
@@ -29,7 +29,7 @@ namespace ImageSharp.MetaData.Properties
         /// </summary>
         /// <param name="value">The value to store in the property.</param>
         /// <returns>a newly created property.</returns>
-        internal static OtherPropertyTag Create(string name)
+        internal static OtherStringPropertyTag Get(string name)
         {
             lock (cache)
             {
@@ -39,23 +39,11 @@ namespace ImageSharp.MetaData.Properties
                 }
                 else
                 {
-                    OtherPropertyTag newTag = new OtherPropertyTag(name);
+                    OtherStringPropertyTag newTag = new OtherStringPropertyTag(name);
                     cache.Add(name, newTag);
                     return newTag;
                 }
             }
-        }
-
-        /// <inheritdoc />
-        internal override IEnumerable<ExifValue> ConvertToExifValues(string comment)
-        {
-            return Enumerable.Empty<ExifValue>();
-        }
-
-        /// <inheritdoc />
-        internal sealed override IEnumerable<string> CreateTypedFromExifProfile(ExifProfile profile)
-        {
-            return Enumerable.Empty<string>();
         }
     }
 }

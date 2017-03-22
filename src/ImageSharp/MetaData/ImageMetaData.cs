@@ -8,6 +8,7 @@ namespace ImageSharp
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using ImageSharp.Formats;
 
     /// <summary>
     /// Encapsulates the metadata of an image.
@@ -258,29 +259,66 @@ namespace ImageSharp
         }
 
         /// <summary>
-        /// Generates an exif profile from the values store in the Metadata Properties
+        /// Sets the current metadata values based on a previous metadata object.
         /// </summary>
-        /// <returns>An Exif profile for use in encoders.</returns>
-        internal ExifProfile GenerateExifProfile()
+        /// <param name="other">Meta data object to copy values from.</param>
+        internal void LoadFrom(PngMetaData other)
         {
-            ExifProfile profile = new ExifProfile();
+            IEnumerable<ImageProperty> properties = ImagePropertyTag.AllTags
+                .SelectMany(x => x.ReadMetaData(other));
 
-            ExifValue[] values = this.properties.SelectMany(x => x.ConvertToExifValues()).ToArray();
-            return new ExifProfile(values);
+            foreach (ImageProperty p in properties)
+            {
+                this.SetProperty(p);
+            }
+
+            this.Quality = Quality;
         }
 
         /// <summary>
         /// Populate the metadata properties based on the values stores in the exif profile.
         /// </summary>
         /// <param name="profile">The source profile.</param>
-        internal void LoadFromExifProfile(ExifProfile profile)
+        internal void LoadFrom(ExifProfile profile)
         {
-            IEnumerable<ImageProperty> properties = ImagePropertyTag.AllTags.SelectMany(x => x.CreateFromExifProfile(profile));
+            IEnumerable<ImageProperty> properties = ImagePropertyTag.AllTags
+                .SelectMany(x => x.ReadMetaData(profile));
 
             foreach (ImageProperty p in properties)
             {
                 this.SetProperty(p);
             }
+        }
+
+        /// <summary>
+        /// Generates PngMetaData from the values store in the Metadata Properties
+        /// </summary>
+        /// <returns>An PngMetaData for use in encoders.</returns>
+        internal PngMetaData GeneratePngMetaData()
+        {
+            PngMetaData profile = new PngMetaData();
+
+            foreach(ImageProperty p in this.properties)
+            {
+                p.Tag.SetMetaData(p, profile);
+            }
+
+            return profile;
+        }
+
+        /// <summary>
+        /// Generates an exif profile from the values store in the Metadata Properties
+        /// </summary>
+        /// <returns>An Exif profile for use in encoders.</returns>
+        internal ExifProfile GenerateExifProfile()
+        { 
+            ExifProfile profile = new ExifProfile();
+
+            foreach (ImageProperty p in this.properties)
+            {
+                p.Tag.SetMetaData(p, profile);
+            }
+            return profile;
         }
     }
 }

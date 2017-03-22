@@ -9,6 +9,7 @@ namespace ImageSharp
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using ImageSharp.Formats;
 
     /// <summary>
     /// Stores meta information about a image, like the name of the author,
@@ -38,35 +39,50 @@ namespace ImageSharp
             return new ImageProperty<T>(this, value);
         }
 
-        /// <summary>
-        /// Convertes an image property value into an ExifValue.
-        /// </summary>
-        /// <param name="value">the property value to read.</param>
-        /// <returns>A collection of Exif values derived from this ImageProperty.</returns>
-        internal abstract IEnumerable<ExifValue> ConvertToExifValues(T value);
-
-        /// <inheritdoc />
-        internal sealed override IEnumerable<ExifValue> ConvertToExifValues(ImageProperty property)
+        internal virtual IEnumerable<T> ReadMetaDataValue(ExifProfile profile)
         {
-            if (property is ImageProperty<T> && property.Tag.GetType() == this.GetType())
-            {
-                return this.ConvertToExifValues((ImageProperty<T>)property);
-            }
-
-            return Enumerable.Empty<ExifValue>();
+            return Enumerable.Empty<T>();
         }
 
-        /// <summary>
-        /// Convertes an ExifProfile to a collection of values.
-        /// </summary>
-        /// <param name="profile">the profile to read the value from.</param>
-        /// <returns>A collection of values derived from this ExifProfile.</returns>
-        internal abstract IEnumerable<T> CreateTypedFromExifProfile(ExifProfile profile);
-
-        /// <inheritdoc />
-        internal override IEnumerable<ImageProperty> CreateFromExifProfile(ExifProfile profile)
+        internal sealed override IEnumerable<ImageProperty> ReadMetaData(ExifProfile profile)
         {
-            return this.CreateTypedFromExifProfile(profile).Select(this.Create).ToArray();
+            return ReadMetaDataValue(profile).Select(Create);
+        }
+
+        internal virtual IEnumerable<T> ReadMetaDataValue(PngMetaData profile)
+        {
+            return Enumerable.Empty<T>();
+        }
+
+        internal sealed override IEnumerable<ImageProperty> ReadMetaData(PngMetaData profile)
+        {
+            return ReadMetaDataValue(profile).Select(Create);
+        }
+
+        internal virtual void SetMetaDataValue(ImageProperty<T> value, ExifProfile profile)
+        {
+        }
+
+        internal sealed override void SetMetaData(ImageProperty property, ExifProfile profile)
+        {
+            if (property.Tag == this && property is ImageProperty<T>)
+            {
+                ImageProperty<T> propertyTyped = property as ImageProperty<T>;
+                base.SetMetaData(propertyTyped, profile);
+            }
+        }
+
+        internal virtual void SetMetaDataValue(ImageProperty<T> value, PngMetaData profile)
+        {
+        }
+
+        internal sealed override void SetMetaData(ImageProperty property, PngMetaData profile)
+        {
+            if (property.Tag == this && property is ImageProperty<T>)
+            {
+                ImageProperty<T> propertyTyped = property as ImageProperty<T>;
+                base.SetMetaData(propertyTyped, profile);
+            }
         }
     }
 }

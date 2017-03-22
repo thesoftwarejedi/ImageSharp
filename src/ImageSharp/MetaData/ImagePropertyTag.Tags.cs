@@ -33,18 +33,22 @@ namespace ImageSharp
         public static ImagePropertyTag<string> UserComment { get; } = new UserCommentPropertyTag();
 
         /// <summary>
-        /// create a new generic named meatadata item.
+        /// The tag represting a software that generated the image.
         /// </summary>
-        /// <param name="name">the name</param>
-        /// <returns>I string baded tag</returns>
-        public static ImagePropertyTag<string> Other(string name) => OtherPropertyTag.Create(name);
+        public static ImagePropertyTag<string> Software { get; } = new SoftwarePropertyTag();
+
+        /// <summary>
+        /// The tag represting an other string value.
+        /// </summary>
+        /// <returns>The tag</returns>
+        public static ImagePropertyTag<string> Other(string name) => OtherStringPropertyTag.Get(name);
 
         internal static readonly IEnumerable<ImagePropertyTag> AllTags = new ImagePropertyTag[]
         {
             HorizontalResolution,
             VerticalResolution,
             UserComment,
-            OtherPropertyTag.Create("other") // we need a general one registerd to reversing
+            Software
         };
     }
 }

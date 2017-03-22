@@ -166,7 +166,7 @@ namespace ImageSharp.Formats
         public Image<TColor> Decode<TColor>(Stream stream)
             where TColor : struct, IPixel<TColor>
         {
-            ImageMetaData metadata = new ImageMetaData();
+            PngMetaData metadata = new PngMetaData();
             this.currentStream = stream;
             this.currentStream.Skip(8);
 
@@ -282,7 +282,7 @@ namespace ImageSharp.Formats
         /// </summary>
         /// <param name="metadata">The metadata to read to.</param>
         /// <param name="data">The data containing physical data.</param>
-        private void ReadPhysicalChunk(ImageMetaData metadata, byte[] data)
+        private void ReadPhysicalChunk(PngMetaData metadata, byte[] data)
         {
             data.ReverseBytes(0, 4);
             data.ReverseBytes(4, 4);
@@ -779,7 +779,7 @@ namespace ImageSharp.Formats
         /// <param name="metadata">The metadata to decode to.</param>
         /// <param name="data">The <see cref="T:byte[]"/> containing  data.</param>
         /// <param name="length">The maximum length to read.</param>
-        private void ReadTextChunk(ImageMetaData metadata, byte[] data, int length)
+        private void ReadTextChunk(PngMetaData metadata, byte[] data, int length)
         {
             if (this.options.IgnoreMetadata)
             {
@@ -800,7 +800,7 @@ namespace ImageSharp.Formats
             string name = this.options.TextEncoding.GetString(data, 0, zeroIndex);
             string value = this.options.TextEncoding.GetString(data, zeroIndex + 1, length - zeroIndex - 1);
 
-            metadata.SetProperty(ImagePropertyTag.Other(name).Create(value));
+            metadata.SetValue(name, value);
         }
 
         /// <summary>

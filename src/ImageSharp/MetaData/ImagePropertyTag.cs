@@ -9,6 +9,7 @@ namespace ImageSharp
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using ImageSharp.Formats;
 
     /// <summary>
     /// Stores meta information about a image, like the name of the author,
@@ -49,10 +50,9 @@ namespace ImageSharp
         /// Convertes an image property into an ExifValue.
         /// </summary>
         /// <param name="property">the property to read the value from.</param>
-        /// <returns>A collection of Exif values derived from this ImageProperty.</returns>
-        internal virtual IEnumerable<ExifValue> ConvertToExifValues(ImageProperty property)
+        /// <param name="profile">the profile to set the value on.</param>
+        internal virtual void SetMetaData(ImageProperty property, ExifProfile profile)
         {
-            return Enumerable.Empty<ExifValue>();
         }
 
         /// <summary>
@@ -60,9 +60,29 @@ namespace ImageSharp
         /// </summary>
         /// <param name="profile">the profile to read the value from.</param>
         /// <returns>A collection of Exif values derived from this ImageProperty.</returns>
-        internal virtual IEnumerable<ImageProperty> CreateFromExifProfile(ExifProfile profile)
+        internal virtual IEnumerable<ImageProperty> ReadMetaData(ExifProfile profile)
         {
             return Enumerable.Empty<ImageProperty>();
+        }
+
+        /// <summary>
+        /// Convertes a PngMetaData to a collection of properties.
+        /// </summary>
+        /// <param name="profile">the profile to read the value from.</param>
+        /// <returns>A collection of Exif values derived from this ImageProperty.</returns>
+        internal virtual IEnumerable<ImageProperty> ReadMetaData(PngMetaData profile)
+        {
+            return Enumerable.Empty<ImageProperty>();
+        }
+
+        /// <summary>
+        /// Convertes an image property into an KeyValuePair{string, string}.
+        /// </summary>
+        /// <param name="property">the property to read the value from.</param>
+        /// <param name="metadata">the metadata to set the value to.</param>
+        /// <returns>A collection of key value pairs values derived from this ImageProperty.</returns>
+        internal virtual void SetMetaData(ImageProperty property, PngMetaData metadata)
+        {
         }
     }
 }

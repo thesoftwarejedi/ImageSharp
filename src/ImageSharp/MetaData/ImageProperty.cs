@@ -40,14 +40,5 @@ namespace ImageSharp
         /// Gets the value of this <see cref="ImageProperty{T}"/>.
         /// </summary>
         public object Value { get; }
-
-        /// <summary>
-        /// Generates exif values for a property value.
-        /// </summary>
-        /// <returns>a collection of exif values this property represents</returns>
-        internal IEnumerable<ExifValue> ConvertToExifValues()
-        {
-            return this.Tag.ConvertToExifValues(this);
-        }
     }
 }
