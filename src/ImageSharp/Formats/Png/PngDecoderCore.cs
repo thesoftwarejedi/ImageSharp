@@ -800,7 +800,7 @@ namespace ImageSharp.Formats
             string name = this.options.TextEncoding.GetString(data, 0, zeroIndex);
             string value = this.options.TextEncoding.GetString(data, zeroIndex + 1, length - zeroIndex - 1);
 
-            metadata.Properties.Add(new ImageProperty(name, value));
+            metadata.SetProperty(ImagePropertyTag.Other(name).Create(value));
         }
 
         /// <summary>

@@ -244,13 +244,13 @@ namespace ImageSharp.Formats
                 return;
             }
 
-            ImageProperty property = image.MetaData.Properties.FirstOrDefault(p => p.Name == GifConstants.Comments);
-            if (property == null || string.IsNullOrEmpty(property.Value))
+            string comment = image.MetaData.GetValue(ImagePropertyTag.UserComment);
+            if (string.IsNullOrEmpty(comment))
             {
                 return;
             }
 
-            byte[] comments = this.options.TextEncoding.GetBytes(property.Value);
+            byte[] comments = this.options.TextEncoding.GetBytes(comment);
 
             int count = Math.Min(comments.Length, 255);
 

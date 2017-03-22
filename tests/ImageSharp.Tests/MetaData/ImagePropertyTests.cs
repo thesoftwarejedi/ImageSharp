@@ -19,13 +19,14 @@ namespace ImageSharp.Tests
         [Fact]
         public void AreEqual()
         {
-            ImageProperty property1 = new ImageProperty("Foo", "Bar");
-            ImageProperty property2 = new ImageProperty("Foo", "Bar");
-            ImageProperty property3 = null;
+            //ImageProperty property1 = new ImageProperty("Foo", "Bar");
+            //ImageProperty property2 = new ImageProperty("Foo", "Bar");
+            //ImageProperty property3 = null;
 
-            Assert.Equal(property1, property2);
-            Assert.True(property1 == property2);
-            Assert.Equal(property3, null);
+            //Assert.Equal(property1, property2);
+            //Assert.True(property1 == property2);
+            //Assert.Equal(property3, null);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -34,20 +35,21 @@ namespace ImageSharp.Tests
         [Fact]
         public void AreNotEqual()
         {
-            ImageProperty property1 = new ImageProperty("Foo", "Bar");
-            ImageProperty property2 = new ImageProperty("Foo", "Foo");
-            ImageProperty property3 = new ImageProperty("Bar", "Bar");
-            ImageProperty property4 = new ImageProperty("Foo", null);
+            //ImageProperty property1 = new ImageProperty("Foo", "Bar");
+            //ImageProperty property2 = new ImageProperty("Foo", "Foo");
+            //ImageProperty property3 = new ImageProperty("Bar", "Bar");
+            //ImageProperty property4 = new ImageProperty("Foo", null);
 
-            Assert.False(property1.Equals("Foo"));
+            //Assert.False(property1.Equals("Foo"));
 
-            Assert.NotEqual(property1, null);
+            //Assert.NotEqual(property1, null);
 
-            Assert.NotEqual(property1, property2);
-            Assert.True(property1 != property2);
+            //Assert.NotEqual(property1, property2);
+            //Assert.True(property1 != property2);
 
-            Assert.NotEqual(property1, property3);
-            Assert.NotEqual(property1, property4);
+            //Assert.NotEqual(property1, property3);
+            //Assert.NotEqual(property1, property4);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -56,9 +58,10 @@ namespace ImageSharp.Tests
         [Fact]
         public void ConstructorThrowsWhenNameIsNullOrEmpty()
         {
-            Assert.Throws<ArgumentNullException>(() => new ImageProperty(null, "Foo"));
+            //Assert.Throws<ArgumentNullException>(() => new ImageProperty(null, "Foo"));
 
-            Assert.Throws<ArgumentException>(() => new ImageProperty(string.Empty, "Foo"));
+            //Assert.Throws<ArgumentException>(() => new ImageProperty(string.Empty, "Foo"));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -67,12 +70,13 @@ namespace ImageSharp.Tests
         [Fact]
         public void ConstructorAssignsProperties()
         {
-            ImageProperty property = new ImageProperty("Foo", null);
-            Assert.Equal("Foo", property.Name);
-            Assert.Equal(null, property.Value);
+            //ImageProperty property = new ImageProperty("Foo", null);
+            //Assert.Equal("Foo", property.Name);
+            //Assert.Equal(null, property.Value);
 
-            property = new ImageProperty("Foo", string.Empty);
-            Assert.Equal(string.Empty, property.Value);
+            //property = new ImageProperty("Foo", string.Empty);
+            //Assert.Equal(string.Empty, property.Value);
+            throw new NotImplementedException();
         }
     }
 }

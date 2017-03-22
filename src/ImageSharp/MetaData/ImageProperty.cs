@@ -8,7 +8,6 @@ namespace ImageSharp
     using System;
     using System.Collections.Generic;
 
-
     /// <summary>
     /// Stores meta information about a image, like the name of the author,
     /// the copyright information, the date, where the image was created
@@ -42,10 +41,13 @@ namespace ImageSharp
         /// </summary>
         public object Value { get; }
 
-
+        /// <summary>
+        /// Generates exif values for a property value.
+        /// </summary>
+        /// <returns>a collection of exif values this property represents</returns>
         internal IEnumerable<ExifValue> ConvertToExifValues()
         {
-            return Tag.ConvertToExifValues(this);
+            return this.Tag.ConvertToExifValues(this);
         }
     }
 }

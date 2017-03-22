@@ -51,6 +51,19 @@ namespace ImageSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="ExifProfile"/> class.
         /// </summary>
+        /// <param name="values">The values to prepopulate this profile.</param>
+        public ExifProfile(IEnumerable<ExifValue> values)
+            : this((byte[])null)
+        {
+            foreach (ExifValue value in values)
+            {
+                this.SetValue(value.Tag, value.Value);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExifProfile"/> class.
+        /// </summary>
         /// <param name="data">The byte array to read the EXIF profile from.</param>
         public ExifProfile(byte[] data)
         {
@@ -239,8 +252,8 @@ namespace ImageSharp
             ExifValue value = this.GetValue(tag);
             if (value != null)
             {
-              Rational newResolution = new Rational(resolution, false);
-              this.SetValue(tag, newResolution);
+                Rational newResolution = new Rational(resolution, false);
+                this.SetValue(tag, newResolution);
             }
         }
 

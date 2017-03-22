@@ -15,52 +15,55 @@ namespace ImageSharp.Tests
         [Fact]
         public void Decode_IgnoreMetadataIsFalse_CommentsAreRead()
         {
-            DecoderOptions options = new DecoderOptions()
-            {
-                IgnoreMetadata = false
-            };
+            //DecoderOptions options = new DecoderOptions()
+            //{
+            //    IgnoreMetadata = false
+            //};
 
-            TestFile testFile = TestFile.Create(TestImages.Gif.Rings);
+            //TestFile testFile = TestFile.Create(TestImages.Gif.Rings);
 
-            using (Image image = testFile.CreateImage(options))
-            {
-                Assert.Equal(1, image.MetaData.Properties.Count);
-                Assert.Equal("Comments", image.MetaData.Properties[0].Name);
-                Assert.Equal("ImageSharp", image.MetaData.Properties[0].Value);
-            }
+            //using (Image image = testFile.CreateImage(options))
+            //{
+            //    Assert.Equal(1, image.MetaData.Properties.Count);
+            //    Assert.Equal("Comments", image.MetaData.Properties[0].Name);
+            //    Assert.Equal("ImageSharp", image.MetaData.Properties[0].Value);
+            //}
+            throw new System.NotImplementedException();
         }
 
         [Fact]
         public void Decode_IgnoreMetadataIsTrue_CommentsAreIgnored()
         {
-            DecoderOptions options = new DecoderOptions()
-            {
-                IgnoreMetadata = true
-            };
+            //DecoderOptions options = new DecoderOptions()
+            //{
+            //    IgnoreMetadata = true
+            //};
 
-            TestFile testFile = TestFile.Create(TestImages.Gif.Rings);
+            //TestFile testFile = TestFile.Create(TestImages.Gif.Rings);
 
-            using (Image image = testFile.CreateImage(options))
-            {
-                Assert.Equal(0, image.MetaData.Properties.Count);
-            }
+            //using (Image image = testFile.CreateImage(options))
+            //{
+            //    Assert.Equal(0, image.MetaData.Properties.Count);
+            //}
+            throw new System.NotImplementedException();
         }
 
         [Fact]
         public void Decode_TextEncodingSetToUnicode_TextIsReadWithCorrectEncoding()
         {
-            GifDecoderOptions options = new GifDecoderOptions()
-            {
-                TextEncoding = Encoding.Unicode
-            };
+            //GifDecoderOptions options = new GifDecoderOptions()
+            //{
+            //    TextEncoding = Encoding.Unicode
+            //};
 
-            TestFile testFile = TestFile.Create(TestImages.Gif.Rings);
+            //TestFile testFile = TestFile.Create(TestImages.Gif.Rings);
 
-            using (Image image = testFile.CreateImage(options))
-            {
-                Assert.Equal(1, image.MetaData.Properties.Count);
-                Assert.Equal("浉条卥慨灲", image.MetaData.Properties[0].Value);
-            }
+            //using (Image image = testFile.CreateImage(options))
+            //{
+            //    Assert.Equal(1, image.MetaData.Properties.Count);
+            //    Assert.Equal("浉条卥慨灲", image.MetaData.Properties[0].Value);
+            //}
+            throw new System.NotImplementedException();
         }
     }
 }

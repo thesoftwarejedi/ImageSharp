@@ -722,8 +722,7 @@ namespace ImageSharp.Formats
                 return;
             }
 
-            image.MetaData.SyncProfiles();
-            this.WriteProfile(image.MetaData.ExifProfile);
+            this.WriteProfile(image.MetaData.GenerateExifProfile());
         }
 
         /// <summary>
