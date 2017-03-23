@@ -37,7 +37,7 @@ namespace ImageSharp.Tests
             {
                 ExifProfile profile = new ExifProfile();
                 profile.SetValue(ExifTag.Orientation, orientation);
-                image.MetaData.LoadFrom(profile);
+                profile.PopulateTo(image.MetaData);
 
                 using (FileStream before = File.OpenWrite($"{path}/before-{file.FileName}"))
                 using (FileStream after = File.OpenWrite($"{path}/after-{file.FileName}"))

@@ -8,7 +8,7 @@
     /// <summary>
     /// Png meta data collection
     /// </summary>
-    internal class PngMetaData : IMetaDataProvider
+    internal class PngMetaData
     {
         private List<KeyValuePair<string, string>> properties = new List<KeyValuePair<string, string>>();
 
@@ -63,7 +63,7 @@
             }
         }
 
-        public void Populate(ImageMetaData metadata)
+        public void PopulateTo(ImageMetaData metadata)
         {
             metadata.SetValue(ImagePropertyTag.UserComment, GetValue("Comment"));
             metadata.SetValue(ImagePropertyTag.Software, GetValue("Software"));

@@ -12,15 +12,16 @@ namespace ImageSharp.Tests
     {
         private static ExifValue GetExifValue()
         {
-            ExifProfile profile;
-            using (Image image = TestFile.Create(TestImages.Jpeg.Baseline.Floorplan).CreateImage())
-            {
-                profile = image.MetaData.ExifProfile;
-            }
+            //ExifProfile profile;
+            //using (Image image = TestFile.Create(TestImages.Jpeg.Baseline.Floorplan).CreateImage())
+            //{
+            //    profile = image.MetaData.ExifProfile;
+            //}
 
-            Assert.NotNull(profile);
+            //Assert.NotNull(profile);
 
-            return profile.Values.First();
+            //return profile.Values.First();
+            throw new System.NotImplementedException();
         }
 
         [Fact]

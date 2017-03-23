@@ -14,7 +14,7 @@ namespace ImageSharp
     /// <summary>
     /// Represents an EXIF profile providing access to the collection of values.
     /// </summary>
-    internal sealed partial class ExifProfile : IMetaDataProvider
+    internal sealed partial class ExifProfile
     {
         private static readonly ExifTag[] HardCodedTags = new ExifTag[]
         {
@@ -42,7 +42,7 @@ namespace ImageSharp
         }
 
         /// <inheritdoc />
-        public void Populate(ImageMetaData metaData)
+        public void PopulateTo(ImageMetaData metaData)
         {
             double? horizontalResolution = this.GetResolution(ExifTag.XResolution);
             if (horizontalResolution.HasValue)

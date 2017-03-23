@@ -13,7 +13,7 @@ namespace ImageSharp
     /// <summary>
     /// Represents an EXIF profile providing access to the collection of values.
     /// </summary>
-    internal sealed partial class ExifProfile : IMetaDataProvider
+    internal sealed partial class ExifProfile
     {
         /// <summary>
         /// The byte array to read the EXIF profile from.

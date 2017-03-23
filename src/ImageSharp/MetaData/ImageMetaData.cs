@@ -280,29 +280,5 @@ namespace ImageSharp
                 }
             }
         }
-
-        /// <summary>
-        /// Sets the current metadata values based on a previous metadata object.
-        /// </summary>
-        /// <param name="other">Meta data object to copy values from.</param>
-        internal void LoadFrom(IMetaDataProvider other)
-        {
-            if (!object.ReferenceEquals(this,other))
-            {
-                other.Populate(this);
-            }
-        }
-
-        /// <summary>
-        /// Sets the current metadata values based on a previous metadata object.
-        /// </summary>
-        /// <param name="other">Meta data object to copy values from.</param>
-        internal void Populate(IMetaDataProvider other)
-        {
-            if (!object.ReferenceEquals( this ,other))
-            {
-                other.LoadFrom(this);
-            }
-        }
     }
 }
