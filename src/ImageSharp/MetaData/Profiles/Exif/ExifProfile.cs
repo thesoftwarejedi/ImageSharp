@@ -13,7 +13,7 @@ namespace ImageSharp
     /// <summary>
     /// Represents an EXIF profile providing access to the collection of values.
     /// </summary>
-    public sealed class ExifProfile
+    internal sealed partial class ExifProfile : IMetaDataProvider
     {
         /// <summary>
         /// The byte array to read the EXIF profile from.
@@ -243,11 +243,11 @@ namespace ImageSharp
         /// <param name="metaData">The meta data.</param>
         internal void Sync(ImageMetaData metaData)
         {
-            this.SyncResolution(ExifTag.XResolution, metaData.HorizontalResolution);
-            this.SyncResolution(ExifTag.YResolution, metaData.VerticalResolution);
+            this.SetResolution(ExifTag.XResolution, metaData.HorizontalResolution);
+            this.SetResolution(ExifTag.YResolution, metaData.VerticalResolution);
         }
 
-        private void SyncResolution(ExifTag tag, double resolution)
+        private void SetResolution(ExifTag tag, double resolution)
         {
             ExifValue value = this.GetValue(tag);
             if (value != null)
@@ -255,6 +255,19 @@ namespace ImageSharp
                 Rational newResolution = new Rational(resolution, false);
                 this.SetValue(tag, newResolution);
             }
+        }
+
+        private double? GetResolution(ExifTag tag)
+        {
+            ExifValue value = this.GetValue(tag);
+            if (value != null)
+            {
+
+                Rational? newResolution = value.Value as Rational?;
+                return newResolution?.ToDouble();
+            }
+
+            return null;
         }
 
         private void InitializeValues()

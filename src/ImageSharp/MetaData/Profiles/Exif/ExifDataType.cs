@@ -8,7 +8,7 @@ namespace ImageSharp
     /// <summary>
     /// Specifies exif data types.
     /// </summary>
-    public enum ExifDataType
+    internal enum ExifDataType
     {
         /// <summary>
         /// Unknown

@@ -17,15 +17,47 @@ namespace ImageSharp
     /// or some other information.
     /// </summary>
     /// <typeparam name="T">Type of the value that can be set against this tag.</typeparam>
-    public abstract class ImagePropertyTag<T> : ImagePropertyTag
+    public class ImagePropertyTag<T> : ImagePropertyTag
     {
+        private static Dictionary<Tuple<string, string>, ImagePropertyTag<T>> cache = new Dictionary<Tuple<string, string>, ImagePropertyTag<T>>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImagePropertyTag{T}"/> class.
+        /// </summary>
+        /// <param name="tagNamespace">a namespace to group the tags.</param>
+        /// <param name="name">The name of the property.</param>
+        /// <param name="allowMultiple">does this tage allow multiple instances.</param>
+        private ImagePropertyTag(string tagNamespace, string name, bool allowMultiple)
+            : base(tagNamespace, name, allowMultiple)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImagePropertyTag{T}"/> class.
+        /// </summary>
+        /// <param name="tagNamespace">a namespace to group the tags.</param>
+        /// <param name="name">The name of the property.</param>
+        private ImagePropertyTag(string tagNamespace, string name)
+            : base(tagNamespace, name, false)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ImagePropertyTag{T}"/> class.
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <param name="allowMultiple">does this tage allow multiple instances.</param>
-        internal ImagePropertyTag(string name, bool allowMultiple)
-            : base(name, allowMultiple)
+        private ImagePropertyTag(string name, bool allowMultiple)
+            : base(null, name, allowMultiple)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImagePropertyTag{T}"/> class.
+        /// </summary>
+        /// <param name="name">The name of the property.</param>
+        private ImagePropertyTag(string name)
+            : base(null, name, false)
         {
         }
 
@@ -39,50 +71,38 @@ namespace ImageSharp
             return new ImageProperty<T>(this, value);
         }
 
-        internal virtual IEnumerable<T> ReadMetaDataValue(ExifProfile profile)
+        /// <summary>
+        /// Creates a new instance or a property with the value set.
+        /// </summary>
+        /// <param name="tagNamespace">The tag namespace.</param>
+        /// <param name="name">The tag name.</param>
+        /// <returns>a newly created property.</returns>
+        internal static ImagePropertyTag<T> Get(string tagNamespace, string name)
         {
-            return Enumerable.Empty<T>();
-        }
-
-        internal sealed override IEnumerable<ImageProperty> ReadMetaData(ExifProfile profile)
-        {
-            return ReadMetaDataValue(profile).Select(Create);
-        }
-
-        internal virtual IEnumerable<T> ReadMetaDataValue(PngMetaData profile)
-        {
-            return Enumerable.Empty<T>();
-        }
-
-        internal sealed override IEnumerable<ImageProperty> ReadMetaData(PngMetaData profile)
-        {
-            return ReadMetaDataValue(profile).Select(Create);
-        }
-
-        internal virtual void SetMetaDataValue(ImageProperty<T> value, ExifProfile profile)
-        {
-        }
-
-        internal sealed override void SetMetaData(ImageProperty property, ExifProfile profile)
-        {
-            if (property.Tag == this && property is ImageProperty<T>)
+            lock (cache)
             {
-                ImageProperty<T> propertyTyped = property as ImageProperty<T>;
-                base.SetMetaData(propertyTyped, profile);
+                Tuple<string, string> key = Tuple.Create(tagNamespace, name);
+                if (cache.ContainsKey(key))
+                {
+                    return cache[key];
+                }
+                else
+                {
+                    ImagePropertyTag<T> newTag = new ImagePropertyTag<T>(name);
+                    cache.Add(key, newTag);
+                    return newTag;
+                }
             }
         }
 
-        internal virtual void SetMetaDataValue(ImageProperty<T> value, PngMetaData profile)
+        /// <summary>
+        /// Creates a new instance or a property with the value set.
+        /// </summary>
+        /// <param name="name">The tag name.</param>
+        /// <returns>a newly created property.</returns>
+        internal static ImagePropertyTag<T> Get(string name)
         {
-        }
-
-        internal sealed override void SetMetaData(ImageProperty property, PngMetaData profile)
-        {
-            if (property.Tag == this && property is ImageProperty<T>)
-            {
-                ImageProperty<T> propertyTyped = property as ImageProperty<T>;
-                base.SetMetaData(propertyTyped, profile);
-            }
+            return Get(null, name);
         }
     }
 }

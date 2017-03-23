@@ -1,5 +1,4 @@
-﻿
-namespace ImageSharp.Formats
+﻿namespace ImageSharp.Formats
 {
     using System;
     using System.Collections.Generic;
@@ -9,12 +8,23 @@ namespace ImageSharp.Formats
     /// <summary>
     /// Png meta data collection
     /// </summary>
-    internal class PngMetaData
+    internal class PngMetaData : IMetaDataProvider
     {
         private List<KeyValuePair<string, string>> properties = new List<KeyValuePair<string, string>>();
 
+        /// <summary>
+        /// Gets or sets the quality.
+        /// </summary>
         public double Quality { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Horizontal Resolution
+        /// </summary>
         public double HorizontalResolution { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the Vertical Resolution
+        /// </summary>
         public double VerticalResolution { get; internal set; }
 
         /// <summary>
@@ -35,6 +45,34 @@ namespace ImageSharp.Formats
         public string GetValue(string key)
         {
             return this.properties.LastOrDefault(x => x.Key == key).Value;
+        }
+
+        private static string[] HardCodedProperties = new[] {
+            "Comment",
+            "Software"
+        };
+        
+        public void LoadFrom(ImageMetaData metadata)
+        {
+            foreach (var p in metadata)
+            {
+                if (p.Tag.Namespace == "png")
+                {
+                    this.SetValue(p.Tag.Name, p.Value?.ToString());
+                }
+            }
+        }
+
+        public void Populate(ImageMetaData metadata)
+        {
+            metadata.SetValue(ImagePropertyTag.UserComment, GetValue("Comment"));
+            metadata.SetValue(ImagePropertyTag.Software, GetValue("Software"));
+
+            var lastProperties = this.properties.GroupBy(X => X.Key).Select(x => x.Last()).Where(x => !HardCodedProperties.Contains(x.Key));
+            foreach(var p in lastProperties)
+            {
+                metadata.SetValue(ImagePropertyTag.Other<string>("png", p.Key), p.Value);
+            }
         }
     }
 }

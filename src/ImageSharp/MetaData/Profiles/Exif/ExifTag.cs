@@ -9,7 +9,7 @@ namespace ImageSharp
     /// All exif tags from the Exif standard 2.2
     /// Descriptions from: <see href="http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html"/>
     /// </summary>
-    public enum ExifTag
+    internal enum ExifTag
     {
         /// <summary>
         /// Unknown

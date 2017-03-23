@@ -8,7 +8,6 @@ namespace ImageSharp
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using ImageSharp.MetaData.Properties;
 
     /// <summary>
     /// Stores meta information about a image, like the name of the author,
@@ -18,37 +17,55 @@ namespace ImageSharp
     public abstract partial class ImagePropertyTag
     {
         /// <summary>
-        /// The tag represting horizontal resolutions
+        /// Gets the tag represting horizontal resolutions
         /// </summary>
-        public static ImagePropertyTag<double> HorizontalResolution { get; } = new HorizontalResolutionPropertyTag();
+        public static ImagePropertyTag<double> HorizontalResolution { get; } = ImagePropertyTag<double>.Get("Horizontal Resoluton");
 
         /// <summary>
-        /// The tag represting vertical resolutions
+        /// Gets the tag represting FrameDelay
         /// </summary>
-        public static ImagePropertyTag<double> VerticalResolution { get; } = new VerticalResolutionPropertyTag();
+        public static ImagePropertyTag<int> FrameDelay { get; } = ImagePropertyTag<int>.Get("Animation", "Frame Delay");
 
         /// <summary>
-        /// The tag represting a user comment
+        /// Gets the tag represting Repeat Count
         /// </summary>
-        public static ImagePropertyTag<string> UserComment { get; } = new UserCommentPropertyTag();
+        public static ImagePropertyTag<ushort> RepeatCount { get; } = ImagePropertyTag<ushort>.Get("Animation", "Repeat Count");
 
         /// <summary>
-        /// The tag represting a software that generated the image.
+        /// Gets the tag represting FrameDelay
         /// </summary>
-        public static ImagePropertyTag<string> Software { get; } = new SoftwarePropertyTag();
+        public static ImagePropertyTag<int> Quality { get; } = ImagePropertyTag<int>.Get("Quality");
+
+        /// <summary>
+        /// Gets the tag represting vertical resolutions
+        /// </summary>
+        public static ImagePropertyTag<double> VerticalResolution { get; } = ImagePropertyTag<double>.Get("Vertical Resoluton");
+
+        /// <summary>
+        /// Gets the tag represting a user comment
+        /// </summary>
+        public static ImagePropertyTag<string> UserComment { get; } = ImagePropertyTag<string>.Get("User Comment");
+
+        /// <summary>
+        /// Gets the tag represting a software that generated the image.
+        /// </summary>
+        public static ImagePropertyTag<string> Software { get; } = ImagePropertyTag<string>.Get("Software");
 
         /// <summary>
         /// The tag represting an other string value.
         /// </summary>
+        /// <typeparam name="T">The type</typeparam>
+        /// <param name="name">The tags name</param>
         /// <returns>The tag</returns>
-        public static ImagePropertyTag<string> Other(string name) => OtherStringPropertyTag.Get(name);
+        public static ImagePropertyTag<T> Other<T>(string name) => ImagePropertyTag<T>.Get(name);
 
-        internal static readonly IEnumerable<ImagePropertyTag> AllTags = new ImagePropertyTag[]
-        {
-            HorizontalResolution,
-            VerticalResolution,
-            UserComment,
-            Software
-        };
+        /// <summary>
+        /// The tag represting an other string value.
+        /// </summary>
+        /// <typeparam name="T">The type</typeparam>
+        /// <param name="tagNamespace">The tags namespace</param>
+        /// <param name="name">The tags name</param>
+        /// <returns>The tag</returns>
+        public static ImagePropertyTag<T> Other<T>(string tagNamespace, string name) => ImagePropertyTag<T>.Get(tagNamespace, name);
     }
 }

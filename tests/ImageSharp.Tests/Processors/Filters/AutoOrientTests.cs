@@ -35,8 +35,9 @@ namespace ImageSharp.Tests
 
             using (Image image = file.CreateImage())
             {
-                image.MetaData.ExifProfile = new ExifProfile();
-                image.MetaData.ExifProfile.SetValue(ExifTag.Orientation, orientation);
+                ExifProfile profile = new ExifProfile();
+                profile.SetValue(ExifTag.Orientation, orientation);
+                image.MetaData.LoadFrom(profile);
 
                 using (FileStream before = File.OpenWrite($"{path}/before-{file.FileName}"))
                 using (FileStream after = File.OpenWrite($"{path}/after-{file.FileName}"))

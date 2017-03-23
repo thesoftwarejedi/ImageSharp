@@ -12,7 +12,7 @@ namespace ImageSharp
     /// <summary>
     /// Represent the value of the EXIF profile.
     /// </summary>
-    public sealed class ExifValue : IEquatable<ExifValue>
+    internal sealed class ExifValue : IEquatable<ExifValue>
     {
         /// <summary>
         /// The exif value.
@@ -78,7 +78,7 @@ namespace ImageSharp
         /// <summary>
         /// Gets the data type of the exif value.
         /// </summary>
-        public ExifDataType DataType
+        internal ExifDataType DataType
         {
             get;
         }
@@ -94,7 +94,7 @@ namespace ImageSharp
         /// <summary>
         /// Gets the tag of the exif value.
         /// </summary>
-        public ExifTag Tag
+        internal ExifTag Tag
         {
             get;
         }

@@ -8,7 +8,7 @@ namespace ImageSharp.Tests
 {
     using System;
     using System.IO;
-
+    using System.Linq;
     using ImageSharp.Formats;
 
     using Xunit;
@@ -133,7 +133,7 @@ namespace ImageSharp.Tests
 
             using (Image image = testFile.CreateImage(options))
             {
-                Assert.NotNull(image.MetaData.ExifProfile);
+                Assert.True(image.MetaData.Any(x=>x.Tag.Namespace == "exif"));
             }
         }
 
@@ -149,7 +149,7 @@ namespace ImageSharp.Tests
 
             using (Image image = testFile.CreateImage(options))
             {
-                Assert.Null(image.MetaData.ExifProfile);
+                Assert.False(image.MetaData.Any(x => x.Tag.Namespace == "exif"));
             }
         }
     }

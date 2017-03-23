@@ -575,16 +575,7 @@ namespace ImageSharp.Formats
             }
             else if (this.isExif)
             {
-                ExifValue horizontal = image.MetaData.ExifProfile.GetValue(ExifTag.XResolution);
-                ExifValue vertical = image.MetaData.ExifProfile.GetValue(ExifTag.YResolution);
-                double horizontalValue = horizontal != null ? ((Rational)horizontal.Value).ToDouble() : 0;
-                double verticalValue = vertical != null ? ((Rational)vertical.Value).ToDouble() : 0;
-
-                if (horizontalValue > 0 && verticalValue > 0)
-                {
-                    image.MetaData.HorizontalResolution = horizontalValue;
-                    image.MetaData.VerticalResolution = verticalValue;
-                }
+                // will already be populated
             }
         }
 
@@ -967,7 +958,7 @@ namespace ImageSharp.Formats
                 && profile[5] == '\0')
             {
                 this.isExif = true;
-                metadata.ExifProfile = new ExifProfile(profile);
+                metadata.LoadFrom(new ExifProfile(profile));
             }
         }
 

@@ -6,6 +6,7 @@
 namespace ImageSharp
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using ImageSharp.Formats;
@@ -13,7 +14,7 @@ namespace ImageSharp
     /// <summary>
     /// Encapsulates the metadata of an image.
     /// </summary>
-    public sealed partial class ImageMetaData : IMetaData
+    public sealed partial class ImageMetaData : IMetaData, IEnumerable<ImageProperty>
     {
         /// <summary>
         /// The default horizontal resolution value (dots per inch) in x direction.
@@ -65,7 +66,7 @@ namespace ImageSharp
         {
             get
             {
-                return GetValue(ImagePropertyTag.HorizontalResolution, DefaultHorizontalResolution);
+                return this.GetValue(ImagePropertyTag.HorizontalResolution, DefaultHorizontalResolution);
             }
 
             set
@@ -76,7 +77,7 @@ namespace ImageSharp
                 }
                 else
                 {
-                    this.SetProperty(ImagePropertyTag.HorizontalResolution.Create(DefaultHorizontalResolution));
+                    this.SetValue(ImagePropertyTag.HorizontalResolution, DefaultHorizontalResolution);
                 }
             }
         }
@@ -107,28 +108,35 @@ namespace ImageSharp
         }
 
         /// <summary>
-        /// Gets or sets the Exif profile.
-        /// </summary>
-        public ExifProfile ExifProfile { get; set; }
-
-        /// <summary>
         /// Gets or sets the frame delay for animated images.
         /// If not 0, this field specifies the number of hundredths (1/100) of a second to
         /// wait before continuing with the processing of the Data Stream.
         /// The clock starts ticking immediately after the graphic is rendered.
         /// </summary>
-        public int FrameDelay { get; set; }
+        public int FrameDelay
+        {
+            get => this.GetValue(ImagePropertyTag.FrameDelay, 0);
+            set => this.SetValue(ImagePropertyTag.FrameDelay, value);
+        }
 
         /// <summary>
         /// Gets or sets the quality of the image. This affects the output quality of lossy image formats.
         /// </summary>
-        public int Quality { get; set; }
+        public int Quality
+        {
+            get => this.GetValue(ImagePropertyTag.Quality, 0);
+            set => this.SetValue(ImagePropertyTag.Quality, value);
+        }
 
         /// <summary>
         /// Gets or sets the number of times any animation is repeated.
         /// <remarks>0 means to repeat indefinitely.</remarks>
         /// </summary>
-        public ushort RepeatCount { get; set; }
+        public ushort RepeatCount
+        {
+            get => this.GetValue(ImagePropertyTag.RepeatCount, (ushort)0);
+            set => this.SetValue(ImagePropertyTag.RepeatCount, value);
+        }
 
         /// <summary>
         /// Gets the property that matches a tag.
@@ -241,20 +249,35 @@ namespace ImageSharp
         }
 
         /// <summary>
+        /// Enumerates the properties
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        IEnumerator<ImageProperty> IEnumerable<ImageProperty>.GetEnumerator()
+        {
+            return this.properties.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Enumerates the properties
+        /// </summary>
+        /// <returns>The enumerator</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.properties.GetEnumerator();
+        }
+
+        /// <summary>
         /// Sets the current metadata values based on a previous metadata object.
         /// </summary>
         /// <param name="other">Meta data object to copy values from.</param>
         internal void LoadFrom(ImageMetaData other)
         {
-            this.HorizontalResolution = other.HorizontalResolution;
-            this.VerticalResolution = other.VerticalResolution;
-            this.Quality = other.Quality;
-            this.FrameDelay = other.FrameDelay;
-            this.RepeatCount = other.RepeatCount;
-
-            foreach (ImageProperty property in other.properties)
+            if (this != other)
             {
-                this.properties.Add(property);
+                foreach (ImageProperty p in other)
+                {
+                    this.SetProperty(p);
+                }
             }
         }
 
@@ -262,63 +285,24 @@ namespace ImageSharp
         /// Sets the current metadata values based on a previous metadata object.
         /// </summary>
         /// <param name="other">Meta data object to copy values from.</param>
-        internal void LoadFrom(PngMetaData other)
+        internal void LoadFrom(IMetaDataProvider other)
         {
-            IEnumerable<ImageProperty> properties = ImagePropertyTag.AllTags
-                .SelectMany(x => x.ReadMetaData(other));
-
-            foreach (ImageProperty p in properties)
+            if (!object.ReferenceEquals(this,other))
             {
-                this.SetProperty(p);
-            }
-
-            this.Quality = Quality;
-        }
-
-        /// <summary>
-        /// Populate the metadata properties based on the values stores in the exif profile.
-        /// </summary>
-        /// <param name="profile">The source profile.</param>
-        internal void LoadFrom(ExifProfile profile)
-        {
-            IEnumerable<ImageProperty> properties = ImagePropertyTag.AllTags
-                .SelectMany(x => x.ReadMetaData(profile));
-
-            foreach (ImageProperty p in properties)
-            {
-                this.SetProperty(p);
+                other.Populate(this);
             }
         }
 
         /// <summary>
-        /// Generates PngMetaData from the values store in the Metadata Properties
+        /// Sets the current metadata values based on a previous metadata object.
         /// </summary>
-        /// <returns>An PngMetaData for use in encoders.</returns>
-        internal PngMetaData GeneratePngMetaData()
+        /// <param name="other">Meta data object to copy values from.</param>
+        internal void Populate(IMetaDataProvider other)
         {
-            PngMetaData profile = new PngMetaData();
-
-            foreach(ImageProperty p in this.properties)
+            if (!object.ReferenceEquals( this ,other))
             {
-                p.Tag.SetMetaData(p, profile);
+                other.LoadFrom(this);
             }
-
-            return profile;
-        }
-
-        /// <summary>
-        /// Generates an exif profile from the values store in the Metadata Properties
-        /// </summary>
-        /// <returns>An Exif profile for use in encoders.</returns>
-        internal ExifProfile GenerateExifProfile()
-        { 
-            ExifProfile profile = new ExifProfile();
-
-            foreach (ImageProperty p in this.properties)
-            {
-                p.Tag.SetMetaData(p, profile);
-            }
-            return profile;
         }
     }
 }

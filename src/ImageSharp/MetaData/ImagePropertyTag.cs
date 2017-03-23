@@ -21,13 +21,15 @@ namespace ImageSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="ImagePropertyTag"/> class.
         /// </summary>
+        /// <param name="tagNamespace">The namespace of the tag.</param>
         /// <param name="name">The name of the property.</param>
         /// <param name="allowMultiple">is this tag allowed to have mutliple copies.</param>
-        internal ImagePropertyTag(string name, bool allowMultiple)
+        internal ImagePropertyTag(string tagNamespace, string name, bool allowMultiple)
         {
             Guard.NotNullOrEmpty(name, nameof(name));
 
             this.Name = name;
+            this.Namespace = tagNamespace;
             this.AllowMultiple = allowMultiple;
         }
 
@@ -47,42 +49,8 @@ namespace ImageSharp
         public string Name { get; }
 
         /// <summary>
-        /// Convertes an image property into an ExifValue.
+        /// Gets the Namespace of the Tag. Namespace is a string used for grouping specialits properties into well know profiles.
         /// </summary>
-        /// <param name="property">the property to read the value from.</param>
-        /// <param name="profile">the profile to set the value on.</param>
-        internal virtual void SetMetaData(ImageProperty property, ExifProfile profile)
-        {
-        }
-
-        /// <summary>
-        /// Convertes an ExifProfile to a collection of properties.
-        /// </summary>
-        /// <param name="profile">the profile to read the value from.</param>
-        /// <returns>A collection of Exif values derived from this ImageProperty.</returns>
-        internal virtual IEnumerable<ImageProperty> ReadMetaData(ExifProfile profile)
-        {
-            return Enumerable.Empty<ImageProperty>();
-        }
-
-        /// <summary>
-        /// Convertes a PngMetaData to a collection of properties.
-        /// </summary>
-        /// <param name="profile">the profile to read the value from.</param>
-        /// <returns>A collection of Exif values derived from this ImageProperty.</returns>
-        internal virtual IEnumerable<ImageProperty> ReadMetaData(PngMetaData profile)
-        {
-            return Enumerable.Empty<ImageProperty>();
-        }
-
-        /// <summary>
-        /// Convertes an image property into an KeyValuePair{string, string}.
-        /// </summary>
-        /// <param name="property">the property to read the value from.</param>
-        /// <param name="metadata">the metadata to set the value to.</param>
-        /// <returns>A collection of key value pairs values derived from this ImageProperty.</returns>
-        internal virtual void SetMetaData(ImageProperty property, PngMetaData metadata)
-        {
-        }
+        public string Namespace { get; }
     }
 }

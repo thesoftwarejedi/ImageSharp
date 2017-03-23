@@ -11,7 +11,7 @@ namespace ImageSharp
     /// Specifies which parts will be written when the profile is added to an image.
     /// </summary>
     [Flags]
-    public enum ExifParts
+    internal enum ExifParts
     {
         /// <summary>
         /// None
