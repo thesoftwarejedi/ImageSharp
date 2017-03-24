@@ -56,7 +56,7 @@
         {
             foreach (var p in metadata)
             {
-                if (p.Tag.Namespace == "png")
+                if (p.Tag.NameSpace == "png")
                 {
                     this.SetValue(p.Tag.Name, p.Value?.ToString());
                 }

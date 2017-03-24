@@ -133,7 +133,7 @@ namespace ImageSharp.Tests
 
             using (Image image = testFile.CreateImage(options))
             {
-                Assert.True(image.MetaData.Any(x=>x.Tag.Namespace == "exif"));
+                Assert.True(image.MetaData.Any(x=>x.Tag.NameSpace == "exif"));
             }
         }
 
@@ -149,7 +149,7 @@ namespace ImageSharp.Tests
 
             using (Image image = testFile.CreateImage(options))
             {
-                Assert.False(image.MetaData.Any(x => x.Tag.Namespace == "exif"));
+                Assert.False(image.MetaData.Any(x => x.Tag.NameSpace == "exif"));
             }
         }
     }

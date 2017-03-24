@@ -29,7 +29,7 @@ namespace ImageSharp
             Guard.NotNullOrEmpty(name, nameof(name));
 
             this.Name = name;
-            this.Namespace = tagNamespace;
+            this.NameSpace = tagNamespace;
             this.AllowMultiple = allowMultiple;
         }
 
@@ -49,8 +49,13 @@ namespace ImageSharp
         public string Name { get; }
 
         /// <summary>
-        /// Gets the Namespace of the Tag. Namespace is a string used for grouping specialits properties into well know profiles.
+        /// Gets the NameSpace of this <see cref="ImagePropertyTag"/> indicating which kind of
+        /// information this property stores.
         /// </summary>
-        public string Namespace { get; }
+        /// <example>
+        /// Typical properties are the author, copyright
+        /// information or other meta information.
+        /// </example>
+        public string NameSpace { get; }
     }
 }

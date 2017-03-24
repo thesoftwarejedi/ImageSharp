@@ -67,7 +67,7 @@ namespace ImageSharp
             where TColor : struct, IPixel<TColor>
         {
             ExifProfile profile = new ExifProfile();
-            source.MetaData.Populate(profile);
+            profile.LoadFrom(source.MetaData);
             
             ExifValue value = profile.GetValue(ExifTag.Orientation);
             if (value == null)

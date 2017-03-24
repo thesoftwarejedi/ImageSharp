@@ -221,7 +221,7 @@ namespace ImageSharp.Formats
                 }
 
                 Image<TColor> image = Image.Create<TColor>(this.header.Width, this.header.Height, this.configuration);
-                image.MetaData.LoadFrom(metadata);
+                metadata.LoadFrom(image.MetaData);
 
                 using (PixelAccessor<TColor> pixels = image.Lock())
                 {

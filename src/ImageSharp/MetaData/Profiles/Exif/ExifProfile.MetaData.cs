@@ -19,21 +19,41 @@ namespace ImageSharp
         private static readonly ExifTag[] HardCodedTags = new ExifTag[]
         {
             ExifTag.XResolution,
-            ExifTag.YResolution
+            ExifTag.YResolution,
+            ExifTag.Copyright
         };
 
-        /// <inheritdoc />
+        private void SetExifValue<T>(ImageMetaData metadata, ExifTag exiftag, ImagePropertyTag<T> tag)
+        {
+            if (metadata.GetProperties(tag).Any())
+            {
+                // if value set
+                this.SetValue(exiftag, metadata.GetValue(tag));
+            }
+        }
+
+        private void SetMetaDataValue<T>(ImageMetaData metadata, ExifTag exiftag, ImagePropertyTag<T> tag)
+        {
+            ExifValue val = this.GetValue(exiftag);
+            if (val != null)
+            {
+                metadata.SetValue(tag, (T)val.Value);
+            }
+        }
+
         public void LoadFrom(ImageMetaData metaData)
         {
+            this.SetExifValue(metaData, ExifTag.Copyright, ImagePropertyTag.Copyright);
+            this.SetExifValue(metaData, ExifTag.ImageDescription, ImagePropertyTag.Description);
             this.SetResolution(ExifTag.XResolution, metaData.HorizontalResolution);
             this.SetResolution(ExifTag.YResolution, metaData.VerticalResolution);
 
             // load all other values into generic exif specific tags
             foreach (ImageProperty pro in metaData)
             {
-                if (pro.Tag.Namespace == "exif")
+                if (pro.Tag is IExifImagePropertyTag)
                 {
-                    if (Enum.TryParse<ExifTag>(pro.Tag.Name, out ExifTag tag))
+                    if (Enum.TryParse(pro.Tag.Name, out ExifTag tag))
                     {
                         this.SetValue(tag, pro.Value);
                     }
@@ -41,9 +61,12 @@ namespace ImageSharp
             }
         }
 
-        /// <inheritdoc />
         public void PopulateTo(ImageMetaData metaData)
         {
+            metaData.SetValue(ExifImagePropertyTag.ExifLoaded, true);
+            this.SetMetaDataValue(metaData, ExifTag.Copyright, ImagePropertyTag.Copyright);
+            this.SetMetaDataValue(metaData, ExifTag.ImageDescription, ImagePropertyTag.Description);
+
             double? horizontalResolution = this.GetResolution(ExifTag.XResolution);
             if (horizontalResolution.HasValue)
             {
@@ -64,43 +87,43 @@ namespace ImageSharp
                     switch (val.DataType)
                     {
                         case ExifDataType.Unknown:
-                            metaData.SetValue(ImagePropertyTag.Other<object>("exif", val.Tag.ToString()), val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<object>(val.Tag), val.Value);
                             break;
                         case ExifDataType.Byte:
-                            metaData.SetValue(ImagePropertyTag.Other<byte>("exif", val.Tag.ToString()), (byte)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag<byte>.GetTag(val.Tag), (byte)val.Value);
                             break;
                         case ExifDataType.Ascii:
-                            metaData.SetValue(ImagePropertyTag.Other<string>("exif", val.Tag.ToString()), val.Value?.ToString());
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<string>(val.Tag), val.Value?.ToString());
                             break;
                         case ExifDataType.Short:
-                            metaData.SetValue(ImagePropertyTag.Other<short>("exif", val.Tag.ToString()), (short)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<short>(val.Tag), (short)val.Value);
                             break;
                         case ExifDataType.Long:
-                            metaData.SetValue(ImagePropertyTag.Other<ulong>("exif", val.Tag.ToString()), (ulong)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<ulong>(val.Tag), (ulong)val.Value);
                             break;
                         case ExifDataType.Rational:
-                            metaData.SetValue(ImagePropertyTag.Other<SignedRational>("exif", val.Tag.ToString()), (SignedRational)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<SignedRational>(val.Tag), (SignedRational)val.Value);
                             break;
                         case ExifDataType.SignedByte:
-                            metaData.SetValue(ImagePropertyTag.Other<sbyte>("exif", val.Tag.ToString()), (sbyte)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<sbyte>(val.Tag), (sbyte)val.Value);
                             break;
                         case ExifDataType.Undefined:
-                            metaData.SetValue(ImagePropertyTag.Other<object>("exif", val.Tag.ToString()), val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<object>(val.Tag), (object)val.Value);
                             break;
                         case ExifDataType.SignedShort:
-                            metaData.SetValue(ImagePropertyTag.Other<short>("exif", val.Tag.ToString()), (short)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<short>(val.Tag), (short)val.Value);
                             break;
                         case ExifDataType.SignedLong:
-                            metaData.SetValue(ImagePropertyTag.Other<long>("exif", val.Tag.ToString()), (long)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<long>(val.Tag), (long)val.Value);
                             break;
                         case ExifDataType.SignedRational:
-                            metaData.SetValue(ImagePropertyTag.Other<SignedRational>("exif", val.Tag.ToString()), (SignedRational)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<SignedRational>(val.Tag), (SignedRational)val.Value);
                             break;
                         case ExifDataType.SingleFloat:
-                            metaData.SetValue(ImagePropertyTag.Other<float>("exif", val.Tag.ToString()), (float)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<float>(val.Tag), (float)val.Value);
                             break;
                         case ExifDataType.DoubleFloat:
-                            metaData.SetValue(ImagePropertyTag.Other<double>("exif", val.Tag.ToString()), (double)val.Value);
+                            metaData.SetValue(ExifImagePropertyTag.GetTag<double>(val.Tag), (double)val.Value);
                             break;
                         default:
                             break;

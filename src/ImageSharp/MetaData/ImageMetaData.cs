@@ -29,6 +29,16 @@ namespace ImageSharp
         public const double DefaultVerticalResolution = 96;
 
         /// <summary>
+        /// VerticalResolution backing value
+        /// </summary>
+        private double verticalResolution = DefaultVerticalResolution;
+
+        /// <summary>
+        /// HorizontalResolution backing value
+        /// </summary>
+        private double horizontalResolution = DefaultHorizontalResolution;
+
+        /// <summary>
         /// Gets the list of properties for storing meta information about this image.
         /// </summary>
         /// <value>A list of image properties.</value>
@@ -64,22 +74,8 @@ namespace ImageSharp
         /// <value>The density of the image in x- direction.</value>
         public double HorizontalResolution
         {
-            get
-            {
-                return this.GetValue(ImagePropertyTag.HorizontalResolution, DefaultHorizontalResolution);
-            }
-
-            set
-            {
-                if (value > 0)
-                {
-                    this.SetValue(ImagePropertyTag.HorizontalResolution, value);
-                }
-                else
-                {
-                    this.SetValue(ImagePropertyTag.HorizontalResolution, DefaultHorizontalResolution);
-                }
-            }
+            get => this.horizontalResolution;
+            set => this.horizontalResolution = value > 0 ? value : DefaultHorizontalResolution;
         }
 
         /// <summary>
@@ -89,22 +85,8 @@ namespace ImageSharp
         /// <value>The density of the image in y- direction.</value>
         public double VerticalResolution
         {
-            get
-            {
-                return this.GetValue(ImagePropertyTag.VerticalResolution, DefaultHorizontalResolution);
-            }
-
-            set
-            {
-                if (value > 0)
-                {
-                    this.SetValue(ImagePropertyTag.VerticalResolution, value);
-                }
-                else
-                {
-                    this.SetValue(ImagePropertyTag.VerticalResolution, DefaultHorizontalResolution);
-                }
-            }
+            get => this.verticalResolution;
+            set => this.verticalResolution = value > 0 ? value : DefaultHorizontalResolution;            
         }
 
         /// <summary>
@@ -113,30 +95,18 @@ namespace ImageSharp
         /// wait before continuing with the processing of the Data Stream.
         /// The clock starts ticking immediately after the graphic is rendered.
         /// </summary>
-        public int FrameDelay
-        {
-            get => this.GetValue(ImagePropertyTag.FrameDelay, 0);
-            set => this.SetValue(ImagePropertyTag.FrameDelay, value);
-        }
+        public int FrameDelay { get; set; }
 
         /// <summary>
         /// Gets or sets the quality of the image. This affects the output quality of lossy image formats.
         /// </summary>
-        public int Quality
-        {
-            get => this.GetValue(ImagePropertyTag.Quality, 0);
-            set => this.SetValue(ImagePropertyTag.Quality, value);
-        }
+        public int Quality { get; set; }
 
         /// <summary>
         /// Gets or sets the number of times any animation is repeated.
         /// <remarks>0 means to repeat indefinitely.</remarks>
         /// </summary>
-        public ushort RepeatCount
-        {
-            get => this.GetValue(ImagePropertyTag.RepeatCount, (ushort)0);
-            set => this.SetValue(ImagePropertyTag.RepeatCount, value);
-        }
+        public ushort RepeatCount { get; set; }
 
         /// <summary>
         /// Gets the property that matches a tag.
@@ -182,6 +152,14 @@ namespace ImageSharp
             }
 
             this.properties.Add(property);
+        }
+
+        /// <summary>
+        /// Clears the MetaData of all custom properties.
+        /// </summary>
+        public void Clear()
+        {
+            this.properties.Clear();
         }
 
         /// <summary>

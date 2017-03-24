@@ -958,7 +958,7 @@ namespace ImageSharp.Formats
                 && profile[5] == '\0')
             {
                 this.isExif = true;
-                metadata.LoadFrom(new ExifProfile(profile));
+                new ExifProfile(profile).PopulateTo(metadata);
             }
         }
 

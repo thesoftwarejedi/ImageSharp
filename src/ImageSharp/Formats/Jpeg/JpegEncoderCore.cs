@@ -723,7 +723,7 @@ namespace ImageSharp.Formats
             }
 
             ExifProfile profile = new ExifProfile();
-            image.MetaData.Populate(profile);
+            profile.LoadFrom(image.MetaData);
             this.WriteProfile(profile);
         }
 

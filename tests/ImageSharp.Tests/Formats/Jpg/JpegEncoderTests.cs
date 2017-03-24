@@ -37,7 +37,7 @@ namespace ImageSharp.Tests
             using (Image<TColor> image = provider.GetImage().Resize(new ResizeOptions { Size = new Size(150, 100), Mode = ResizeMode.Max }))
             {
                 image.MetaData.Quality = quality;
-                image.MetaData.ExifProfile = null; // Reduce the size of the file
+                image.MetaData.Clear();
                 JpegEncoder encoder = new JpegEncoder();
                 JpegEncoderOptions options = new JpegEncoderOptions { Subsample = subsample, Quality = quality };
 
@@ -90,7 +90,7 @@ namespace ImageSharp.Tests
                     memStream.Position = 0;
                     using (Image output = Image.Load(memStream))
                     {
-                        Assert.NotNull(output.MetaData.ExifProfile);
+                        Assert.True(output.MetaData.GetValue(ExifImagePropertyTag.ExifLoaded, false));
                     }
                 }
             }
@@ -115,7 +115,7 @@ namespace ImageSharp.Tests
                     memStream.Position = 0;
                     using (Image output = Image.Load(memStream))
                     {
-                        Assert.Null(output.MetaData.ExifProfile);
+                        Assert.False(output.MetaData.GetValue(ExifImagePropertyTag.ExifLoaded, false));
                     }
                 }
             }

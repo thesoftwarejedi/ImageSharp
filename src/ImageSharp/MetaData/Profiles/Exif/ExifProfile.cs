@@ -237,16 +237,6 @@ namespace ImageSharp
             return writer.GetData();
         }
 
-        /// <summary>
-        /// Synchronizes the profiles with the specified meta data.
-        /// </summary>
-        /// <param name="metaData">The meta data.</param>
-        internal void Sync(ImageMetaData metaData)
-        {
-            this.SetResolution(ExifTag.XResolution, metaData.HorizontalResolution);
-            this.SetResolution(ExifTag.YResolution, metaData.VerticalResolution);
-        }
-
         private void SetResolution(ExifTag tag, double resolution)
         {
             ExifValue value = this.GetValue(tag);

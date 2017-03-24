@@ -24,27 +24,6 @@ namespace ImageSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="ImagePropertyTag{T}"/> class.
         /// </summary>
-        /// <param name="tagNamespace">a namespace to group the tags.</param>
-        /// <param name="name">The name of the property.</param>
-        /// <param name="allowMultiple">does this tage allow multiple instances.</param>
-        private ImagePropertyTag(string tagNamespace, string name, bool allowMultiple)
-            : base(tagNamespace, name, allowMultiple)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImagePropertyTag{T}"/> class.
-        /// </summary>
-        /// <param name="tagNamespace">a namespace to group the tags.</param>
-        /// <param name="name">The name of the property.</param>
-        private ImagePropertyTag(string tagNamespace, string name)
-            : base(tagNamespace, name, false)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImagePropertyTag{T}"/> class.
-        /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <param name="allowMultiple">does this tage allow multiple instances.</param>
         private ImagePropertyTag(string name, bool allowMultiple)
@@ -58,6 +37,27 @@ namespace ImageSharp
         /// <param name="name">The name of the property.</param>
         private ImagePropertyTag(string name)
             : base(null, name, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImagePropertyTag{T}"/> class.
+        /// </summary>
+        /// <param name="tagNameSpace">The namespace of the property.</param>
+        /// <param name="name">The name of the property.</param>
+        /// <param name="allowMultiple">does this tage allow multiple instances.</param>
+        protected ImagePropertyTag(string tagNameSpace, string name, bool allowMultiple)
+            : base(tagNameSpace, name, allowMultiple)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImagePropertyTag{T}"/> class.
+        /// </summary>
+        /// <param name="tagNameSpace">The namespace of the property.</param>
+        /// <param name="name">The name of the property.</param>
+        private ImagePropertyTag(string tagNameSpace, string name)
+            : base(tagNameSpace, name, false)
         {
         }
 
