@@ -7,29 +7,28 @@ namespace ImageSharp.Drawing.Processors
 {
     using System;
     using System.Buffers;
-    using System.Numerics;
-    using System.Threading.Tasks;
     using Drawing;
+    using ImageSharp.PixelFormats;
     using ImageSharp.Processing;
 
     /// <summary>
     /// Usinf a brsuh and a shape fills shape with contents of brush the
     /// </summary>
-    /// <typeparam name="TColor">The type of the color.</typeparam>
-    /// <seealso cref="ImageSharp.Processing.ImageProcessor{TColor}" />
-    internal class FillRegionProcessor<TColor> : ImageProcessor<TColor>
-        where TColor : struct, IPixel<TColor>
+    /// <typeparam name="TPixel">The type of the color.</typeparam>
+    /// <seealso cref="ImageSharp.Processing.ImageProcessor{TPixel}" />
+    internal class FillRegionProcessor<TPixel> : ImageProcessor<TPixel>
+        where TPixel : struct, IPixel<TPixel>
     {
         private const float AntialiasFactor = 1f;
         private const int DrawPadding = 1;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FillRegionProcessor{TColor}" /> class.
+        /// Initializes a new instance of the <see cref="FillRegionProcessor{TPixel}" /> class.
         /// </summary>
         /// <param name="brush">The details how to fill the region of interest.</param>
         /// <param name="region">The region of interest to be filled.</param>
         /// <param name="options">The configuration options.</param>
-        public FillRegionProcessor(IBrush<TColor> brush, Region region, GraphicsOptions options)
+        public FillRegionProcessor(IBrush<TPixel> brush, Region region, GraphicsOptions options)
         {
             this.Region = region;
             this.Brush = brush;
@@ -39,7 +38,7 @@ namespace ImageSharp.Drawing.Processors
         /// <summary>
         /// Gets the brush.
         /// </summary>
-        public IBrush<TColor> Brush { get; }
+        public IBrush<TPixel> Brush { get; }
 
         /// <summary>
         /// Gets the region that this processor applies to.
@@ -55,7 +54,7 @@ namespace ImageSharp.Drawing.Processors
         public GraphicsOptions Options { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TColor> source, Rectangle sourceRectangle)
+        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             Region region = this.Region;
             Rectangle rect = region.Bounds;
@@ -65,6 +64,15 @@ namespace ImageSharp.Drawing.Processors
             int maxX = Math.Min(source.Width, rect.Right);
             int minY = Math.Max(0, rect.Top);
             int maxY = Math.Min(source.Height, rect.Bottom);
+            if (minX >= maxX)
+            {
+                return; // no effect inside image;
+            }
+
+            if (minY >= maxY)
+            {
+                return; // no effect inside image;
+            }
 
             ArrayPool<float> arrayPool = ArrayPool<float>.Shared;
 
@@ -79,8 +87,8 @@ namespace ImageSharp.Drawing.Processors
                 }
             }
 
-            using (PixelAccessor<TColor> sourcePixels = source.Lock())
-            using (BrushApplicator<TColor> applicator = this.Brush.CreateApplicator(sourcePixels, rect))
+            using (PixelAccessor<TPixel> sourcePixels = source.Lock())
+            using (BrushApplicator<TPixel> applicator = this.Brush.CreateApplicator(sourcePixels, rect))
             {
                 float[] buffer = arrayPool.Rent(maxIntersections);
                 int scanlineWidth = maxX - minX;
@@ -119,25 +127,36 @@ namespace ImageSharp.Drawing.Processors
                                 // points will be paired up
                                 float scanStart = buffer[point] - minX;
                                 float scanEnd = buffer[point + 1] - minX;
-                                int startX = (int)Math.Floor(scanStart);
-                                int endX = (int)Math.Floor(scanEnd);
+                                int startX = (int)MathF.Floor(scanStart);
+                                int endX = (int)MathF.Floor(scanEnd);
 
-                                for (float x = scanStart; x < startX + 1; x += subpixelFraction)
+                                if (startX >= 0 && startX < scanline.Length)
                                 {
-                                    scanline[startX] += subpixelFractionPoint;
-                                    scanlineDirty = true;
+                                    for (float x = scanStart; x < startX + 1; x += subpixelFraction)
+                                    {
+                                        scanline[startX] += subpixelFractionPoint;
+                                        scanlineDirty = true;
+                                    }
                                 }
 
-                                for (float x = endX; x < scanEnd; x += subpixelFraction)
+                                if (endX >= 0 && endX < scanline.Length)
                                 {
-                                    scanline[endX] += subpixelFractionPoint;
-                                    scanlineDirty = true;
+                                    for (float x = endX; x < scanEnd; x += subpixelFraction)
+                                    {
+                                        scanline[endX] += subpixelFractionPoint;
+                                        scanlineDirty = true;
+                                    }
                                 }
 
-                                for (int x = startX + 1; x < endX; x++)
+                                int nextX = startX + 1;
+                                endX = Math.Min(endX, scanline.Length); // reduce to end to the right edge
+                                if (nextX >= 0)
                                 {
-                                    scanline[x] += subpixelFraction;
-                                    scanlineDirty = true;
+                                    for (int x = nextX; x < endX; x++)
+                                    {
+                                        scanline[x] += subpixelFraction;
+                                        scanlineDirty = true;
+                                    }
                                 }
                             }
                         }

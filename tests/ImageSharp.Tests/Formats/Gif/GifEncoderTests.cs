@@ -9,9 +9,23 @@ namespace ImageSharp.Tests
     using Xunit;
 
     using ImageSharp.Formats;
+    using ImageSharp.PixelFormats;
 
     public class GifEncoderTests
     {
+        private const PixelTypes PixelTypes = Tests.PixelTypes.StandardImageClass | Tests.PixelTypes.RgbaVector | Tests.PixelTypes.Argb32;
+
+        [Theory]
+        [WithTestPatternImages(100, 100, PixelTypes)]
+        public void EncodeGeneratedPatterns<TPixel>(TestImageProvider<TPixel> provider)
+            where TPixel : struct, IPixel<TPixel>
+        {
+            using (Image<TPixel> image = provider.GetImage())
+            {
+                provider.Utility.SaveTestOutputFile(image, "gif", new GifEncoder());
+            }
+        }
+
         [Fact]
         public void Encode_IgnoreMetadataIsFalse_CommentsAreWritten()
         {
@@ -29,7 +43,7 @@ namespace ImageSharp.Tests
                     input.Save(memStream, new GifFormat(), options);
 
                     memStream.Position = 0;
-                    using (Image output = new Image(memStream))
+                    using (Image output = Image.Load(memStream))
                     {
                         Assert.Equal(1, output.MetaData.Properties.Count);
                         Assert.Equal("Comments", output.MetaData.Properties[0].Name);
@@ -56,7 +70,7 @@ namespace ImageSharp.Tests
                     input.SaveAsGif(memStream, options);
 
                     memStream.Position = 0;
-                    using (Image output = new Image(memStream))
+                    using (Image output = Image.Load(memStream))
                     {
                         Assert.Equal(0, output.MetaData.Properties.Count);
                     }
@@ -77,7 +91,7 @@ namespace ImageSharp.Tests
                     input.Save(memStream, new GifFormat());
 
                     memStream.Position = 0;
-                    using (Image output = new Image(memStream))
+                    using (Image output = Image.Load(memStream))
                     {
                         Assert.Equal(1, output.MetaData.Properties.Count);
                         Assert.Equal("Comments", output.MetaData.Properties[0].Name);

@@ -10,6 +10,9 @@ namespace ImageSharp.Tests
     using System.IO;
     using System.Linq;
     using System.Text;
+
+    using ImageSharp.PixelFormats;
+
     using Xunit;
 
     public class ExifProfileTests
@@ -73,7 +76,7 @@ namespace ImageSharp.Tests
                 image.SaveAsJpeg(memStream);
 
                 memStream.Position = 0;
-                image = new Image(memStream);
+                image = Image.Load(memStream);
 
                 profile = image.MetaData.ExifProfile;
                 Assert.NotNull(profile);
@@ -91,7 +94,7 @@ namespace ImageSharp.Tests
                 image.SaveAsJpeg(memStream);
 
                 memStream.Position = 0;
-                image = new Image(memStream);
+                image = Image.Load(memStream);
 
                 profile = image.MetaData.ExifProfile;
                 Assert.NotNull(profile);
@@ -243,7 +246,7 @@ namespace ImageSharp.Tests
 
             TestProfile(profile);
 
-            Image<Color> thumbnail = profile.CreateThumbnail<Color>();
+            Image<Rgba32> thumbnail = profile.CreateThumbnail<Rgba32>();
             Assert.NotNull(thumbnail);
             Assert.Equal(256, thumbnail.Width);
             Assert.Equal(170, thumbnail.Height);
@@ -268,6 +271,24 @@ namespace ImageSharp.Tests
             }
         }
 
+        [Fact]
+        public void ExifTypeUndefined()
+        {
+            Image image = TestFile.Create(TestImages.Jpeg.Baseline.Bad.ExifUndefType).CreateImage();
+            Assert.NotNull(image);
+
+            ExifProfile profile = image.MetaData.ExifProfile;
+            Assert.NotNull(profile);
+
+            foreach (ExifValue value in profile.Values)
+            {
+                if (value.DataType == ExifDataType.Undefined)
+                {
+                    Assert.Equal(4, value.NumberOfComponents);
+                }
+            }
+        }
+
         private static ExifProfile GetExifProfile()
         {
             Image image = TestFile.Create(TestImages.Jpeg.Baseline.Floorplan).CreateImage();
@@ -286,7 +307,7 @@ namespace ImageSharp.Tests
                 image.Dispose();
 
                 memStream.Position = 0;
-                return new Image(memStream);
+                return Image.Load(memStream);
             }
         }
 

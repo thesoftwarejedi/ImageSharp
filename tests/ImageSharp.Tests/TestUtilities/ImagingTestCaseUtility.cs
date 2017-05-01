@@ -11,6 +11,7 @@ namespace ImageSharp.Tests
     using System.Reflection;
 
     using ImageSharp.Formats;
+    using ImageSharp.PixelFormats;
 
     /// <summary>
     /// Utility class to provide information about the test image & the test case for the test code,
@@ -19,12 +20,12 @@ namespace ImageSharp.Tests
     public class ImagingTestCaseUtility : TestBase
     {
         /// <summary>
-        /// Name of the TColor in the owner <see cref="TestImageProvider{TColor}"/>
+        /// Name of the TPixel in the owner <see cref="TestImageProvider{TPixel}"/>
         /// </summary>
         public string PixelTypeName { get; set; } = string.Empty;
 
         /// <summary>
-        /// The name of the file which is provided by <see cref="TestImageProvider{TColor}"/>
+        /// The name of the file which is provided by <see cref="TestImageProvider{TPixel}"/>
         /// Or a short string describing the image in the case of a non-file based image provider.
         /// </summary>
         public string SourceFileOrDescription { get; set; } = string.Empty;
@@ -44,13 +45,26 @@ namespace ImageSharp.Tests
         /// </summary>
         /// <param name="extension"></param>
         /// <returns>The required extension</returns>
-        public string GetTestOutputFileName(string extension = null)
+        public string GetTestOutputFileName(string extension = null, string tag = null)
         {
             string fn = string.Empty;
 
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = null;
+            }
+
             fn = Path.GetFileNameWithoutExtension(this.SourceFileOrDescription);
-            extension = extension ?? Path.GetExtension(this.SourceFileOrDescription);
-            extension = extension ?? ".bmp";
+
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = Path.GetExtension(this.SourceFileOrDescription);
+            }
+
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = ".bmp";
+            }
 
             if (extension[0] != '.')
             {
@@ -65,22 +79,29 @@ namespace ImageSharp.Tests
                 pixName = '_' + pixName;
             }
 
-            return $"{this.GetTestOutputDir()}/{this.TestName}{pixName}{fn}{extension}";
+            tag = tag ?? string.Empty;
+            if (tag != string.Empty)
+            {
+                tag = '_' + tag;
+            }
+
+
+            return $"{this.GetTestOutputDir()}/{this.TestName}{pixName}{fn}{tag}{extension}";
         }
 
         /// <summary>
         /// Encodes image by the format matching the required extension, than saves it to the recommended output file.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format of the image</typeparam>
+        /// <typeparam name="TPixel">The pixel format of the image</typeparam>
         /// <param name="image">The image instance</param>
         /// <param name="extension">The requested extension</param>
         /// <param name="encoder">Optional encoder</param>
         /// <param name="options">Optional encoder options</param>
-        public void SaveTestOutputFile<TColor>(Image<TColor> image, string extension = null, IImageEncoder encoder = null, IEncoderOptions options = null)
-            where TColor : struct, IPixel<TColor>
+        public void SaveTestOutputFile<TPixel>(Image<TPixel> image, string extension = null, IImageEncoder encoder = null, IEncoderOptions options = null, string tag = null)
+            where TPixel : struct, IPixel<TPixel>
         {
-            string path = this.GetTestOutputFileName(extension);
-
+            string path = this.GetTestOutputFileName(extension: extension, tag:tag);
+            extension = Path.GetExtension(path);
             IImageFormat format = GetImageFormatByExtension(extension);
 
             encoder = encoder ?? format.Encoder;
@@ -91,16 +112,21 @@ namespace ImageSharp.Tests
             }
         }
 
+        internal void Init(string typeName, string methodName)
+        {
+            this.TestGroupName = typeName;
+            this.TestName = methodName;
+        }
+
         internal void Init(MethodInfo method)
         {
-            this.TestGroupName = method.DeclaringType.Name;
-            this.TestName = method.Name;
+            this.Init(method.DeclaringType.Name, method.Name);
         }
 
         private static IImageFormat GetImageFormatByExtension(string extension)
         {
-            extension = extension.ToLower();
-            return Configuration.Default.ImageFormats.First(f => f.SupportedExtensions.Contains(extension));
+            extension = extension?.TrimStart('.');
+            return Configuration.Default.ImageFormats.First(f => f.SupportedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase));
         }
 
         private string GetTestOutputDir()

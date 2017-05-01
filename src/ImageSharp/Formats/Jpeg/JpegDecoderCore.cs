@@ -11,6 +11,7 @@ namespace ImageSharp.Formats
     using System.Threading.Tasks;
 
     using ImageSharp.Formats.Jpg;
+    using ImageSharp.PixelFormats;
 
     /// <summary>
     /// Performs the jpeg decoding operation.
@@ -38,9 +39,19 @@ namespace ImageSharp.Formats
 #pragma warning restore SA401
 
         /// <summary>
+        /// Lookup tables for converting YCbCr to Rgb
+        /// </summary>
+        private static YCbCrToRgbTables yCbCrToRgbTables = YCbCrToRgbTables.Create();
+
+        /// <summary>
         /// The decoder options.
         /// </summary>
         private readonly IDecoderOptions options;
+
+        /// <summary>
+        /// The global configuration
+        /// </summary>
+        private readonly Configuration configuration;
 
         /// <summary>
         /// The App14 marker color-space
@@ -91,8 +102,10 @@ namespace ImageSharp.Formats
         /// Initializes a new instance of the <see cref="JpegDecoderCore" /> class.
         /// </summary>
         /// <param name="options">The decoder options.</param>
-        public JpegDecoderCore(IDecoderOptions options)
+        /// <param name="configuration">The configuration.</param>
+        public JpegDecoderCore(IDecoderOptions options, Configuration configuration)
         {
+            this.configuration = configuration ?? Configuration.Default;
             this.options = options ?? new DecoderOptions();
             this.HuffmanTrees = HuffmanTree.CreateHuffmanTrees();
             this.QuantizationTables = new Block8x8F[MaxTq + 1];
@@ -114,7 +127,7 @@ namespace ImageSharp.Formats
         /// <summary>
         /// Gets the array of <see cref="DecodedBlockArray"/>-s storing the "raw" frequency-domain decoded blocks.
         /// We need to apply IDCT, dequantiazition and unzigging to transform them into color-space blocks.
-        /// This is done by <see cref="ProcessBlocksIntoJpegImageChannels{TColor}"/>.
+        /// This is done by <see cref="ProcessBlocksIntoJpegImageChannels{TPixel}"/>.
         /// When <see cref="IsProgressive"/>==true, we are touching these blocks multiple times - each time we process a Scan.
         /// </summary>
         public DecodedBlockArray[] DecodedBlocks { get; }
@@ -179,19 +192,18 @@ namespace ImageSharp.Formats
         /// Decodes the image from the specified <see cref="Stream"/>  and sets
         /// the data to image.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
-        /// <param name="image">The image, where the data should be set to.</param>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="stream">The stream, where the image should be.</param>
-        /// <param name="metadataOnly">Whether to decode metadata only.</param>
-        public void Decode<TColor>(Image<TColor> image, Stream stream, bool metadataOnly)
-            where TColor : struct, IPixel<TColor>
+        /// <returns>The decoded image.</returns>
+        public Image<TPixel> Decode<TPixel>(Stream stream)
+            where TPixel : struct, IPixel<TPixel>
         {
-            this.ProcessStream(image, stream, metadataOnly);
-            if (!metadataOnly)
-            {
-                this.ProcessBlocksIntoJpegImageChannels<TColor>();
-                this.ConvertJpegPixelsToImagePixels(image);
-            }
+            ImageMetaData metadata = new ImageMetaData();
+            this.ProcessStream(metadata, stream, false);
+            this.ProcessBlocksIntoJpegImageChannels<TPixel>();
+            Image<TPixel> image = this.ConvertJpegPixelsToImagePixels<TPixel>(metadata);
+
+            return image;
         }
 
         /// <summary>
@@ -245,43 +257,12 @@ namespace ImageSharp.Formats
         }
 
         /// <summary>
-        /// Optimized method to pack bytes to the image from the YCbCr color space.
-        /// This is faster than implicit casting as it avoids double packing.
-        /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
-        /// <param name="packed">The packed pixel.</param>
-        /// <param name="y">The y luminance component.</param>
-        /// <param name="cb">The cb chroma component.</param>
-        /// <param name="cr">The cr chroma component.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void PackYcbCr<TColor>(ref TColor packed, byte y, byte cb, byte cr)
-            where TColor : struct, IPixel<TColor>
-        {
-            int ccb = cb - 128;
-            int ccr = cr - 128;
-
-            // Speed up the algorithm by removing floating point calculation
-            // Scale by 65536, add .5F and truncate value. We use bit shifting to divide the result
-            int r0 = 91881 * ccr; // (1.402F * 65536) + .5F
-            int g0 = 22554 * ccb; // (0.34414F * 65536) + .5F
-            int g1 = 46802 * ccr; // (0.71414F  * 65536) + .5F
-            int b0 = 116130 * ccb; // (1.772F * 65536) + .5F
-
-            byte r = (byte)(y + (r0 >> 16)).Clamp(0, 255);
-            byte g = (byte)(y - (g0 >> 16) - (g1 >> 16)).Clamp(0, 255);
-            byte b = (byte)(y + (b0 >> 16)).Clamp(0, 255);
-            packed.PackFromBytes(r, g, b, 255);
-        }
-
-        /// <summary>
         /// Read metadata from stream and read the blocks in the scans into <see cref="DecodedBlocks"/>.
         /// </summary>
-        /// <typeparam name="TColor">The pixel type</typeparam>
-        /// <param name="image">The <see cref="Image{TColor}"/></param>
+        /// <param name="metadata">The metadata</param>
         /// <param name="stream">The stream</param>
         /// <param name="metadataOnly">Whether to decode metadata only.</param>
-        private void ProcessStream<TColor>(Image<TColor> image, Stream stream, bool metadataOnly)
-            where TColor : struct, IPixel<TColor>
+        private void ProcessStream(ImageMetaData metadata, Stream stream, bool metadataOnly)
         {
             this.InputStream = stream;
             this.InputProcessor = new InputProcessor(stream, this.Temp);
@@ -429,7 +410,7 @@ namespace ImageSharp.Formats
                         this.ProcessApplicationHeader(remaining);
                         break;
                     case JpegConstants.Markers.APP1:
-                        this.ProcessApp1Marker(remaining, image);
+                        this.ProcessApp1Marker(remaining, metadata);
                         break;
                     case JpegConstants.Markers.APP14:
                         this.ProcessApp14Marker(remaining);
@@ -477,9 +458,9 @@ namespace ImageSharp.Formats
         /// <see cref="DecodedBlocks"/> are in a "raw" frequency-domain form. We need to apply IDCT, dequantization and unzigging to transform them into color-space blocks.
         /// We can copy these blocks into <see cref="JpegPixelArea"/>-s afterwards.
         /// </summary>
-        /// <typeparam name="TColor">The pixel type</typeparam>
-        private void ProcessBlocksIntoJpegImageChannels<TColor>()
-            where TColor : struct, IPixel<TColor>
+        /// <typeparam name="TPixel">The pixel type</typeparam>
+        private void ProcessBlocksIntoJpegImageChannels<TPixel>()
+            where TPixel : struct, IPixel<TPixel>
         {
             Parallel.For(
                 0,
@@ -493,16 +474,20 @@ namespace ImageSharp.Formats
         }
 
         /// <summary>
-        /// Convert the pixel data in <see cref="YCbCrImage"/> and/or <see cref="JpegPixelArea"/> into pixels of <see cref="Image{TColor}"/>
+        /// Convert the pixel data in <see cref="YCbCrImage"/> and/or <see cref="JpegPixelArea"/> into pixels of <see cref="Image{TPixel}"/>
         /// </summary>
-        /// <typeparam name="TColor">The pixel type</typeparam>
-        /// <param name="image">The destination image</param>
-        private void ConvertJpegPixelsToImagePixels<TColor>(Image<TColor> image)
-            where TColor : struct, IPixel<TColor>
+        /// <typeparam name="TPixel">The pixel type</typeparam>
+        /// <param name="metadata">The metadata for the image.</param>
+        /// <returns>The decoded image.</returns>
+        private Image<TPixel> ConvertJpegPixelsToImagePixels<TPixel>(ImageMetaData metadata)
+            where TPixel : struct, IPixel<TPixel>
         {
+            Image<TPixel> image = Image.Create<TPixel>(this.ImageWidth, this.ImageHeight, metadata, this.configuration);
+
             if (this.grayImage.IsInitialized)
             {
-                this.ConvertFromGrayScale(this.ImageWidth, this.ImageHeight, image);
+                this.ConvertFromGrayScale(image);
+                return image;
             }
             else if (this.ycbcrImage != null)
             {
@@ -519,27 +504,27 @@ namespace ImageSharp.Formats
                     // TODO: YCbCrA?
                     if (this.adobeTransform == JpegConstants.Adobe.ColorTransformYcck)
                     {
-                        this.ConvertFromYcck(this.ImageWidth, this.ImageHeight, image);
+                        this.ConvertFromYcck(image);
                     }
                     else if (this.adobeTransform == JpegConstants.Adobe.ColorTransformUnknown)
                     {
                         // Assume CMYK
-                        this.ConvertFromCmyk(this.ImageWidth, this.ImageHeight, image);
+                        this.ConvertFromCmyk(image);
                     }
 
-                    return;
+                    return image;
                 }
 
                 if (this.ComponentCount == 3)
                 {
                     if (this.IsRGB())
                     {
-                        this.ConvertFromRGB(this.ImageWidth, this.ImageHeight, image);
-                        return;
+                        this.ConvertFromRGB(image);
+                        return image;
                     }
 
-                    this.ConvertFromYCbCr(this.ImageWidth, this.ImageHeight, image);
-                    return;
+                    this.ConvertFromYCbCr(image);
+                    return image;
                 }
 
                 throw new ImageFormatException("JpegDecoder only supports RGB, CMYK and Grayscale color spaces.");
@@ -553,10 +538,10 @@ namespace ImageSharp.Formats
         /// <summary>
         /// Assigns the horizontal and vertical resolution to the image if it has a JFIF header.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="image">The image to assign the resolution to.</param>
-        private void AssignResolution<TColor>(Image<TColor> image)
-            where TColor : struct, IPixel<TColor>
+        private void AssignResolution<TPixel>(Image<TPixel> image)
+            where TPixel : struct, IPixel<TPixel>
         {
             if (this.isJfif && this.horizontalResolution > 0 && this.verticalResolution > 0)
             {
@@ -581,35 +566,31 @@ namespace ImageSharp.Formats
         /// <summary>
         /// Converts the image from the original CMYK image pixels.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
-        /// <param name="width">The image width.</param>
-        /// <param name="height">The image height.</param>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="image">The image.</param>
-        private void ConvertFromCmyk<TColor>(int width, int height, Image<TColor> image)
-            where TColor : struct, IPixel<TColor>
+        private void ConvertFromCmyk<TPixel>(Image<TPixel> image)
+            where TPixel : struct, IPixel<TPixel>
         {
             int scale = this.ComponentArray[0].HorizontalFactor / this.ComponentArray[1].HorizontalFactor;
 
-            image.InitPixels(width, height);
-
-            using (PixelAccessor<TColor> pixels = image.Lock())
+            using (PixelAccessor<TPixel> pixels = image.Lock())
             {
                 Parallel.For(
                     0,
-                    height,
+                    image.Height,
                     y =>
                     {
                         // TODO: Simplify + optimize + share duplicate code across converter methods
                         int yo = this.ycbcrImage.GetRowYOffset(y);
                         int co = this.ycbcrImage.GetRowCOffset(y);
 
-                        for (int x = 0; x < width; x++)
+                        for (int x = 0; x < image.Width; x++)
                         {
                             byte cyan = this.ycbcrImage.YChannel.Pixels[yo + x];
                             byte magenta = this.ycbcrImage.CbChannel.Pixels[co + (x / scale)];
                             byte yellow = this.ycbcrImage.CrChannel.Pixels[co + (x / scale)];
 
-                            TColor packed = default(TColor);
+                            TPixel packed = default(TPixel);
                             this.PackCmyk(ref packed, cyan, magenta, yellow, x, y);
                             pixels[x, y] = packed;
                         }
@@ -622,29 +603,25 @@ namespace ImageSharp.Formats
         /// <summary>
         /// Converts the image from the original grayscale image pixels.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
-        /// <param name="width">The image width.</param>
-        /// <param name="height">The image height.</param>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="image">The image.</param>
-        private void ConvertFromGrayScale<TColor>(int width, int height, Image<TColor> image)
-            where TColor : struct, IPixel<TColor>
+        private void ConvertFromGrayScale<TPixel>(Image<TPixel> image)
+            where TPixel : struct, IPixel<TPixel>
         {
-            image.InitPixels(width, height);
-
-            using (PixelAccessor<TColor> pixels = image.Lock())
+            using (PixelAccessor<TPixel> pixels = image.Lock())
             {
                 Parallel.For(
                     0,
-                    height,
+                    image.Height,
                     image.Configuration.ParallelOptions,
                     y =>
                     {
                         int yoff = this.grayImage.GetRowOffset(y);
-                        for (int x = 0; x < width; x++)
+                        for (int x = 0; x < image.Width; x++)
                         {
                             byte rgb = this.grayImage.Pixels[yoff + x];
 
-                            TColor packed = default(TColor);
+                            TPixel packed = default(TPixel);
                             packed.PackFromBytes(rgb, rgb, rgb, 255);
                             pixels[x, y] = packed;
                         }
@@ -657,21 +634,18 @@ namespace ImageSharp.Formats
         /// <summary>
         /// Converts the image from the original RBG image pixels.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
-        /// <param name="width">The image width.</param>
-        /// <param name="height">The height.</param>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="image">The image.</param>
-        private void ConvertFromRGB<TColor>(int width, int height, Image<TColor> image)
-            where TColor : struct, IPixel<TColor>
+        private void ConvertFromRGB<TPixel>(Image<TPixel> image)
+            where TPixel : struct, IPixel<TPixel>
         {
             int scale = this.ComponentArray[0].HorizontalFactor / this.ComponentArray[1].HorizontalFactor;
-            image.InitPixels(width, height);
 
-            using (PixelAccessor<TColor> pixels = image.Lock())
+            using (PixelAccessor<TPixel> pixels = image.Lock())
             {
                 Parallel.For(
                     0,
-                    height,
+                    image.Height,
                     image.Configuration.ParallelOptions,
                     y =>
                     {
@@ -679,13 +653,13 @@ namespace ImageSharp.Formats
                         int yo = this.ycbcrImage.GetRowYOffset(y);
                         int co = this.ycbcrImage.GetRowCOffset(y);
 
-                        for (int x = 0; x < width; x++)
+                        for (int x = 0; x < image.Width; x++)
                         {
                             byte red = this.ycbcrImage.YChannel.Pixels[yo + x];
                             byte green = this.ycbcrImage.CbChannel.Pixels[co + (x / scale)];
                             byte blue = this.ycbcrImage.CrChannel.Pixels[co + (x / scale)];
 
-                            TColor packed = default(TColor);
+                            TPixel packed = default(TPixel);
                             packed.PackFromBytes(red, green, blue, 255);
                             pixels[x, y] = packed;
                         }
@@ -698,39 +672,43 @@ namespace ImageSharp.Formats
         /// <summary>
         /// Converts the image from the original YCbCr image pixels.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
-        /// <param name="width">The image width.</param>
-        /// <param name="height">The image height.</param>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="image">The image.</param>
-        private void ConvertFromYCbCr<TColor>(int width, int height, Image<TColor> image)
-            where TColor : struct, IPixel<TColor>
+        private void ConvertFromYCbCr<TPixel>(Image<TPixel> image)
+            where TPixel : struct, IPixel<TPixel>
         {
             int scale = this.ComponentArray[0].HorizontalFactor / this.ComponentArray[1].HorizontalFactor;
-            image.InitPixels(width, height);
-
-            using (PixelAccessor<TColor> pixels = image.Lock())
+            using (PixelAccessor<TPixel> pixels = image.Lock())
             {
                 Parallel.For(
-                    0,
-                    height,
-                    image.Configuration.ParallelOptions,
-                    y =>
-                    {
-                        // TODO: Simplify + optimize + share duplicate code across converter methods
-                        int yo = this.ycbcrImage.GetRowYOffset(y);
-                        int co = this.ycbcrImage.GetRowCOffset(y);
+                 0,
+                 image.Height,
+                 image.Configuration.ParallelOptions,
+                 y =>
+                 {
+                     // TODO. This Parallel loop doesn't give us the boost it should.
+                     ref byte ycRef = ref this.ycbcrImage.YChannel.Pixels[0];
+                     ref byte cbRef = ref this.ycbcrImage.CbChannel.Pixels[0];
+                     ref byte crRef = ref this.ycbcrImage.CrChannel.Pixels[0];
+                     fixed (YCbCrToRgbTables* tables = &yCbCrToRgbTables)
+                     {
+                         // TODO: Simplify + optimize + share duplicate code across converter methods
+                         int yo = this.ycbcrImage.GetRowYOffset(y);
+                         int co = this.ycbcrImage.GetRowCOffset(y);
 
-                        for (int x = 0; x < width; x++)
-                        {
-                            byte yy = this.ycbcrImage.YChannel.Pixels[yo + x];
-                            byte cb = this.ycbcrImage.CbChannel.Pixels[co + (x / scale)];
-                            byte cr = this.ycbcrImage.CrChannel.Pixels[co + (x / scale)];
+                         for (int x = 0; x < image.Width; x++)
+                         {
+                             int cOff = co + (x / scale);
+                             byte yy = Unsafe.Add(ref ycRef, yo + x);
+                             byte cb = Unsafe.Add(ref cbRef, cOff);
+                             byte cr = Unsafe.Add(ref crRef, cOff);
 
-                            TColor packed = default(TColor);
-                            PackYcbCr<TColor>(ref packed, yy, cb, cr);
-                            pixels[x, y] = packed;
-                        }
-                    });
+                             TPixel packed = default(TPixel);
+                             YCbCrToRgbTables.Pack(ref packed, tables, yy, cb, cr);
+                             pixels[x, y] = packed;
+                         }
+                     }
+                 });
             }
 
             this.AssignResolution(image);
@@ -739,35 +717,31 @@ namespace ImageSharp.Formats
         /// <summary>
         /// Converts the image from the original YCCK image pixels.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
-        /// <param name="width">The image width.</param>
-        /// <param name="height">The image height.</param>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="image">The image.</param>
-        private void ConvertFromYcck<TColor>(int width, int height, Image<TColor> image)
-            where TColor : struct, IPixel<TColor>
+        private void ConvertFromYcck<TPixel>(Image<TPixel> image)
+            where TPixel : struct, IPixel<TPixel>
         {
             int scale = this.ComponentArray[0].HorizontalFactor / this.ComponentArray[1].HorizontalFactor;
 
-            image.InitPixels(width, height);
-
-            using (PixelAccessor<TColor> pixels = image.Lock())
+            using (PixelAccessor<TPixel> pixels = image.Lock())
             {
                 Parallel.For(
                     0,
-                    height,
+                    image.Height,
                     y =>
                     {
                         // TODO: Simplify + optimize + share duplicate code across converter methods
                         int yo = this.ycbcrImage.GetRowYOffset(y);
                         int co = this.ycbcrImage.GetRowCOffset(y);
 
-                        for (int x = 0; x < width; x++)
+                        for (int x = 0; x < image.Width; x++)
                         {
                             byte yy = this.ycbcrImage.YChannel.Pixels[yo + x];
                             byte cb = this.ycbcrImage.CbChannel.Pixels[co + (x / scale)];
                             byte cr = this.ycbcrImage.CrChannel.Pixels[co + (x / scale)];
 
-                            TColor packed = default(TColor);
+                            TPixel packed = default(TPixel);
                             this.PackYcck(ref packed, yy, cb, cr, x, y);
                             pixels[x, y] = packed;
                         }
@@ -861,15 +835,15 @@ namespace ImageSharp.Formats
         /// Optimized method to pack bytes to the image from the CMYK color space.
         /// This is faster than implicit casting as it avoids double packing.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="packed">The packed pixel.</param>
         /// <param name="c">The cyan component.</param>
         /// <param name="m">The magenta component.</param>
         /// <param name="y">The yellow component.</param>
         /// <param name="xx">The x-position within the image.</param>
         /// <param name="yy">The y-position within the image.</param>
-        private void PackCmyk<TColor>(ref TColor packed, byte c, byte m, byte y, int xx, int yy)
-            where TColor : struct, IPixel<TColor>
+        private void PackCmyk<TPixel>(ref TPixel packed, byte c, byte m, byte y, int xx, int yy)
+            where TPixel : struct, IPixel<TPixel>
         {
             // Get keyline
             float keyline = (255 - this.blackImage[xx, yy]) / 255F;
@@ -886,15 +860,15 @@ namespace ImageSharp.Formats
         /// Optimized method to pack bytes to the image from the YCCK color space.
         /// This is faster than implicit casting as it avoids double packing.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="packed">The packed pixel.</param>
         /// <param name="y">The y luminance component.</param>
         /// <param name="cb">The cb chroma component.</param>
         /// <param name="cr">The cr chroma component.</param>
         /// <param name="xx">The x-position within the image.</param>
         /// <param name="yy">The y-position within the image.</param>
-        private void PackYcck<TColor>(ref TColor packed, byte y, byte cb, byte cr, int xx, int yy)
-            where TColor : struct, IPixel<TColor>
+        private void PackYcck<TPixel>(ref TPixel packed, byte y, byte cb, byte cr, int xx, int yy)
+            where TPixel : struct, IPixel<TPixel>
         {
             // Convert the YCbCr part of the YCbCrK to RGB, invert the RGB to get
             // CMY, and patch in the original K. The RGB to CMY inversion cancels
@@ -959,11 +933,9 @@ namespace ImageSharp.Formats
         /// <summary>
         /// Processes the App1 marker retrieving any stored metadata
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
         /// <param name="remaining">The remaining bytes in the segment block.</param>
-        /// <param name="image">The image.</param>
-        private void ProcessApp1Marker<TColor>(int remaining, Image<TColor> image)
-            where TColor : struct, IPixel<TColor>
+        /// <param name="metadata">The image.</param>
+        private void ProcessApp1Marker(int remaining, ImageMetaData metadata)
         {
             if (remaining < 6 || this.options.IgnoreMetadata)
             {
@@ -978,7 +950,7 @@ namespace ImageSharp.Formats
                 && profile[5] == '\0')
             {
                 this.isExif = true;
-                image.MetaData.ExifProfile = new ExifProfile(profile);
+                metadata.ExifProfile = new ExifProfile(profile);
             }
         }
 

@@ -5,38 +5,40 @@ namespace ImageSharp.Tests.Colors
     using System;
     using System.Numerics;
 
+    using ImageSharp.PixelFormats;
+
     using Xunit;
     using Xunit.Abstractions;
 
     public class BulkPixelOperationsTests
     {
-        public class Color : BulkPixelOperationsTests<ImageSharp.Color>
+        public class Color32 : BulkPixelOperationsTests<Rgba32>
         {
-            public Color(ITestOutputHelper output)
+            public Color32(ITestOutputHelper output)
                 : base(output)
             {
             }
 
             // For 4.6 test runner MemberData does not work without redeclaring the public field in the derived test class:
-            public static new TheoryData<int> ArraySizesData => new TheoryData<int> { 7, 16, 1111 };
+            //public static new TheoryData<int> ArraySizesData => new TheoryData<int> { 7, 16, 1111 };
 
             [Fact]
             public void IsSpecialImplementation()
             {
-                Assert.IsType<ImageSharp.Color.BulkOperations>(BulkPixelOperations<ImageSharp.Color>.Instance);
+                Assert.IsType<Rgba32.BulkOperations>(BulkPixelOperations<Rgba32>.Instance);
             }
-            
+
             [Fact]
             public void ToVector4SimdAligned()
             {
-                ImageSharp.Color[] source = CreatePixelTestData(64);
+                Rgba32[] source = CreatePixelTestData(64);
                 Vector4[] expected = CreateExpectedVector4Data(source);
 
                 TestOperation(
                     source,
                     expected,
-                    (s, d) => ImageSharp.Color.BulkOperations.ToVector4SimdAligned(s, d, 64)
-                    );
+                    (s, d) => Rgba32.BulkOperations.ToVector4SimdAligned(s, d, 64)
+                );
             }
 
             // [Fact] // Profiling benchmark - enable manually!
@@ -45,20 +47,20 @@ namespace ImageSharp.Tests.Colors
                 int times = 200000;
                 int count = 1024;
 
-                using (PinnedBuffer<ImageSharp.Color> source = new PinnedBuffer<ImageSharp.Color>(count))
-                using (PinnedBuffer<Vector4> dest = new PinnedBuffer<Vector4>(count))
+                using (Buffer<Rgba32> source = new Buffer<Rgba32>(count))
+                using (Buffer<Vector4> dest = new Buffer<Vector4>(count))
                 {
                     this.Measure(
                         times,
                         () =>
                             {
-                                BulkPixelOperations<ImageSharp.Color>.Instance.ToVector4(source, dest, count);
+                                BulkPixelOperations<Rgba32>.Instance.ToVector4(source, dest, count);
                             });
                 }
             }
         }
 
-        public class Argb : BulkPixelOperationsTests<ImageSharp.Argb>
+        public class Argb : BulkPixelOperationsTests<Argb32>
         {
             // For 4.6 test runner MemberData does not work without redeclaring the public field in the derived test class:
             public Argb(ITestOutputHelper output)
@@ -66,20 +68,20 @@ namespace ImageSharp.Tests.Colors
             {
             }
 
-            public static new TheoryData<int> ArraySizesData => new TheoryData<int> { 7, 16, 1111 };
+            //public static new TheoryData<int> ArraySizesData => new TheoryData<int> { 7, 16, 1111 };
         }
 
         [Theory]
         [WithBlankImages(1, 1, PixelTypes.All)]
-        public void GetGlobalInstance<TColor>(TestImageProvider<TColor> dummy)
-            where TColor:struct, IPixel<TColor>
+        public void GetGlobalInstance<TPixel>(TestImageProvider<TPixel> dummy)
+            where TPixel : struct, IPixel<TPixel>
         {
-            Assert.NotNull(BulkPixelOperations<TColor>.Instance);
+            Assert.NotNull(BulkPixelOperations<TPixel>.Instance);
         }
     }
 
-    public abstract class BulkPixelOperationsTests<TColor> : MeasureFixture
-        where TColor : struct, IPixel<TColor>
+    public abstract class BulkPixelOperationsTests<TPixel> : MeasureFixture
+        where TPixel : struct, IPixel<TPixel>
     {
         protected BulkPixelOperationsTests(ITestOutputHelper output)
             : base(output)
@@ -88,11 +90,11 @@ namespace ImageSharp.Tests.Colors
 
         public static TheoryData<int> ArraySizesData => new TheoryData<int> { 7, 16, 1111 };
 
-        private static BulkPixelOperations<TColor> Operations => BulkPixelOperations<TColor>.Instance;
+        private static BulkPixelOperations<TPixel> Operations => BulkPixelOperations<TPixel>.Instance;
 
-        internal static TColor[] CreateExpectedPixelData(Vector4[] source)
+        internal static TPixel[] CreateExpectedPixelData(Vector4[] source)
         {
-            TColor[] expected = new TColor[source.Length];
+            TPixel[] expected = new TPixel[source.Length];
 
             for (int i = 0; i < expected.Length; i++)
             {
@@ -106,16 +108,16 @@ namespace ImageSharp.Tests.Colors
         public void PackFromVector4(int count)
         {
             Vector4[] source = CreateVector4TestData(count);
-            TColor[] expected = CreateExpectedPixelData(source);
+            TPixel[] expected = CreateExpectedPixelData(source);
 
             TestOperation(
                 source,
                 expected,
                 (s, d) => Operations.PackFromVector4(s, d, count)
-                );
+            );
         }
 
-        internal static Vector4[] CreateExpectedVector4Data(TColor[] source)
+        internal static Vector4[] CreateExpectedVector4Data(TPixel[] source)
         {
             Vector4[] expected = new Vector4[source.Length];
 
@@ -130,14 +132,14 @@ namespace ImageSharp.Tests.Colors
         [MemberData(nameof(ArraySizesData))]
         public void ToVector4(int count)
         {
-            TColor[] source = CreatePixelTestData(count);
+            TPixel[] source = CreatePixelTestData(count);
             Vector4[] expected = CreateExpectedVector4Data(source);
 
             TestOperation(
                 source,
                 expected,
                 (s, d) => Operations.ToVector4(s, d, count)
-                );
+            );
         }
 
 
@@ -146,7 +148,7 @@ namespace ImageSharp.Tests.Colors
         public void PackFromXyzBytes(int count)
         {
             byte[] source = CreateByteTestData(count * 3);
-            TColor[] expected = new TColor[count];
+            TPixel[] expected = new TPixel[count];
 
             for (int i = 0; i < count; i++)
             {
@@ -156,17 +158,17 @@ namespace ImageSharp.Tests.Colors
             }
 
             TestOperation(
-                source, 
-                expected, 
+                source,
+                expected,
                 (s, d) => Operations.PackFromXyzBytes(s, d, count)
-                );
+            );
         }
 
         [Theory]
         [MemberData(nameof(ArraySizesData))]
         public void ToXyzBytes(int count)
         {
-            TColor[] source = CreatePixelTestData(count);
+            TPixel[] source = CreatePixelTestData(count);
             byte[] expected = new byte[count * 3];
 
             for (int i = 0; i < count; i++)
@@ -179,7 +181,7 @@ namespace ImageSharp.Tests.Colors
                 source,
                 expected,
                 (s, d) => Operations.ToXyzBytes(s, d, count)
-                );
+            );
         }
 
         [Theory]
@@ -187,7 +189,7 @@ namespace ImageSharp.Tests.Colors
         public void PackFromXyzwBytes(int count)
         {
             byte[] source = CreateByteTestData(count * 4);
-            TColor[] expected = new TColor[count];
+            TPixel[] expected = new TPixel[count];
 
             for (int i = 0; i < count; i++)
             {
@@ -200,14 +202,14 @@ namespace ImageSharp.Tests.Colors
                 source,
                 expected,
                 (s, d) => Operations.PackFromXyzwBytes(s, d, count)
-                );
+            );
         }
 
         [Theory]
         [MemberData(nameof(ArraySizesData))]
         public void ToXyzwBytes(int count)
         {
-            TColor[] source = CreatePixelTestData(count);
+            TPixel[] source = CreatePixelTestData(count);
             byte[] expected = new byte[count * 4];
 
             for (int i = 0; i < count; i++)
@@ -220,7 +222,7 @@ namespace ImageSharp.Tests.Colors
                 source,
                 expected,
                 (s, d) => Operations.ToXyzwBytes(s, d, count)
-                );
+            );
         }
 
         [Theory]
@@ -228,7 +230,7 @@ namespace ImageSharp.Tests.Colors
         public void PackFromZyxBytes(int count)
         {
             byte[] source = CreateByteTestData(count * 3);
-            TColor[] expected = new TColor[count];
+            TPixel[] expected = new TPixel[count];
 
             for (int i = 0; i < count; i++)
             {
@@ -241,14 +243,14 @@ namespace ImageSharp.Tests.Colors
                 source,
                 expected,
                 (s, d) => Operations.PackFromZyxBytes(s, d, count)
-                );
+            );
         }
 
         [Theory]
         [MemberData(nameof(ArraySizesData))]
         public void ToZyxBytes(int count)
         {
-            TColor[] source = CreatePixelTestData(count);
+            TPixel[] source = CreatePixelTestData(count);
             byte[] expected = new byte[count * 3];
 
             for (int i = 0; i < count; i++)
@@ -261,7 +263,7 @@ namespace ImageSharp.Tests.Colors
                 source,
                 expected,
                 (s, d) => Operations.ToZyxBytes(s, d, count)
-                );
+            );
         }
 
         [Theory]
@@ -269,7 +271,7 @@ namespace ImageSharp.Tests.Colors
         public void PackFromZyxwBytes(int count)
         {
             byte[] source = CreateByteTestData(count * 4);
-            TColor[] expected = new TColor[count];
+            TPixel[] expected = new TPixel[count];
 
             for (int i = 0; i < count; i++)
             {
@@ -282,14 +284,14 @@ namespace ImageSharp.Tests.Colors
                 source,
                 expected,
                 (s, d) => Operations.PackFromZyxwBytes(s, d, count)
-                );
+            );
         }
 
         [Theory]
         [MemberData(nameof(ArraySizesData))]
         public void ToZyxwBytes(int count)
         {
-            TColor[] source = CreatePixelTestData(count);
+            TPixel[] source = CreatePixelTestData(count);
             byte[] expected = new byte[count * 4];
 
             for (int i = 0; i < count; i++)
@@ -302,26 +304,26 @@ namespace ImageSharp.Tests.Colors
                 source,
                 expected,
                 (s, d) => Operations.ToZyxwBytes(s, d, count)
-                );
+            );
         }
 
-        
+
         private class TestBuffers<TSource, TDest> : IDisposable
             where TSource : struct
             where TDest : struct
         {
-            public PinnedBuffer<TSource> SourceBuffer { get; }
-            public PinnedBuffer<TDest> ActualDestBuffer { get; }
-            public PinnedBuffer<TDest> ExpectedDestBuffer { get; }
+            public Buffer<TSource> SourceBuffer { get; }
+            public Buffer<TDest> ActualDestBuffer { get; }
+            public Buffer<TDest> ExpectedDestBuffer { get; }
 
-            public BufferPointer<TSource> Source => this.SourceBuffer.Slice();
-            public BufferPointer<TDest> ActualDest => this.ActualDestBuffer.Slice();
-            
+            public BufferSpan<TSource> Source => this.SourceBuffer;
+            public BufferSpan<TDest> ActualDest => this.ActualDestBuffer;
+
             public TestBuffers(TSource[] source, TDest[] expectedDest)
             {
-                this.SourceBuffer = new PinnedBuffer<TSource>(source);
-                this.ExpectedDestBuffer = new PinnedBuffer<TDest>(expectedDest);
-                this.ActualDestBuffer = new PinnedBuffer<TDest>(expectedDest.Length);
+                this.SourceBuffer = new Buffer<TSource>(source);
+                this.ExpectedDestBuffer = new Buffer<TDest>(expectedDest);
+                this.ActualDestBuffer = new Buffer<TDest>(expectedDest.Length);
             }
 
             public void Dispose()
@@ -335,7 +337,7 @@ namespace ImageSharp.Tests.Colors
 
             public void Verify()
             {
-                int count = this.ExpectedDestBuffer.Count;
+                int count = this.ExpectedDestBuffer.Length;
 
                 if (typeof(TDest) == typeof(Vector4))
                 {
@@ -364,7 +366,7 @@ namespace ImageSharp.Tests.Colors
         internal static void TestOperation<TSource, TDest>(
             TSource[] source,
             TDest[] expected,
-            Action<BufferPointer<TSource>, BufferPointer<TDest>> action)
+            Action<BufferSpan<TSource>, BufferSpan<TDest>> action)
             where TSource : struct
             where TDest : struct
         {
@@ -387,9 +389,9 @@ namespace ImageSharp.Tests.Colors
             return result;
         }
 
-        internal static TColor[] CreatePixelTestData(int length)
+        internal static TPixel[] CreatePixelTestData(int length)
         {
-            TColor[] result = new TColor[length];
+            TPixel[] result = new TPixel[length];
 
             Random rnd = new Random(42); // Deterministic random values
 

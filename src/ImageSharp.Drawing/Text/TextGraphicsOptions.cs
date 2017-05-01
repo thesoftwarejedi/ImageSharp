@@ -36,6 +36,17 @@ namespace ImageSharp.Drawing
         public float TabWidth;
 
         /// <summary>
+        /// Flag weather to use the current image resultion to for point size scaling.
+        /// If this is [false] the text renders at 72dpi otherwise it renders at Image resolution
+        /// </summary>
+        public bool UseImageResolution;
+
+        /// <summary>
+        /// If greater than zero determine the width at which text should wrap.
+        /// </summary>
+        public float WrapTextWidth;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TextGraphicsOptions" /> struct.
         /// </summary>
         /// <param name="enableAntialiasing">If set to <c>true</c> [enable antialiasing].</param>
@@ -45,6 +56,8 @@ namespace ImageSharp.Drawing
             this.ApplyKerning = true;
             this.TabWidth = 4;
             this.AntialiasSubpixelDepth = 16;
+            this.UseImageResolution = false;
+            this.WrapTextWidth = 0;
         }
 
         /// <summary>

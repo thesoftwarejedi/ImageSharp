@@ -7,48 +7,64 @@ using ImageSharp.Formats;
 
 namespace ImageSharp.Tests
 {
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
+    using ImageSharp.IO;
+    using ImageSharp.PixelFormats;
 
     using Xunit;
 
     public class PngEncoderTests : FileTestBase
     {
-        [Fact]
-        public void ImageCanSaveIndexedPng()
-        {
-            string path = CreateOutputDirectory("Png", "Indexed");
+        private const PixelTypes PixelTypes = Tests.PixelTypes.StandardImageClass | Tests.PixelTypes.RgbaVector | Tests.PixelTypes.Argb32;
 
-            foreach (TestFile file in Files)
+        [Theory]
+        [WithTestPatternImages(100, 100, PixelTypes, PngColorType.RgbWithAlpha)]
+        [WithTestPatternImages(100, 100, PixelTypes, PngColorType.Rgb)]
+        [WithTestPatternImages(100, 100, PixelTypes, PngColorType.Palette)]
+        [WithTestPatternImages(100, 100, PixelTypes, PngColorType.Grayscale)]
+        [WithTestPatternImages(100, 100, PixelTypes, PngColorType.GrayscaleWithAlpha)]
+        public void EncodeGeneratedPatterns<TPixel>(TestImageProvider<TPixel> provider, PngColorType pngColorType)
+            where TPixel : struct, IPixel<TPixel>
+        {
+            using (Image<TPixel> image = provider.GetImage())
             {
-                using (Image image = file.CreateImage())
-                {
-                    using (FileStream output = File.OpenWrite($"{path}/{file.FileNameWithoutExtension}.png"))
-                    {
-                        image.MetaData.Quality = 256;
-                        image.Save(output, new PngFormat());
-                    }
-                }
+                PngEncoderOptions options = new PngEncoderOptions()
+                                                {
+                                                    PngColorType = pngColorType
+                                                };
+                provider.Utility.TestName += "_" + pngColorType;
+
+                provider.Utility.SaveTestOutputFile(image, "png", new PngEncoder(), options);
             }
         }
 
-        [Fact]
-        public void ImageCanSavePngInParallel()
+        [Theory]
+        [WithBlankImages(1, 1, PixelTypes.All)]
+        public void WritesFileMarker<TPixel>(TestImageProvider<TPixel> provider)
+            where TPixel : struct, IPixel<TPixel>
         {
-            string path = this.CreateOutputDirectory("Png");
+            using (Image<TPixel> image = provider.GetImage())
+            using (MemoryStream ms = new MemoryStream())
+            {
+                image.Save(ms, new PngEncoder());
+                
+                byte[] data = ms.ToArray().Take(8).ToArray(); 
+                byte[] expected = {
+                    0x89, // Set the high bit.
+                    0x50, // P
+                    0x4E, // N
+                    0x47, // G
+                    0x0D, // Line ending CRLF
+                    0x0A, // Line ending CRLF
+                    0x1A, // EOF
+                    0x0A // LF
+                };
 
-            Parallel.ForEach(
-                Files,
-                file =>
-                    {
-                        using (Image image = file.CreateImage())
-                        {
-                            using (FileStream output = File.OpenWrite($"{path}/{file.FileNameWithoutExtension}.png"))
-                            {
-                                image.SaveAsPng(output);
-                            }
-                        }
-                    });
+                Assert.Equal(expected, data);
+            }
         }
     }
 }

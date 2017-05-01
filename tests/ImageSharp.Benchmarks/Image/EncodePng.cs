@@ -12,6 +12,7 @@ namespace ImageSharp.Benchmarks.Image
     using BenchmarkDotNet.Attributes;
 
     using ImageSharp.Formats;
+    using ImageSharp.PixelFormats;
     using ImageSharp.Quantizers;
 
     using CoreImage = ImageSharp.Image;
@@ -38,7 +39,7 @@ namespace ImageSharp.Benchmarks.Image
                                   ? "../ImageSharp.Tests/TestImages/Formats/Jpg/baseline/jpeg420exif.jpg"
                                   : "../ImageSharp.Tests/TestImages/Formats/Bmp/Car.bmp";
                 this.bmpStream = File.OpenRead(path);
-                this.bmpCore = new CoreImage(this.bmpStream);
+                this.bmpCore = CoreImage.Load(this.bmpStream);
                 this.bmpStream.Position = 0;
                 this.bmpDrawing = Image.FromStream(this.bmpStream);
             }
@@ -66,10 +67,10 @@ namespace ImageSharp.Benchmarks.Image
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                Quantizer<ImageSharp.Color> quantizer = this.UseOctreeQuantizer
-                                                            ? (Quantizer<ImageSharp.Color>)
-                                                            new OctreeQuantizer<ImageSharp.Color>()
-                                                            : new PaletteQuantizer<ImageSharp.Color>();
+                Quantizer<Rgba32> quantizer = this.UseOctreeQuantizer
+                ? (Quantizer<Rgba32>)
+                new OctreeQuantizer<Rgba32>()
+                : new PaletteQuantizer<Rgba32>();
 
                 PngEncoderOptions options = new PngEncoderOptions() { Quantizer = quantizer };
                 this.bmpCore.SaveAsPng(memoryStream, options);

@@ -8,6 +8,8 @@ namespace ImageSharp.Formats
     using System;
     using System.IO;
 
+    using ImageSharp.PixelFormats;
+
     /// <summary>
     /// Image decoder for generating an image out of a Windows bitmap stream.
     /// </summary>
@@ -26,13 +28,13 @@ namespace ImageSharp.Formats
     public class BmpDecoder : IImageDecoder
     {
         /// <inheritdoc/>
-        public void Decode<TColor>(Image<TColor> image, Stream stream, IDecoderOptions options)
-            where TColor : struct, IPixel<TColor>
+        public Image<TPixel> Decode<TPixel>(Configuration configuration, Stream stream, IDecoderOptions options)
+
+            where TPixel : struct, IPixel<TPixel>
         {
-            Guard.NotNull(image, "image");
             Guard.NotNull(stream, "stream");
 
-            new BmpDecoderCore().Decode(image, stream);
+            return new BmpDecoderCore(configuration).Decode<TPixel>(stream);
         }
     }
 }

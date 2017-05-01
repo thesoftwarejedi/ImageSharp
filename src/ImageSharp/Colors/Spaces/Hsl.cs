@@ -8,6 +8,7 @@ namespace ImageSharp.Colors.Spaces
     using System;
     using System.ComponentModel;
     using System.Numerics;
+    using ImageSharp.PixelFormats;
 
     /// <summary>
     /// Represents a Hsl (hue, saturation, lightness) color.
@@ -70,40 +71,40 @@ namespace ImageSharp.Colors.Spaces
         public bool IsEmpty => this.Equals(Empty);
 
         /// <summary>
-        /// Allows the implicit conversion of an instance of <see cref="Color"/> to a
+        /// Allows the implicit conversion of an instance of <see cref="Rgba32"/> to a
         /// <see cref="Hsl"/>.
         /// </summary>
-        /// <param name="color">The instance of <see cref="Color"/> to convert.</param>
+        /// <param name="color">The instance of <see cref="Rgba32"/> to convert.</param>
         /// <returns>
         /// An instance of <see cref="Hsl"/>.
         /// </returns>
-        public static implicit operator Hsl(Color color)
+        public static implicit operator Hsl(Rgba32 color)
         {
             float r = color.R / 255F;
             float g = color.G / 255F;
             float b = color.B / 255F;
 
-            float max = Math.Max(r, Math.Max(g, b));
-            float min = Math.Min(r, Math.Min(g, b));
+            float max = MathF.Max(r, MathF.Max(g, b));
+            float min = MathF.Min(r, MathF.Min(g, b));
             float chroma = max - min;
             float h = 0;
             float s = 0;
             float l = (max + min) / 2;
 
-            if (Math.Abs(chroma) < Constants.Epsilon)
+            if (MathF.Abs(chroma) < Constants.Epsilon)
             {
                 return new Hsl(0, s, l);
             }
 
-            if (Math.Abs(r - max) < Constants.Epsilon)
+            if (MathF.Abs(r - max) < Constants.Epsilon)
             {
                 h = (g - b) / chroma;
             }
-            else if (Math.Abs(g - max) < Constants.Epsilon)
+            else if (MathF.Abs(g - max) < Constants.Epsilon)
             {
                 h = 2 + ((b - r) / chroma);
             }
-            else if (Math.Abs(b - max) < Constants.Epsilon)
+            else if (MathF.Abs(b - max) < Constants.Epsilon)
             {
                 h = 4 + ((r - g) / chroma);
             }

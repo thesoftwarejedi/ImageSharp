@@ -7,7 +7,7 @@ namespace ImageSharp.Sandbox46
 {
     using System;
     using System.Runtime.DesignerServices;
-    
+
     using ImageSharp.Tests;
     using ImageSharp.Tests.Colors;
 
@@ -38,18 +38,25 @@ namespace ImageSharp.Sandbox46
         public static void Main(string[] args)
         {
             // RunDecodeJpegProfilingTests();
+            // RunToVector4ProfilingTest();
 
-            RunToVector4ProfilingTest();
+            RunResizeProfilingTest();
 
             Console.ReadLine();
         }
 
+        private static void RunResizeProfilingTest()
+        {
+            ResizeProfilingBenchmarks test = new ResizeProfilingBenchmarks(new ConsoleOutput());
+            test.ResizeBicubic(2000, 2000);
+        }
+
         private static void RunToVector4ProfilingTest()
         {
-            BulkPixelOperationsTests.Color tests = new BulkPixelOperationsTests.Color(new ConsoleOutput());
+            BulkPixelOperationsTests.Color32 tests = new BulkPixelOperationsTests.Color32(new ConsoleOutput());
             tests.Benchmark_ToVector4();
         }
-        
+
         private static void RunDecodeJpegProfilingTests()
         {
             Console.WriteLine("RunDecodeJpegProfilingTests...");

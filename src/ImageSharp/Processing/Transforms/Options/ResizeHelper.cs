@@ -8,6 +8,8 @@ namespace ImageSharp.Processing
     using System;
     using System.Linq;
 
+    using ImageSharp.PixelFormats;
+
     /// <summary>
     /// Provides methods to help calculate the target rectangle when resizing using the
     /// <see cref="ResizeMode"/> enumeration.
@@ -17,14 +19,14 @@ namespace ImageSharp.Processing
         /// <summary>
         /// Calculates the target location and bounds to perform the resize operation against.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The source image.</param>
         /// <param name="options">The resize options.</param>
         /// <returns>
         /// The <see cref="Rectangle"/>.
         /// </returns>
-        public static Rectangle CalculateTargetLocationAndBounds<TColor>(ImageBase<TColor> source, ResizeOptions options)
-            where TColor : struct, IPixel<TColor>
+        public static Rectangle CalculateTargetLocationAndBounds<TPixel>(ImageBase<TPixel> source, ResizeOptions options)
+            where TPixel : struct, IPixel<TPixel>
         {
             switch (options.Mode)
             {
@@ -48,14 +50,14 @@ namespace ImageSharp.Processing
         /// <summary>
         /// Calculates the target rectangle for crop mode.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The source image.</param>
         /// <param name="options">The resize options.</param>
         /// <returns>
         /// The <see cref="Rectangle"/>.
         /// </returns>
-        private static Rectangle CalculateCropRectangle<TColor>(ImageBase<TColor> source, ResizeOptions options)
-            where TColor : struct, IPixel<TColor>
+        private static Rectangle CalculateCropRectangle<TPixel>(ImageBase<TPixel> source, ResizeOptions options)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = options.Size.Width;
             int height = options.Size.Height;
@@ -65,7 +67,7 @@ namespace ImageSharp.Processing
                 return new Rectangle(0, 0, source.Width, source.Height);
             }
 
-            double ratio;
+            float ratio;
             int sourceWidth = source.Width;
             int sourceHeight = source.Height;
 
@@ -75,8 +77,8 @@ namespace ImageSharp.Processing
             int destinationHeight = height;
 
             // Fractional variants for preserving aspect ratio.
-            double percentHeight = Math.Abs(height / (double)sourceHeight);
-            double percentWidth = Math.Abs(width / (double)sourceWidth);
+            float percentHeight = MathF.Abs(height / (float)sourceHeight);
+            float percentWidth = MathF.Abs(width / (float)sourceWidth);
 
             if (percentHeight < percentWidth)
             {
@@ -84,7 +86,7 @@ namespace ImageSharp.Processing
 
                 if (options.CenterCoordinates.Any())
                 {
-                    double center = -(ratio * sourceHeight) * options.CenterCoordinates.First();
+                    float center = -(ratio * sourceHeight) * options.CenterCoordinates.First();
                     destinationY = (int)center + (height / 2);
 
                     if (destinationY > 0)
@@ -117,7 +119,7 @@ namespace ImageSharp.Processing
                     }
                 }
 
-                destinationHeight = (int)Math.Ceiling(sourceHeight * percentWidth);
+                destinationHeight = (int)MathF.Ceiling(sourceHeight * percentWidth);
             }
             else
             {
@@ -125,7 +127,7 @@ namespace ImageSharp.Processing
 
                 if (options.CenterCoordinates.Any())
                 {
-                    double center = -(ratio * sourceWidth) * options.CenterCoordinates.ToArray()[1];
+                    float center = -(ratio * sourceWidth) * options.CenterCoordinates.ToArray()[1];
                     destinationX = (int)center + (width / 2);
 
                     if (destinationX > 0)
@@ -158,7 +160,7 @@ namespace ImageSharp.Processing
                     }
                 }
 
-                destinationWidth = (int)Math.Ceiling(sourceWidth * percentHeight);
+                destinationWidth = (int)MathF.Ceiling(sourceWidth * percentHeight);
             }
 
             return new Rectangle(destinationX, destinationY, destinationWidth, destinationHeight);
@@ -167,14 +169,14 @@ namespace ImageSharp.Processing
         /// <summary>
         /// Calculates the target rectangle for pad mode.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The source image.</param>
         /// <param name="options">The resize options.</param>
         /// <returns>
         /// The <see cref="Rectangle"/>.
         /// </returns>
-        private static Rectangle CalculatePadRectangle<TColor>(ImageBase<TColor> source, ResizeOptions options)
-            where TColor : struct, IPixel<TColor>
+        private static Rectangle CalculatePadRectangle<TPixel>(ImageBase<TPixel> source, ResizeOptions options)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = options.Size.Width;
             int height = options.Size.Height;
@@ -184,7 +186,7 @@ namespace ImageSharp.Processing
                 return new Rectangle(0, 0, source.Width, source.Height);
             }
 
-            double ratio;
+            float ratio;
             int sourceWidth = source.Width;
             int sourceHeight = source.Height;
 
@@ -194,8 +196,8 @@ namespace ImageSharp.Processing
             int destinationHeight = height;
 
             // Fractional variants for preserving aspect ratio.
-            double percentHeight = Math.Abs(height / (double)sourceHeight);
-            double percentWidth = Math.Abs(width / (double)sourceWidth);
+            float percentHeight = MathF.Abs(height / (float)sourceHeight);
+            float percentWidth = MathF.Abs(width / (float)sourceWidth);
 
             if (percentHeight < percentWidth)
             {
@@ -248,14 +250,14 @@ namespace ImageSharp.Processing
         /// <summary>
         /// Calculates the target rectangle for box pad mode.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The source image.</param>
         /// <param name="options">The resize options.</param>
         /// <returns>
         /// The <see cref="Rectangle"/>.
         /// </returns>
-        private static Rectangle CalculateBoxPadRectangle<TColor>(ImageBase<TColor> source, ResizeOptions options)
-            where TColor : struct, IPixel<TColor>
+        private static Rectangle CalculateBoxPadRectangle<TPixel>(ImageBase<TPixel> source, ResizeOptions options)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = options.Size.Width;
             int height = options.Size.Height;
@@ -269,8 +271,8 @@ namespace ImageSharp.Processing
             int sourceHeight = source.Height;
 
             // Fractional variants for preserving aspect ratio.
-            double percentHeight = Math.Abs(height / (double)sourceHeight);
-            double percentWidth = Math.Abs(width / (double)sourceWidth);
+            float percentHeight = MathF.Abs(height / (float)sourceHeight);
+            float percentWidth = MathF.Abs(width / (float)sourceWidth);
 
             int boxPadHeight = height > 0 ? height : Convert.ToInt32(sourceHeight * percentWidth);
             int boxPadWidth = width > 0 ? width : Convert.ToInt32(sourceWidth * percentHeight);
@@ -335,14 +337,14 @@ namespace ImageSharp.Processing
         /// <summary>
         /// Calculates the target rectangle for max mode.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The source image.</param>
         /// <param name="options">The resize options.</param>
         /// <returns>
         /// The <see cref="Rectangle"/>.
         /// </returns>
-        private static Rectangle CalculateMaxRectangle<TColor>(ImageBase<TColor> source, ResizeOptions options)
-            where TColor : struct, IPixel<TColor>
+        private static Rectangle CalculateMaxRectangle<TPixel>(ImageBase<TPixel> source, ResizeOptions options)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = options.Size.Width;
             int height = options.Size.Height;
@@ -350,12 +352,12 @@ namespace ImageSharp.Processing
             int destinationHeight = height;
 
             // Fractional variants for preserving aspect ratio.
-            double percentHeight = Math.Abs(height / (double)source.Height);
-            double percentWidth = Math.Abs(width / (double)source.Width);
+            float percentHeight = MathF.Abs(height / (float)source.Height);
+            float percentWidth = MathF.Abs(width / (float)source.Width);
 
-            // Integers must be cast to doubles to get needed precision
-            double ratio = (double)options.Size.Height / options.Size.Width;
-            double sourceRatio = (double)source.Height / source.Width;
+            // Integers must be cast to floats to get needed precision
+            float ratio = (float)options.Size.Height / options.Size.Width;
+            float sourceRatio = (float)source.Height / source.Width;
 
             if (sourceRatio < ratio)
             {
@@ -376,14 +378,14 @@ namespace ImageSharp.Processing
         /// <summary>
         /// Calculates the target rectangle for min mode.
         /// </summary>
-        /// <typeparam name="TColor">The pixel format.</typeparam>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The source image.</param>
         /// <param name="options">The resize options.</param>
         /// <returns>
         /// The <see cref="Rectangle"/>.
         /// </returns>
-        private static Rectangle CalculateMinRectangle<TColor>(ImageBase<TColor> source, ResizeOptions options)
-            where TColor : struct, IPixel<TColor>
+        private static Rectangle CalculateMinRectangle<TPixel>(ImageBase<TPixel> source, ResizeOptions options)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = options.Size.Width;
             int height = options.Size.Height;
@@ -397,7 +399,7 @@ namespace ImageSharp.Processing
                 return new Rectangle(0, 0, source.Width, source.Height);
             }
 
-            double sourceRatio = (double)source.Height / source.Width;
+            float sourceRatio = (float)source.Height / source.Width;
 
             // Find the shortest distance to go.
             int widthDiff = source.Width - width;

@@ -8,6 +8,7 @@ namespace ImageSharp.Colors.Spaces
     using System;
     using System.ComponentModel;
     using System.Numerics;
+    using ImageSharp.PixelFormats;
 
     /// <summary>
     /// Represents an CIE LAB 1976 color.
@@ -72,16 +73,16 @@ namespace ImageSharp.Colors.Spaces
         public bool IsEmpty => this.Equals(Empty);
 
         /// <summary>
-        /// Allows the implicit conversion of an instance of <see cref="Color"/> to a
+        /// Allows the implicit conversion of an instance of <see cref="Rgba32"/> to a
         /// <see cref="CieLab"/>.
         /// </summary>
         /// <param name="color">
-        /// The instance of <see cref="Color"/> to convert.
+        /// The instance of <see cref="Rgba32"/> to convert.
         /// </param>
         /// <returns>
         /// An instance of <see cref="CieLab"/>.
         /// </returns>
-        public static implicit operator CieLab(Color color)
+        public static implicit operator CieLab(Rgba32 color)
         {
             // First convert to CIE XYZ
             Vector4 vector = color.ToVector4().Expand();
@@ -95,11 +96,11 @@ namespace ImageSharp.Colors.Spaces
             // y /= 1F;
             z /= 1.08883F;
 
-            x = x > 0.008856F ? (float)Math.Pow(x, 0.3333333F) : ((903.3F * x) + 16F) / 116F;
-            y = y > 0.008856F ? (float)Math.Pow(y, 0.3333333F) : ((903.3F * y) + 16F) / 116F;
-            z = z > 0.008856F ? (float)Math.Pow(z, 0.3333333F) : ((903.3F * z) + 16F) / 116F;
+            x = x > 0.008856F ? MathF.Pow(x, 0.3333333F) : ((903.3F * x) + 16F) / 116F;
+            y = y > 0.008856F ? MathF.Pow(y, 0.3333333F) : ((903.3F * y) + 16F) / 116F;
+            z = z > 0.008856F ? MathF.Pow(z, 0.3333333F) : ((903.3F * z) + 16F) / 116F;
 
-            float l = Math.Max(0, (116F * y) - 16F);
+            float l = MathF.Max(0, (116F * y) - 16F);
             float a = 500F * (x - y);
             float b = 200F * (y - z);
 
