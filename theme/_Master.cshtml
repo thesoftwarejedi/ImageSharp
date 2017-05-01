@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="@Context.GetLink("favicon-32x32.png")" type="image/png">
+        <title>@Context.String(DocsKeys.Title, "Docs") - @ViewData[Keys.Title]</title>
+        <link href="@Context.GetLink("/assets/css/responsive.min.css")" rel="stylesheet">
+        <link href="@Context.GetLink("/assets/css/prism.css")" rel="stylesheet">
+        <link href="@Context.GetLink("/assets/css/style.css")" rel="stylesheet">
+        <link href="@Context.GetLink("/assets/css/mermaid.css")" rel="stylesheet">
+
+        <script src="@Context.GetLink("/assets/js/jquery-3.2.1.min.js")"></script>
+        @Html.Partial("_Head")
+    </head>
+    @{
+        string layoutTopNav = Model.Bool(DocsKeys.NoSidebar, false) ? "layout-top-nav" : string.Empty;
+        string noGutter = Model.Bool(DocsKeys.NoGutter, false) ? "no-gutter" : string.Empty;
+    }
+    <body>
+        <header role="banner">
+            <div class="container">
+                <h1><a href="@Context.GetLink("/")"><img src="@Context.GetLink("/assets/img/imagesharp-logo.svg")" alt="ImageSharp Logo"></a>ImageSharp</h1>
+                <p>A new open source cross-platform 2D graphics API for .NET Core</p>
+                <ul class="repo-icons">
+                    <li>
+                        <iframe src="http://ghbtns.com/github-btn.html?user=jimbobsquarepants&repo=imagesharp&type=watch&count=true" allowtransparency="true"
+                            frameborder="0" scrolling="0" width="110" height="20" title="Star on GitHub"></iframe>
+                    </li>
+                    <li>
+                        <iframe src="http://ghbtns.com/github-btn.html?user=jimbobsquarepants&repo=imagesharp&type=fork&count=true" allowtransparency="true"
+                            frameborder="0" scrolling="0" width="95" height="20" title="Fork on GitHub"></iframe>
+                    </li>
+                    <li>
+                        <a href="https://gitter.im/ImageSharp/General?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Get ImageSharp - A cross-platform 2D graphics API for .NET Core"
+                            data-via="james_m_south" data-hashtags="dotnetcore,oss">Tweet</a>
+                        <script>
+                            !function (d, s, id) {
+                                var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                                if (!d.getElementById(id)) {
+                                    js = d.createElement(s);
+                                    js.id = id;
+                                    js.src = p + '://platform.twitter.com/widgets.js';
+                                    fjs.parentNode.insertBefore(js, fjs);
+                                }
+                            }(document, 'script', 'twitter-wjs');
+                        </script>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <nav role="navigation">
+            <div class="container">
+                <ul>                            
+                    @Html.Partial("_Navbar") 
+                </ul> 
+            </div>   
+        </nav>
+        <main role="main">
+            <div class="container">
+                @{
+                    bool sidebar = Model.Bool("NoSidebar", false);
+                    string aside = !sidebar ? "col-m-3" : "hidden";
+                    string main = !sidebar ? "col-m-9" : "col-xxs-12";
+                }
+                <div class="row">
+                    <aside class="@aside">
+                        <section class="infobar"> 
+                            @RenderSection("Infobar", false)
+                        </section>
+                        <section class="sidebar">                    
+                            @RenderSection("Search", false)
+                            <ul class="sidebar-menu">
+                                @RenderSection("Sidebar", false)
+                            </ul>
+                        </section>                
+                    </aside>
+                    <section class="@main">
+                        @RenderBody()   
+                    </section>
+                </div>
+            </div>
+        </main>
+        <footer role="contentinfo">
+            <div class="container">
+                @Html.Partial("_Footer")
+            </div>
+        </footer>
+        <script src="@Context.GetLink("/assets/js/mermaid.min.js")"></script>
+        <script src="@Context.GetLink("/assets/js/prism.js")"></script>
+        <script >
+            var config = {
+                startOnLoad:true,
+                flowchart:{
+                        useMaxWidth:false,
+                        htmlLabels:true
+                }
+            };
+            mermaid.initialize(config);
+        </script>
+    </body>
+</html>
