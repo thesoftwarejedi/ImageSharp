@@ -5,6 +5,7 @@ namespace ImageSharp.Benchmarks.Color.Bulk
 
     using BenchmarkDotNet.Attributes;
 
+    using ImageSharp.Memory;
     using ImageSharp.PixelFormats;
 
     public abstract class ToVector4<TPixel>
@@ -47,17 +48,17 @@ namespace ImageSharp.Benchmarks.Color.Bulk
         [Benchmark]
         public void CommonBulk()
         {
-            new BulkPixelOperations<TPixel>().ToVector4(this.source, this.destination, this.Count);
+            new PixelOperations<TPixel>().ToVector4(this.source, this.destination, this.Count);
         }
 
         [Benchmark]
         public void OptimizedBulk()
         {
-            BulkPixelOperations<TPixel>.Instance.ToVector4(this.source, this.destination, this.Count);
+            PixelOperations<TPixel>.Instance.ToVector4(this.source, this.destination, this.Count);
         }
     }
 
-    public class ToVector4_Color : ToVector4<Rgba32>
+    public class ToVector4_Rgba32 : ToVector4<Rgba32>
     {
     }
 }

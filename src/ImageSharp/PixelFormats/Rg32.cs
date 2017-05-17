@@ -11,7 +11,9 @@ namespace ImageSharp.PixelFormats
 
     /// <summary>
     /// Packed pixel type containing two 16-bit unsigned normalized values ranging from 0 to 1.
+    /// <para>
     /// Ranges from &lt;0, 0, 0, 1&gt; to &lt;1, 1, 0, 1&gt; in vector form.
+    /// </para>
     /// </summary>
     public struct Rg32 : IPixel<Rg32>, IPackedVector<uint>
     {
@@ -74,7 +76,7 @@ namespace ImageSharp.PixelFormats
         }
 
         /// <inheritdoc />
-        public BulkPixelOperations<Rg32> CreateBulkOperations() => new BulkPixelOperations<Rg32>();
+        public PixelOperations<Rg32> CreateBulkOperations() => new PixelOperations<Rg32>();
 
         /// <summary>
         /// Expands the packed representation into a <see cref="Vector2"/>.
@@ -112,7 +114,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzBytes(byte[] bytes, int startIndex)
+        public void ToXyzBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4() * 255F;
 
@@ -123,7 +125,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzwBytes(byte[] bytes, int startIndex)
+        public void ToXyzwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4() * 255F;
 
@@ -135,7 +137,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxBytes(byte[] bytes, int startIndex)
+        public void ToZyxBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4() * 255F;
 
@@ -146,7 +148,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxwBytes(byte[] bytes, int startIndex)
+        public void ToZyxwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4() * 255F;
 

@@ -5,12 +5,15 @@
 
 namespace ImageSharp.PixelFormats
 {
+    using System;
     using System.Numerics;
     using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Packed pixel type containing two 16-bit floating-point values.
+    /// <para>
     /// Ranges from &lt;0, 0, 0, 1&gt; to &lt;1, 0, 0, 1&gt; in vector form.
+    /// </para>
     /// </summary>
     public struct HalfVector2 : IPixel<HalfVector2>, IPackedVector<uint>
     {
@@ -83,7 +86,7 @@ namespace ImageSharp.PixelFormats
         }
 
         /// <inheritdoc />
-        public BulkPixelOperations<HalfVector2> CreateBulkOperations() => new BulkPixelOperations<HalfVector2>();
+        public PixelOperations<HalfVector2> CreateBulkOperations() => new PixelOperations<HalfVector2>();
 
         /// <summary>
         /// Expands the packed representation into a <see cref="Vector2"/>.
@@ -122,7 +125,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzBytes(byte[] bytes, int startIndex)
+        public void ToXyzBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             vector *= MaxBytes;
@@ -136,7 +139,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzwBytes(byte[] bytes, int startIndex)
+        public void ToXyzwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             vector *= MaxBytes;
@@ -151,7 +154,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxBytes(byte[] bytes, int startIndex)
+        public void ToZyxBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             vector *= MaxBytes;
@@ -165,7 +168,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxwBytes(byte[] bytes, int startIndex)
+        public void ToZyxwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             vector *= MaxBytes;

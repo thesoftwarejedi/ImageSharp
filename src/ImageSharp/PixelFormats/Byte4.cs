@@ -11,7 +11,9 @@ namespace ImageSharp.PixelFormats
 
     /// <summary>
     /// Packed pixel type containing four 8-bit unsigned integer values, ranging from 0 to 255.
+    /// <para>
     /// Ranges from &lt;0, 0, 0, 0&gt; to &lt;1, 1, 1, 1&gt; in vector form.
+    /// </para>
     /// </summary>
     public struct Byte4 : IPixel<Byte4>, IPackedVector<uint>
     {
@@ -71,7 +73,7 @@ namespace ImageSharp.PixelFormats
         }
 
         /// <inheritdoc />
-        public BulkPixelOperations<Byte4> CreateBulkOperations() => new BulkPixelOperations<Byte4>();
+        public PixelOperations<Byte4> CreateBulkOperations() => new PixelOperations<Byte4>();
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -100,7 +102,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzBytes(byte[] bytes, int startIndex)
+        public void ToXyzBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             bytes[startIndex] = (byte)vector.X;
@@ -110,7 +112,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzwBytes(byte[] bytes, int startIndex)
+        public void ToXyzwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             bytes[startIndex] = (byte)vector.X;
@@ -121,7 +123,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxBytes(byte[] bytes, int startIndex)
+        public void ToZyxBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             bytes[startIndex] = (byte)vector.Z;
@@ -131,7 +133,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxwBytes(byte[] bytes, int startIndex)
+        public void ToZyxwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             bytes[startIndex] = (byte)vector.Z;

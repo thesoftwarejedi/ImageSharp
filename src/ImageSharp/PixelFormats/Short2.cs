@@ -11,7 +11,9 @@ namespace ImageSharp.PixelFormats
 
     /// <summary>
     /// Packed pixel type containing two 16-bit signed integer values.
+    /// <para>
     /// Ranges from &lt;-32767, -32767, 0, 1&gt; to &lt;32767, 32767, 0, 1&gt; in vector form.
+    /// </para>
     /// </summary>
     public struct Short2 : IPixel<Short2>, IPackedVector<uint>
     {
@@ -89,7 +91,7 @@ namespace ImageSharp.PixelFormats
         }
 
         /// <inheritdoc />
-        public BulkPixelOperations<Short2> CreateBulkOperations() => new BulkPixelOperations<Short2>();
+        public PixelOperations<Short2> CreateBulkOperations() => new PixelOperations<Short2>();
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -117,7 +119,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzBytes(byte[] bytes, int startIndex)
+        public void ToXyzBytes(Span<byte> bytes, int startIndex)
         {
             Vector2 vector = this.ToVector2();
             vector /= 65534;
@@ -133,7 +135,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzwBytes(byte[] bytes, int startIndex)
+        public void ToXyzwBytes(Span<byte> bytes, int startIndex)
         {
             Vector2 vector = this.ToVector2();
             vector /= 65534;
@@ -150,7 +152,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxBytes(byte[] bytes, int startIndex)
+        public void ToZyxBytes(Span<byte> bytes, int startIndex)
         {
             Vector2 vector = this.ToVector2();
             vector /= 65534;
@@ -166,7 +168,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxwBytes(byte[] bytes, int startIndex)
+        public void ToZyxwBytes(Span<byte> bytes, int startIndex)
         {
             Vector2 vector = this.ToVector2();
             vector /= 65534;

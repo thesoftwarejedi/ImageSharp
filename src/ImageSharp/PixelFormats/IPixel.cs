@@ -16,11 +16,11 @@ namespace ImageSharp.PixelFormats
         where TSelf : struct, IPixel<TSelf>
     {
         /// <summary>
-        /// Creates a <see cref="BulkPixelOperations{TPixel}"/> instance for this pixel type.
-        /// This method is not intended to be consumed directly. Use <see cref="BulkPixelOperations{TPixel}.Instance"/> instead.
+        /// Creates a <see cref="PixelOperations{TPixel}"/> instance for this pixel type.
+        /// This method is not intended to be consumed directly. Use <see cref="PixelOperations{TPixel}.Instance"/> instead.
         /// </summary>
-        /// <returns>The <see cref="BulkPixelOperations{TPixel}"/> instance.</returns>
-        BulkPixelOperations<TSelf> CreateBulkOperations();
+        /// <returns>The <see cref="PixelOperations{TPixel}"/> instance.</returns>
+        PixelOperations<TSelf> CreateBulkOperations();
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace ImageSharp.PixelFormats
         /// </summary>
         /// <param name="bytes">The bytes to set the color in.</param>
         /// <param name="startIndex">The starting index of the <paramref name="bytes"/>.</param>
-        void ToXyzBytes(byte[] bytes, int startIndex);
+        void ToXyzBytes(Span<byte> bytes, int startIndex);
 
         /// <summary>
         /// Expands the packed representation into a given byte array.
@@ -64,7 +64,7 @@ namespace ImageSharp.PixelFormats
         /// </summary>
         /// <param name="bytes">The bytes to set the color in.</param>
         /// <param name="startIndex">The starting index of the <paramref name="bytes"/>.</param>
-        void ToXyzwBytes(byte[] bytes, int startIndex);
+        void ToXyzwBytes(Span<byte> bytes, int startIndex);
 
         /// <summary>
         /// Expands the packed representation into a given byte array.
@@ -72,7 +72,7 @@ namespace ImageSharp.PixelFormats
         /// </summary>
         /// <param name="bytes">The bytes to set the color in.</param>
         /// <param name="startIndex">The starting index of the <paramref name="bytes"/>.</param>
-        void ToZyxBytes(byte[] bytes, int startIndex);
+        void ToZyxBytes(Span<byte> bytes, int startIndex);
 
         /// <summary>
         /// Expands the packed representation into a given byte array.
@@ -80,6 +80,6 @@ namespace ImageSharp.PixelFormats
         /// </summary>
         /// <param name="bytes">The bytes to set the color in.</param>
         /// <param name="startIndex">The starting index of the <paramref name="bytes"/>.</param>
-        void ToZyxwBytes(byte[] bytes, int startIndex);
+        void ToZyxwBytes(Span<byte> bytes, int startIndex);
     }
 }

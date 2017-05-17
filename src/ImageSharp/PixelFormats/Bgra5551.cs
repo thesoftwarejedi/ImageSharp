@@ -11,6 +11,9 @@ namespace ImageSharp.PixelFormats
 
     /// <summary>
     /// Packed pixel type containing unsigned normalized values ranging from 0 to 1. The x , y and z components use 5 bits, and the w component uses 1 bit.
+    /// <para>
+    /// Ranges from &lt;0, 0, 0, 0&gt; to &lt;1, 1, 1, 1&gt; in vector form.
+    /// </para>
     /// </summary>
     public struct Bgra5551 : IPixel<Bgra5551>, IPackedVector<ushort>
     {
@@ -69,7 +72,7 @@ namespace ImageSharp.PixelFormats
         }
 
         /// <inheritdoc />
-        public BulkPixelOperations<Bgra5551> CreateBulkOperations() => new BulkPixelOperations<Bgra5551>();
+        public PixelOperations<Bgra5551> CreateBulkOperations() => new PixelOperations<Bgra5551>();
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -98,7 +101,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzBytes(byte[] bytes, int startIndex)
+        public void ToXyzBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4() * 255F;
             bytes[startIndex] = (byte)vector.X;
@@ -108,7 +111,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzwBytes(byte[] bytes, int startIndex)
+        public void ToXyzwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4() * 255F;
             bytes[startIndex] = (byte)vector.X;
@@ -119,7 +122,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxBytes(byte[] bytes, int startIndex)
+        public void ToZyxBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4() * 255F;
             bytes[startIndex] = (byte)vector.Z;
@@ -129,7 +132,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxwBytes(byte[] bytes, int startIndex)
+        public void ToZyxwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4() * 255F;
             bytes[startIndex] = (byte)vector.Z;

@@ -103,19 +103,6 @@ namespace ImageSharp
         }
 
         /// <summary>
-        /// Returns the given degrees converted to radians.
-        /// </summary>
-        /// <param name="degrees">The angle in degrees.</param>
-        /// <returns>
-        /// The <see cref="float"/> representing the degree as radians.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float DegreesToRadians(float degrees)
-        {
-            return degrees * (MathF.PI / 180);
-        }
-
-        /// <summary>
         /// Gets the bounding <see cref="Rectangle"/> from the given points.
         /// </summary>
         /// <param name="topLeft">
@@ -159,7 +146,7 @@ namespace ImageSharp
         /// than the given one.
         /// </summary>
         /// <typeparam name="TPixel">The pixel format.</typeparam>
-        /// <param name="bitmap">The <see cref="Image"/> to search within.</param>
+        /// <param name="bitmap">The <see cref="Image{TPixel}"/> to search within.</param>
         /// <param name="componentValue">The color component value to remove.</param>
         /// <param name="channel">The <see cref="RgbaComponent"/> channel to test against.</param>
         /// <returns>
@@ -195,7 +182,7 @@ namespace ImageSharp
                     break;
             }
 
-            Func<PixelAccessor<TPixel>, int> getMinY = pixels =>
+            int GetMinY(PixelAccessor<TPixel> pixels)
             {
                 for (int y = 0; y < height; y++)
                 {
@@ -209,9 +196,9 @@ namespace ImageSharp
                 }
 
                 return 0;
-            };
+            }
 
-            Func<PixelAccessor<TPixel>, int> getMaxY = pixels =>
+            int GetMaxY(PixelAccessor<TPixel> pixels)
             {
                 for (int y = height - 1; y > -1; y--)
                 {
@@ -225,9 +212,9 @@ namespace ImageSharp
                 }
 
                 return height;
-            };
+            }
 
-            Func<PixelAccessor<TPixel>, int> getMinX = pixels =>
+            int GetMinX(PixelAccessor<TPixel> pixels)
             {
                 for (int x = 0; x < width; x++)
                 {
@@ -241,9 +228,9 @@ namespace ImageSharp
                 }
 
                 return 0;
-            };
+            }
 
-            Func<PixelAccessor<TPixel>, int> getMaxX = pixels =>
+            int GetMaxX(PixelAccessor<TPixel> pixels)
             {
                 for (int x = width - 1; x > -1; x--)
                 {
@@ -257,14 +244,14 @@ namespace ImageSharp
                 }
 
                 return height;
-            };
+            }
 
             using (PixelAccessor<TPixel> bitmapPixels = bitmap.Lock())
             {
-                topLeft.Y = getMinY(bitmapPixels);
-                topLeft.X = getMinX(bitmapPixels);
-                bottomRight.Y = (getMaxY(bitmapPixels) + 1).Clamp(0, height);
-                bottomRight.X = (getMaxX(bitmapPixels) + 1).Clamp(0, width);
+                topLeft.Y = GetMinY(bitmapPixels);
+                topLeft.X = GetMinX(bitmapPixels);
+                bottomRight.Y = (GetMaxY(bitmapPixels) + 1).Clamp(0, height);
+                bottomRight.X = (GetMaxX(bitmapPixels) + 1).Clamp(0, width);
             }
 
             return GetBoundingRectangle(topLeft, bottomRight);

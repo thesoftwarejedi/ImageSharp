@@ -11,7 +11,9 @@ namespace ImageSharp.PixelFormats
 
     /// <summary>
     /// Packed packed pixel type containing two 8-bit signed normalized values, ranging from −1 to 1.
+    /// <para>
     /// Ranges from &lt;-1, -1, 0, 1&gt; to &lt;1, 1, 0, 1&gt; in vector form.
+    /// </para>
     /// </summary>
     public struct NormalizedByte2 : IPixel<NormalizedByte2>, IPackedVector<ushort>
     {
@@ -89,7 +91,7 @@ namespace ImageSharp.PixelFormats
         }
 
         /// <inheritdoc />
-        public BulkPixelOperations<NormalizedByte2> CreateBulkOperations() => new BulkPixelOperations<NormalizedByte2>();
+        public PixelOperations<NormalizedByte2> CreateBulkOperations() => new PixelOperations<NormalizedByte2>();
 
         /// <summary>
         /// Expands the packed representation into a <see cref="Vector2"/>.
@@ -132,7 +134,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzBytes(byte[] bytes, int startIndex)
+        public void ToXyzBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             vector *= Half;
@@ -148,7 +150,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzwBytes(byte[] bytes, int startIndex)
+        public void ToXyzwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             vector *= Half;
@@ -165,7 +167,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxBytes(byte[] bytes, int startIndex)
+        public void ToZyxBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             vector *= Half;
@@ -181,7 +183,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxwBytes(byte[] bytes, int startIndex)
+        public void ToZyxwBytes(Span<byte> bytes, int startIndex)
         {
             Vector4 vector = this.ToVector4();
             vector *= Half;

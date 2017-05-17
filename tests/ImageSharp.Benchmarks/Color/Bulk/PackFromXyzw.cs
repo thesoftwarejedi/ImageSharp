@@ -3,6 +3,7 @@ namespace ImageSharp.Benchmarks.Color.Bulk
 {
     using BenchmarkDotNet.Attributes;
 
+    using ImageSharp.Memory;
     using ImageSharp.PixelFormats;
 
     public abstract class PackFromXyzw<TPixel>
@@ -47,17 +48,17 @@ namespace ImageSharp.Benchmarks.Color.Bulk
         [Benchmark]
         public void CommonBulk()
         {
-            new BulkPixelOperations<TPixel>().PackFromXyzwBytes(this.source, this.destination, this.Count);
+            new PixelOperations<TPixel>().PackFromXyzwBytes(this.source, this.destination, this.Count);
         }
 
         [Benchmark]
         public void OptimizedBulk()
         {
-            BulkPixelOperations<TPixel>.Instance.PackFromXyzwBytes(this.source, this.destination, this.Count);
+           PixelOperations<TPixel>.Instance.PackFromXyzwBytes(this.source, this.destination, this.Count);
         }
     }
 
-    public class PackFromXyzw_Color : PackFromXyzw<Rgba32>
+    public class PackFromXyzw_Rgba32 : PackFromXyzw<Rgba32>
     {
     }
 }

@@ -26,8 +26,18 @@ namespace ImageSharp
         /// The configuration providing initialization code which allows extending the library.
         /// </param>
         public ImageFrame(int width, int height, Configuration configuration = null)
-            : base(width, height, configuration)
+            : base(configuration, width, height)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageFrame{TPixel}"/> class.
+        /// </summary>
+        /// <param name="image">The image to create the frame from.</param>
+        public ImageFrame(ImageFrame<TPixel> image)
+            : base(image)
+        {
+            this.CopyProperties(image);
         }
 
         /// <summary>

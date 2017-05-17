@@ -11,7 +11,9 @@ namespace ImageSharp.PixelFormats
 
     /// <summary>
     /// Packed pixel type containing a single 8 bit normalized W values.
+    /// <para>
     /// Ranges from &lt;0, 0, 0, 0&gt; to &lt;0, 0, 0, 1&gt; in vector form.
+    /// </para>
     /// </summary>
     public struct Alpha8 : IPixel<Alpha8>, IPackedVector<byte>
     {
@@ -60,7 +62,7 @@ namespace ImageSharp.PixelFormats
         }
 
         /// <inheritdoc />
-        public BulkPixelOperations<Alpha8> CreateBulkOperations() => new BulkPixelOperations<Alpha8>();
+        public PixelOperations<Alpha8> CreateBulkOperations() => new PixelOperations<Alpha8>();
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -85,7 +87,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzBytes(byte[] bytes, int startIndex)
+        public void ToXyzBytes(Span<byte> bytes, int startIndex)
         {
             bytes[startIndex] = 0;
             bytes[startIndex + 1] = 0;
@@ -94,7 +96,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToXyzwBytes(byte[] bytes, int startIndex)
+        public void ToXyzwBytes(Span<byte> bytes, int startIndex)
         {
             bytes[startIndex] = 0;
             bytes[startIndex + 1] = 0;
@@ -104,7 +106,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxBytes(byte[] bytes, int startIndex)
+        public void ToZyxBytes(Span<byte> bytes, int startIndex)
         {
             bytes[startIndex] = 0;
             bytes[startIndex + 1] = 0;
@@ -113,7 +115,7 @@ namespace ImageSharp.PixelFormats
 
         /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToZyxwBytes(byte[] bytes, int startIndex)
+        public void ToZyxwBytes(Span<byte> bytes, int startIndex)
         {
             bytes[startIndex] = 0;
             bytes[startIndex + 1] = 0;
