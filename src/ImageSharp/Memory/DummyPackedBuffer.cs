@@ -1,11 +1,9 @@
 ﻿namespace ImageSharp.Memory
 {
-    using System;
-
     internal class DummyPackedBuffer<T> : PackedBuffer<T>
         where T : struct
     {
-        private bool isBufferOwner;
+        private readonly bool isBufferOwner;
 
         private readonly Buffer<T> buffer;
 
@@ -33,6 +31,11 @@
             }
         }
 
+        protected override PartitionIterator CreateIterator()
+        {
+            return new Iterator(this.buffer);
+        }
+
         private sealed class Iterator : PartitionIterator
         {
             private Buffer<T> buffer;
@@ -42,9 +45,12 @@
                 this.buffer = buffer;
             }
 
+            public override void Dispose()
+            {
+            }
+
             internal override void ReadCurrent()
             {
-                
             }
 
             internal override void WriteCurrent()
@@ -66,15 +72,6 @@
                 this.buffer = null;
                 return true;
             }
-
-            public override void Dispose()
-            {
-            }
-        }
-
-        protected override PartitionIterator CreateIterator()
-        {
-            return new Iterator(this.buffer);
         }
     }
 }

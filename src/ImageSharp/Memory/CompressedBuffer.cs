@@ -1,7 +1,6 @@
 namespace ImageSharp.Memory
 {
     using System;
-    using System.Runtime.CompilerServices;
 
     internal class CompressedBuffer<T, TCompression> : PackedBuffer<T>
         where T : struct
@@ -49,7 +48,7 @@ namespace ImageSharp.Memory
             private CompressedBuffer<T, TCompression> compressedBuffer;
 
             private int currentPosition;
-            
+
             private Buffer<T> partitionBuffer;
 
             private int compressedElementSize;
@@ -65,6 +64,11 @@ namespace ImageSharp.Memory
                 this.partitionBuffer = new Buffer<T>(compressedBuffer.preferredPartitionLength);
 
                 this.currentPosition = -compressedBuffer.preferredPartitionLength;
+            }
+
+            public override void Dispose()
+            {
+                this.partitionBuffer.Dispose();
             }
 
             internal override bool MoveNext()
@@ -91,24 +95,21 @@ namespace ImageSharp.Memory
                     partitionLength = d;
                 }
 
-                this.CurrentPartition = new Partition(
-                    this.partitionBuffer,
-                    0,
-                    partitionLength);
+                this.CurrentPartition = new Partition(this.partitionBuffer, 0, partitionLength);
 
                 return true;
             }
 
             internal override void ReadCurrent()
             {
-                var compressedSpan = this.GetCompressedSpan();
+                Span<byte> compressedSpan = this.GetCompressedSpan();
 
                 this.compression.Decompress(compressedSpan, this.CurrentPartition.Span);
             }
 
             internal override void WriteCurrent()
             {
-                var compressedSpan = this.GetCompressedSpan();
+                Span<byte> compressedSpan = this.GetCompressedSpan();
 
                 this.compression.Compress(this.CurrentPartition.Span, compressedSpan);
             }
@@ -118,13 +119,9 @@ namespace ImageSharp.Memory
                 int compressedStart = this.currentPosition * this.compressedElementSize;
                 int compressedLength = this.CurrentPartition.Span.Length * this.compressedElementSize;
 
-                Span<byte> compressedSpan = this.compressedBuffer.compressedData.Slice(compressedStart, compressedLength);
+                Span<byte> compressedSpan =
+                    this.compressedBuffer.compressedData.Slice(compressedStart, compressedLength);
                 return compressedSpan;
-            }
-
-            public override void Dispose()
-            {
-                this.partitionBuffer.Dispose();
             }
         }
     }

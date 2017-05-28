@@ -3,7 +3,7 @@ namespace ImageSharp.Memory
     using System;
     using System.Collections.Generic;
 
-    internal abstract partial class PackedBuffer<T> : IDisposable
+    internal abstract class PackedBuffer<T> : IDisposable
         where T : struct
     {
         protected PackedBuffer(int totalLength)
@@ -57,6 +57,12 @@ namespace ImageSharp.Memory
             }
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+        }
+
+        protected abstract PartitionIterator CreateIterator();
+
         // TODO: Should be replaced with corefxlab Buffer<T> (aka former Memory<T>)
         public struct Partition
         {
@@ -81,23 +87,19 @@ namespace ImageSharp.Memory
             public Span<T> Span => this.buffer != null ? this.buffer.Slice(this.start, this.length) : Span<T>.Empty;
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-        }
-
         protected abstract class PartitionIterator : IDisposable
         {
+#pragma warning disable SA1401 // Fields must be private
             internal Partition CurrentPartition = Partition.Empty;
+#pragma warning restore SA1401 // Fields must be private
+
+            public abstract void Dispose();
 
             internal abstract void ReadCurrent();
 
             internal abstract void WriteCurrent();
 
             internal abstract bool MoveNext();
-
-            public abstract void Dispose();
         }
-
-        protected abstract PartitionIterator CreateIterator();
     }
 }
