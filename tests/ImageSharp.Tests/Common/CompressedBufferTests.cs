@@ -73,39 +73,42 @@ namespace ImageSharp.Tests.Common
         [MemberData(nameof(TestData))]
         public void WriteRead(bool dummyCompression, int length, int partitionLength)
         {
-            PackedBuffer<float> buffer = dummyCompression
-                                             ? (PackedBuffer<float>)new CompressedBuffer<float, DummyCompression>(length, partitionLength)
-                                             : new CompressedBuffer<float, AsUInt16Compression>(length, partitionLength);
-
-            int value = 1;
-
-            foreach (PackedBuffer<float>.Partition p in buffer.WriteAllPartitions())
+            using (PackedBuffer<float> buffer = dummyCompression
+                                                    ? (PackedBuffer<float>)new CompressedBuffer<float, DummyCompression>(
+                                                        length,
+                                                        partitionLength)
+                                                    : new CompressedBuffer<float, AsUInt16Compression>(
+                                                        length,
+                                                        partitionLength))
             {
-                Span<float> span = p.Span;
+                int value = 1;
 
-                for (int i = 0; i < span.Length; i++)
+                foreach (PackedBuffer<float>.Partition p in buffer.WriteAllPartitions())
                 {
-                    span[i] = value;
-                    value++;
+                    Span<float> span = p.Span;
+
+                    for (int i = 0; i < span.Length; i++)
+                    {
+                        span[i] = value;
+                        value++;
+                    }
                 }
-            }
 
-            value = 0;
+                value = 0;
 
-            foreach (PackedBuffer<float>.Partition p in buffer.ReadAllPartitions())
-            {
-                Span<float> span = p.Span;
-                for (int i = 0; i < span.Length; i++)
+                foreach (PackedBuffer<float>.Partition p in buffer.ReadAllPartitions())
                 {
-                    value += (int)span[i];
+                    Span<float> span = p.Span;
+                    for (int i = 0; i < span.Length; i++)
+                    {
+                        value += (int)span[i];
+                    }
                 }
+
+                int expected = length * (length + 1) / 2;
+
+                Assert.Equal(expected, value);
             }
-
-
-            int expected = length * (length + 1) / 2;
-
-            Assert.Equal(expected, value);
         }
-        
     }
 }
