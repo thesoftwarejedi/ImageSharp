@@ -3,6 +3,11 @@ namespace ImageSharp.Memory
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Base class for buffers of type `T` that can be read/written in segments called <see cref="Partition"/>-s.
+    /// The partition returns the elements in the desired format, regardless of the backing format stored in the buffer.
+    /// </summary>
+    /// <typeparam name="T">The element (value) type</typeparam>
     internal abstract class PackedBuffer<T> : IDisposable
         where T : struct
     {
@@ -63,7 +68,11 @@ namespace ImageSharp.Memory
 
         protected abstract PartitionIterator CreateIterator();
 
-        // TODO: Should be replaced with corefxlab Buffer<T> (aka former Memory<T>)
+        /// <summary>
+        /// Represents a readable/writeable partition of the buffer.
+        /// <see cref="Span"/> returns the elements in the desired format, regardless of the backing format stored in the buffer.
+        /// </summary>
+        // TODO: Should be replaced with corefxlab Buffer<T> (aka former Memory<T>) in the future
         public struct Partition
         {
             internal static readonly Partition Empty = default(Partition);

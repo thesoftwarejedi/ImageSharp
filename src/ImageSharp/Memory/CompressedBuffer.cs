@@ -2,6 +2,12 @@ namespace ImageSharp.Memory
 {
     using System;
 
+    /// <summary>
+    /// <see cref="PackedBuffer{T}"/> implementation that stores the elements in a CBR compressed form.
+    /// A sample compression: <see cref="float"/>-s in [0..255] range rounded and converted to <see cref="byte"/>-s.
+    /// </summary>
+    /// <typeparam name="T">The element type.</typeparam>
+    /// <typeparam name="TCompression">The compression provider.</typeparam>
     internal class CompressedBuffer<T, TCompression> : PackedBuffer<T>
         where T : struct
         where TCompression : struct, IConstantBitRateCompression<T>
