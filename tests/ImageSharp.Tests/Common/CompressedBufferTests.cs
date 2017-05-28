@@ -73,6 +73,9 @@ namespace ImageSharp.Tests.Common
         [MemberData(nameof(TestData))]
         public void WriteRead(bool dummyCompression, int length, int partitionLength)
         {
+            // The test fills the buffer with series of natural numbers. Then reads and sums them to verify the sum.
+            // See: https://en.wikipedia.org/wiki/1_%2B_2_%2B_3_%2B_4_%2B_%E2%8B%AF
+
             using (PackedBuffer<float> buffer = dummyCompression
                                                     ? (PackedBuffer<float>)new CompressedBuffer<float, DummyCompression>(
                                                         length,
@@ -105,6 +108,7 @@ namespace ImageSharp.Tests.Common
                     }
                 }
 
+                // See: https://en.wikipedia.org/wiki/1_%2B_2_%2B_3_%2B_4_%2B_%E2%8B%AF
                 int expected = length * (length + 1) / 2;
 
                 Assert.Equal(expected, value);
