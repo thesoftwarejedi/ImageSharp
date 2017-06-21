@@ -1,5 +1,5 @@
-﻿// <copyright file="ImageBenchmarkTests.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="ImageBenchmarkTests.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
@@ -12,7 +12,7 @@
 #if TEST
 
 // ReSharper disable InconsistentNaming
-namespace ImageSharp.Benchmarks.Image
+namespace SixLabors.ImageSharp.Benchmarks.Image
 {
     using System;
     using System.Collections.Generic;

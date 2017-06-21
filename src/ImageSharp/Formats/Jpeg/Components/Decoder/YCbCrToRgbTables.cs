@@ -1,12 +1,12 @@
-﻿// <copyright file="YCbCrToRgbTables.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="YCbCrToRgbTables.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Formats.Jpg
+namespace SixLabors.ImageSharp.Formats.Jpg
 {
     using System.Runtime.CompilerServices;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Provides 8-bit lookup tables for converting from YCbCr to Rgb colorspace.

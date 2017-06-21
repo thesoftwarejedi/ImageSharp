@@ -1,19 +1,19 @@
-﻿// <copyright file="DrawText.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="DrawText.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Tests.Drawing.Text
+namespace SixLabors.ImageSharp.Tests.Drawing.Text
 {
     using System;
     using System.Numerics;
 
-    using ImageSharp.Drawing;
-    using ImageSharp.Drawing.Brushes;
-    using ImageSharp.Drawing.Pens;
-    using ImageSharp.Drawing.Processors;
-    using ImageSharp.PixelFormats;
-    using ImageSharp.Tests.Drawing.Paths;
+    using SixLabors.ImageSharp.Drawing;
+    using SixLabors.ImageSharp.Drawing.Brushes;
+    using SixLabors.ImageSharp.Drawing.Pens;
+    using SixLabors.ImageSharp.Drawing.Processors;
+    using SixLabors.ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Tests.Drawing.Paths;
 
     using SixLabors.Fonts;
     using SixLabors.Shapes;

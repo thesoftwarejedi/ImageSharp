@@ -1,9 +1,9 @@
-﻿// <copyright file="FlagsHelper.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="FlagsHelper.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace ImageSharp.Tests
     using System.Numerics;
     using System.Reflection;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     using Xunit;
     using Xunit.Abstractions;
@@ -48,16 +48,6 @@ namespace ImageSharp.Tests
             }
 
             return image;
-        }
-
-        [Fact]
-        public void Baz()
-        {
-            Type type = typeof(Rgba32).GetTypeInfo().Assembly.GetType("ImageSharp.Rgba32");
-            this.Output.WriteLine(type.ToString());
-
-            Type fake = typeof(Rgba32).GetTypeInfo().Assembly.GetType("ImageSharp.dsaada_DASqewrr");
-            Assert.Null(fake);
         }
 
         [Theory]

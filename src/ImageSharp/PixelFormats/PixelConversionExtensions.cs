@@ -1,4 +1,4 @@
-﻿namespace ImageSharp.PixelFormats
+﻿namespace SixLabors.ImageSharp.PixelFormats
 {
     using System;
     using System.Runtime.CompilerServices;

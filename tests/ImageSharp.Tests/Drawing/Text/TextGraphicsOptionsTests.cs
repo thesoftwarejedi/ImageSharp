@@ -1,7 +1,7 @@
 ﻿
-namespace ImageSharp.Tests.Drawing.Text
+namespace SixLabors.ImageSharp.Tests.Drawing.Text
 {
-    using ImageSharp.Drawing;
+    using SixLabors.ImageSharp.Drawing;
     using SixLabors.Fonts;
     using System;
     using System.Collections.Generic;

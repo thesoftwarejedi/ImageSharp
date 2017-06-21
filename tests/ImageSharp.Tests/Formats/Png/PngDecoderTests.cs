@@ -1,15 +1,15 @@
-﻿// <copyright file="PngDecoderTests.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="PngDecoderTests.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
     using System.Text;
     using Xunit;
 
-    using ImageSharp.Formats;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Formats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     public class PngDecoderTests
     {

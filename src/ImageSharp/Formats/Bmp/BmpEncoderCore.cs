@@ -1,16 +1,14 @@
-﻿// <copyright file="BmpEncoderCore.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="BmpEncoderCore.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Formats
+namespace SixLabors.ImageSharp.Formats
 {
     using System;
     using System.IO;
-
-    using ImageSharp.PixelFormats;
-
     using IO;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Image encoder for writing an image to a stream as a Windows bitmap.

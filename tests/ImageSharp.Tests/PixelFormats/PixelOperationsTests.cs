@@ -1,12 +1,12 @@
 ﻿// ReSharper disable InconsistentNaming
 // ReSharper disable AccessToDisposedClosure
-namespace ImageSharp.Tests.PixelFormats
+namespace SixLabors.ImageSharp.Tests.PixelFormats
 {
     using System;
     using System.Numerics;
 
-    using ImageSharp.Memory;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Memory;
+    using SixLabors.ImageSharp.PixelFormats;
 
     using Xunit;
     using Xunit.Abstractions;

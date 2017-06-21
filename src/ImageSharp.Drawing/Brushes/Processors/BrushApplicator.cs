@@ -1,14 +1,14 @@
-﻿// <copyright file="BrushApplicator.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="BrushApplicator.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Drawing.Processors
+namespace SixLabors.ImageSharp.Drawing.Processors
 {
     using System;
 
-    using ImageSharp.Memory;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Memory;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// primitive that converts a point in to a color for discovering the fill color based on an implementation

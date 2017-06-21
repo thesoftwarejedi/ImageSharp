@@ -1,5 +1,5 @@
-﻿// <copyright file="AssemblyInfo.Common.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="AssemblyInfo.Common.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
@@ -12,9 +12,9 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 [assembly: AssemblyDescription("A cross-platform library for processing of image files; written in C#")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("James Jackson-South")]
+[assembly: AssemblyCompany("Six Labors")]
 [assembly: AssemblyProduct("ImageSharp")]
-[assembly: AssemblyCopyright("Copyright (c) James Jackson-South and contributors.")]
+[assembly: AssemblyCopyright("Copyright (c) Six Labors and contributors.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
@@ -34,7 +34,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyInformationalVersion("1.0.0.0")]
 
 // Ensure the internals can be built and tested.
-[assembly: InternalsVisibleTo("ImageSharp.Drawing")]
+[assembly: InternalsVisibleTo("SixLabors.ImageSharp.Drawing")]
 [assembly: InternalsVisibleTo("ImageSharp.Benchmarks")]
 [assembly: InternalsVisibleTo("ImageSharp.Tests")]
 [assembly: InternalsVisibleTo("ImageSharp.Sandbox46")]

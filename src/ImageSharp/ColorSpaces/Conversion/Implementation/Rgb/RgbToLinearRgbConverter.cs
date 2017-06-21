@@ -1,9 +1,9 @@
-﻿// <copyright file="RgbToLinearRgbConverter.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="RgbToLinearRgbConverter.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.ColorSpaces.Conversion.Implementation.Rgb
+namespace SixLabors.ImageSharp.ColorSpaces.Conversion.Implementation.Rgb
 {
     using System.Numerics;
 

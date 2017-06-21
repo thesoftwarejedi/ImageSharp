@@ -1,10 +1,10 @@
 // ReSharper disable InconsistentNaming
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
     using System;
     using System.Numerics;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     using Xunit;
 

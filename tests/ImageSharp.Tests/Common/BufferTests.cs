@@ -1,12 +1,12 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace ImageSharp.Tests.Common
+namespace SixLabors.ImageSharp.Tests.Common
 {
     using System;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
     using System.Threading.Tasks;
 
-    using ImageSharp.Memory;
+    using SixLabors.ImageSharp.Memory;
 
     using Xunit;
 

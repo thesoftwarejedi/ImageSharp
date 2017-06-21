@@ -1,14 +1,14 @@
-﻿// <copyright file="PngDecoder.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="PngDecoder.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Formats
+namespace SixLabors.ImageSharp.Formats
 {
     using System;
     using System.IO;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Encoder for generating an image out of a png encoded stream.

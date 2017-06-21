@@ -1,10 +1,10 @@
-﻿// <copyright file="IccProfileTag.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="IccProfileTag.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
 // ReSharper disable InconsistentNaming
-namespace ImageSharp
+namespace SixLabors.ImageSharp
 {
     /// <summary>
     /// Enumerates the ICC Profile Tags as defined in ICC.1:2010 version 4.3.0.0

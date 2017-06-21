@@ -1,9 +1,9 @@
-﻿// <copyright file="IImageFrame.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="IImageFrame.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp
+namespace SixLabors.ImageSharp
 {
     /// <summary>
     /// Encapsulates the basic properties and methods required to manipulate images.

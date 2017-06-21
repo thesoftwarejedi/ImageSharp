@@ -1,16 +1,16 @@
-// <copyright file="ResizeProfilingBenchmarks.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+// <copyright file="ResizeProfilingBenchmarks.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Tests.Processing.Transforms
+namespace SixLabors.ImageSharp.Tests.Processing.Transforms
 {
     using System;
     using System.IO;
     using System.Text;
 
-    using ImageSharp.Processing;
-    using ImageSharp.Processing.Processors;
+    using SixLabors.ImageSharp.Processing;
+    using SixLabors.ImageSharp.Processing.Processors;
 
     using Xunit;
     using Xunit.Abstractions;

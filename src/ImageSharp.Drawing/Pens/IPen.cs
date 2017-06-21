@@ -1,12 +1,12 @@
-﻿// <copyright file="IPen.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="IPen.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Drawing.Pens
+namespace SixLabors.ImageSharp.Drawing.Pens
 {
-    using ImageSharp.PixelFormats;
     using Processors;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Interface representing a Pen

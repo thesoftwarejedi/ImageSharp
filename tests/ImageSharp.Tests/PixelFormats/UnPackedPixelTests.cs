@@ -1,8 +1,8 @@
-﻿namespace ImageSharp.Tests.Colors
+﻿namespace SixLabors.ImageSharp.Tests.Colors
 {
     using System.Numerics;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     using Xunit;
 

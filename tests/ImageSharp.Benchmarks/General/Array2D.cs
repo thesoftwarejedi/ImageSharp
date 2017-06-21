@@ -1,15 +1,15 @@
-﻿// <copyright file="Array2D.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="Array2D.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Benchmarks.General
+namespace SixLabors.ImageSharp.Benchmarks.General
 {
     using System;
 
     using BenchmarkDotNet.Attributes;
 
-    using ImageSharp.Memory;
+    using SixLabors.ImageSharp.Memory;
 
     public class Array2D
     {

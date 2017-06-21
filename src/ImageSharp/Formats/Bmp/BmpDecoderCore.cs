@@ -1,14 +1,14 @@
-﻿// <copyright file="BmpDecoderCore.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="BmpDecoderCore.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
-namespace ImageSharp.Formats
+namespace SixLabors.ImageSharp.Formats
 {
     using System;
     using System.IO;
     using System.Runtime.CompilerServices;
-    using ImageSharp.Memory;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Memory;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Performs the bmp decoding operation.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
     internal class NoneSeekableStream : Stream
     {

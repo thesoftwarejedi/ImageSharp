@@ -1,5 +1,5 @@
-﻿// <copyright file="JpegUtilityTestFixture.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="JpegUtilityTestFixture.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
@@ -8,12 +8,12 @@ using System.Text;
 using Xunit.Abstractions;
 // ReSharper disable InconsistentNaming
 
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
     using System;
     using System.Diagnostics;
 
-    using ImageSharp.Formats.Jpg;
+    using SixLabors.ImageSharp.Formats.Jpg;
 
     public class JpegUtilityTestFixture : MeasureFixture
     {

@@ -1,17 +1,17 @@
-﻿// <copyright file="ColorConversionTests.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="ColorConversionTests.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Tests.Drawing
+namespace SixLabors.ImageSharp.Tests.Drawing
 {
-    using ImageSharp.Drawing;
-    using ImageSharp.Drawing.Pens;
+    using SixLabors.ImageSharp.Drawing;
+    using SixLabors.ImageSharp.Drawing.Pens;
 
     using System.IO;
     using System.Numerics;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     using Xunit;
 

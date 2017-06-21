@@ -1,16 +1,16 @@
-// <copyright file="JpegUtilsTests.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+// <copyright file="JpegUtilsTests.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
 // ReSharper disable InconsistentNaming
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
     using System;
     using System.Numerics;
 
-    using ImageSharp.Formats.Jpg;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Formats.Jpg;
+    using SixLabors.ImageSharp.PixelFormats;
 
     using Xunit;
 

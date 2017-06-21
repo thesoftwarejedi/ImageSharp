@@ -1,11 +1,11 @@
-﻿// <copyright file="JarvisJudiceNinke.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="JarvisJudiceNinke.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Dithering
+namespace SixLabors.ImageSharp.Dithering
 {
-    using ImageSharp.Memory;
+    using SixLabors.ImageSharp.Memory;
 
     /// <summary>
     /// Applies error diffusion based dithering using the JarvisJudiceNinke image dithering algorithm.

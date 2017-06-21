@@ -1,9 +1,9 @@
-﻿// <copyright file="Configuration.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="Configuration.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp
+namespace SixLabors.ImageSharp
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace ImageSharp
     using System.Threading.Tasks;
 
     using Formats;
-    using ImageSharp.IO;
+    using SixLabors.ImageSharp.IO;
 
     /// <summary>
     /// Provides initialization code which allows extending the library.

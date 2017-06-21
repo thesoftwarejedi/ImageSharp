@@ -1,4 +1,4 @@
-namespace ImageSharp.Tests.Common
+namespace SixLabors.ImageSharp.Tests.Common
 {
     using Xunit;
 

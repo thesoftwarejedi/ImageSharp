@@ -1,4 +1,4 @@
-﻿namespace ImageSharp.Tests.Helpers
+﻿namespace SixLabors.ImageSharp.Tests.Helpers
 {
     using System;
 

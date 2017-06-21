@@ -1,11 +1,12 @@
 version: 1.0.0.{build}
 image: Visual Studio 2017
 
-# prevent the double build when a branch has an active PR
-skip_branch_with_pr: true
+install:
+  - choco install gitversion.portable -pre -y
 
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://gist.githubusercontent.com/PureKrome/0f79e25693d574807939/raw/8cf3160c9516ef1f4effc825c0a44acc918a0b5a/appveyor-build-info.ps'))
+before_build:
+  - cmd: dotnet --version
+  - ps: gitversion /l console /output buildserver
 
 build_script:
 - cmd: build.cmd
@@ -26,3 +27,7 @@ deploy:
    artifact: /.*\.nupkg/
    on:
      branch: master
+
+
+# prevent the double build when a branch has an active PR
+skip_branch_with_pr: true

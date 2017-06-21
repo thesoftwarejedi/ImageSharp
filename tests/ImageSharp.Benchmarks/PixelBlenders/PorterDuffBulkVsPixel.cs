@@ -1,19 +1,19 @@
-﻿// <copyright file="Crop.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="Crop.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Benchmarks
+namespace SixLabors.ImageSharp.Benchmarks
 {
     using System;
 
     using BenchmarkDotNet.Attributes;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
     using CoreSize = SixLabors.Primitives.Size;
     using System.Numerics;
 
-    using ImageSharp.Memory;
-    using ImageSharp.PixelFormats.PixelBlenders;
+    using SixLabors.ImageSharp.Memory;
+    using SixLabors.ImageSharp.PixelFormats.PixelBlenders;
 
     public class PorterDuffBulkVsPixel : BenchmarkBase
     {

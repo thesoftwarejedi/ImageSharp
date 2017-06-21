@@ -1,9 +1,9 @@
-﻿// <copyright file="IccDataWriter.Lut.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="IccDataWriter.Lut.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp
+namespace SixLabors.ImageSharp
 {
     /// <content>
     /// Provides methods to write ICC data types

@@ -1,12 +1,12 @@
 ﻿
-namespace ImageSharp.Tests.Drawing.Paths
+namespace SixLabors.ImageSharp.Tests.Drawing.Paths
 {
     using System;
     using System.IO;
-    using ImageSharp;
-    using ImageSharp.Processing;
+    using SixLabors.ImageSharp;
+    using SixLabors.ImageSharp.Processing;
     using System.Collections.Generic;
-   using ImageSharp.PixelFormats;
+   using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.Primitives;
 
     /// <summary>

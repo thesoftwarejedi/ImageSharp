@@ -1,15 +1,15 @@
 ﻿
-namespace ImageSharp.Tests.Drawing
+namespace SixLabors.ImageSharp.Tests.Drawing
 {
-    using ImageSharp;
+    using SixLabors.ImageSharp;
     using Xunit;
-    using ImageSharp.Drawing;
-    using ImageSharp.Drawing.Processors;
+    using SixLabors.ImageSharp.Drawing;
+    using SixLabors.ImageSharp.Drawing.Processors;
     using Moq;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
     using System;
-    using ImageSharp.Drawing.Pens;
+    using SixLabors.ImageSharp.Drawing.Pens;
     using System.Numerics;
 
     public class FillRegionProcessorTests

@@ -1,5 +1,5 @@
-﻿// <copyright file="Block8x8FTests.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="Block8x8FTests.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
@@ -8,13 +8,13 @@
 
 // ReSharper disable InconsistentNaming
 
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
     using System.Diagnostics;
     using System.Numerics;
 
-    using ImageSharp.Formats;
-    using ImageSharp.Formats.Jpg;
+    using SixLabors.ImageSharp.Formats;
+    using SixLabors.ImageSharp.Formats.Jpg;
 
     using Xunit;
     using Xunit.Abstractions;

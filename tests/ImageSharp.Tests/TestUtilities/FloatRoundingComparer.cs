@@ -1,4 +1,4 @@
-﻿namespace ImageSharp.Tests
+﻿namespace SixLabors.ImageSharp.Tests
 {
     using System;
     using System.Collections.Generic;

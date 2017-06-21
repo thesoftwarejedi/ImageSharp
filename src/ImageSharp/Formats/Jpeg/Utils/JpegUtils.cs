@@ -1,14 +1,14 @@
-﻿// <copyright file="JpegUtils.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="JpegUtils.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
-namespace ImageSharp.Formats.Jpg
+namespace SixLabors.ImageSharp.Formats.Jpg
 {
     using System;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     ///     Jpeg specific utilities and extension methods

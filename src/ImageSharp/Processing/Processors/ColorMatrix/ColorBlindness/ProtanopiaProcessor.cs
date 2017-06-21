@@ -1,14 +1,14 @@
-﻿// <copyright file="ProtanopiaProcessor.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="ProtanopiaProcessor.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Processing.Processors
+namespace SixLabors.ImageSharp.Processing.Processors
 {
     using System;
     using System.Numerics;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Converts the colors of the image recreating Protanopia (Red-Blind) color blindness.

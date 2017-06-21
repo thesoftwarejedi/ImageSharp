@@ -1,13 +1,13 @@
-﻿// <copyright file="BmpEncoderTests.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="BmpEncoderTests.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-using ImageSharp.Formats;
+using SixLabors.ImageSharp.Formats;
 
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     using Xunit;
 

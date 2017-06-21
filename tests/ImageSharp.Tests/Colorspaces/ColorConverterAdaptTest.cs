@@ -1,10 +1,10 @@
-namespace ImageSharp.Tests.Colorspaces
+namespace SixLabors.ImageSharp.Tests.Colorspaces
 {
     using System.Collections.Generic;
 
-    using ImageSharp.ColorSpaces;
-    using ImageSharp.ColorSpaces.Conversion;
-    using ImageSharp.ColorSpaces.Conversion.Implementation.Lms;
+    using SixLabors.ImageSharp.ColorSpaces;
+    using SixLabors.ImageSharp.ColorSpaces.Conversion;
+    using SixLabors.ImageSharp.ColorSpaces.Conversion.Implementation.Lms;
 
     using Xunit;
 

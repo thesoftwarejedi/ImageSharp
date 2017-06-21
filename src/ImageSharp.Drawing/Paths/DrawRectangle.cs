@@ -1,14 +1,14 @@
-﻿// <copyright file="DrawRectangle.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="DrawRectangle.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp
+namespace SixLabors.ImageSharp
 {
     using Drawing;
     using Drawing.Brushes;
     using Drawing.Pens;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.Primitives;
 
     /// <summary>

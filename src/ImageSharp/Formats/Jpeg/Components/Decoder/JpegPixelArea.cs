@@ -1,12 +1,12 @@
-﻿// <copyright file="JpegPixelArea.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="JpegPixelArea.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
-namespace ImageSharp.Formats.Jpg
+namespace SixLabors.ImageSharp.Formats.Jpg
 {
     using System.Runtime.CompilerServices;
 
-    using ImageSharp.Memory;
+    using SixLabors.ImageSharp.Memory;
 
     /// <summary>
     /// Represents an area of a Jpeg subimage (channel)

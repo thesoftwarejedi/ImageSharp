@@ -1,0 +1,16 @@
+# to create a new package you create a new release/tag 
+# in github appveyor will build it without the -cixxx tag 
+# it will then be deployable cleanly to nuget.org
+# means that myget/appberyor feed will always be of the form 
+# 0.0.0.0-CIxxxx so you are always on CI if you pick CI for example
+# unless you remove the fee.
+
+branches:  
+  master:
+    tag: ci
+    mode: ContinuousDeployment
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+ignore:
+  sha: []

@@ -1,12 +1,12 @@
-﻿// <copyright file="ColorSpaceConverter.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="ColorSpaceConverter.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.ColorSpaces.Conversion
+namespace SixLabors.ImageSharp.ColorSpaces.Conversion
 {
-    using ImageSharp.ColorSpaces;
-    using ImageSharp.ColorSpaces.Conversion.Implementation.YCbCr;
+    using SixLabors.ImageSharp.ColorSpaces;
+    using SixLabors.ImageSharp.ColorSpaces.Conversion.Implementation.YCbCr;
 
     /// <content>
     /// Allows conversion to <see cref="YCbCr"/>.

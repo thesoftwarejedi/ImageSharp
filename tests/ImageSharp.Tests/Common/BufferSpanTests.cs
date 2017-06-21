@@ -1,14 +1,14 @@
 // ReSharper disable ObjectCreationAsStatement
 // ReSharper disable InconsistentNaming
 
-namespace ImageSharp.Tests.Common
+namespace SixLabors.ImageSharp.Tests.Common
 {
     using System;
     using System.Numerics;
     using System.Runtime.CompilerServices;
 
-    using ImageSharp.Memory;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Memory;
+    using SixLabors.ImageSharp.PixelFormats;
 
     using Xunit;
 

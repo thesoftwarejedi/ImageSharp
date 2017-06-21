@@ -1,16 +1,16 @@
-﻿// <copyright file="PixelAccessorTests.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="PixelAccessorTests.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
     using System;
     using System.IO;
     using System.Linq;
-    using ImageSharp.Formats;
-    using ImageSharp.IO;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Formats;
+    using SixLabors.ImageSharp.IO;
+    using SixLabors.ImageSharp.PixelFormats;
 
     using Moq;
     using Xunit;

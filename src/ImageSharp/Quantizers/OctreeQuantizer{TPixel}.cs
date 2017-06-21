@@ -1,14 +1,14 @@
-﻿// <copyright file="OctreeQuantizer{TPixel}.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="OctreeQuantizer{TPixel}.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Quantizers
+namespace SixLabors.ImageSharp.Quantizers
 {
     using System;
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Encapsulates methods to calculate the color palette if an image using an Octree pattern.

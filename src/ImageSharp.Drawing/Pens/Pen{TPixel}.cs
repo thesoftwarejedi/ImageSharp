@@ -1,16 +1,15 @@
-﻿// <copyright file="Pen{TPixel}.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="Pen{TPixel}.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Drawing.Pens
+namespace SixLabors.ImageSharp.Drawing.Pens
 {
     using System;
     using System.Numerics;
-
-    using ImageSharp.Drawing.Brushes;
-    using ImageSharp.PixelFormats;
     using Processors;
+    using SixLabors.ImageSharp.Drawing.Brushes;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Provides a pen that can apply a pattern to a line with a set brush and thickness

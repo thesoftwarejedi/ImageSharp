@@ -1,14 +1,14 @@
 ﻿
-namespace ImageSharp.Tests.Drawing.Paths
+namespace SixLabors.ImageSharp.Tests.Drawing.Paths
 {
     using System;
 
-    using ImageSharp.Drawing.Brushes;
+    using SixLabors.ImageSharp.Drawing.Brushes;
 
     using Xunit;
-    using ImageSharp.Drawing;
-    using ImageSharp.Drawing.Processors;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.Drawing;
+    using SixLabors.ImageSharp.Drawing.Processors;
+    using SixLabors.ImageSharp.PixelFormats;
 
     public class FillRectangle : IDisposable
     {

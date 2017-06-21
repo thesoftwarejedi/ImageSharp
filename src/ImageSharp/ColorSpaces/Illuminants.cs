@@ -1,4 +1,4 @@
-﻿namespace ImageSharp.ColorSpaces
+﻿namespace SixLabors.ImageSharp.ColorSpaces
 {
     /// <summary>
     /// The well known standard illuminants.

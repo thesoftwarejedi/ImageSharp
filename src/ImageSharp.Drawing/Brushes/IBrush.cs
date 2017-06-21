@@ -1,12 +1,12 @@
-﻿// <copyright file="IBrush.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="IBrush.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Drawing
+namespace SixLabors.ImageSharp.Drawing
 {
-    using ImageSharp.PixelFormats;
     using Processors;
+    using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.Primitives;
 
     /// <summary>

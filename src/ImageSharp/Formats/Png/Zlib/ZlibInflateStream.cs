@@ -1,4 +1,4 @@
-﻿namespace ImageSharp.Formats
+﻿namespace SixLabors.ImageSharp.Formats
 {
     using System;
     using System.Collections.Generic;

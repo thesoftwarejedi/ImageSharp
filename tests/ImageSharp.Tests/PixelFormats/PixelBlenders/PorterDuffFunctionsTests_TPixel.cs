@@ -1,17 +1,17 @@
-﻿// <copyright file="PorterDuffFunctions<TPixel>Tests.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="PorterDuffFunctions<TPixel>Tests.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Tests.PixelFormats.PixelBlenders
+namespace SixLabors.ImageSharp.Tests.PixelFormats.PixelBlenders
 {
     using System;
     using System.Collections.Generic;
     using System.Numerics;
     using System.Text;
-    using ImageSharp.PixelFormats;
-    using ImageSharp.PixelFormats.PixelBlenders;
-    using ImageSharp.Tests.TestUtilities;
+    using SixLabors.ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats.PixelBlenders;
+    using SixLabors.ImageSharp.Tests.TestUtilities;
     using Xunit;
 
     public class PorterDuffFunctionsTests_TPixel

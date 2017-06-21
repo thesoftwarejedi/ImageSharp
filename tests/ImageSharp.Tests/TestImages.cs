@@ -1,10 +1,10 @@
-﻿// <copyright file="FileTestBase.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="FileTestBase.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
 // ReSharper disable MemberHidesStaticFromOuterClass
-namespace ImageSharp.Tests
+namespace SixLabors.ImageSharp.Tests
 {
     using System.Linq;
 

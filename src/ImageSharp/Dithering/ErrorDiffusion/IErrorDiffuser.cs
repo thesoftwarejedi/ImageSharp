@@ -1,11 +1,11 @@
-﻿// <copyright file="IErrorDiffuser.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="IErrorDiffuser.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Dithering
+namespace SixLabors.ImageSharp.Dithering
 {
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Encapsulates properties and methods required to perfom diffused error dithering on an image.

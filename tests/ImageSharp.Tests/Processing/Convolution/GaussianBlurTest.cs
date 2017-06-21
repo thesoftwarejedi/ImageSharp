@@ -1,11 +1,11 @@
-﻿// <copyright file="GaussianBlurTest.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="GaussianBlurTest.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Tests.Processing.Convolution
+namespace SixLabors.ImageSharp.Tests.Processing.Convolution
 {
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.Primitives;
     using Xunit;
 

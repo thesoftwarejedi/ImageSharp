@@ -1,9 +1,9 @@
-﻿// <copyright file="FillWithPattern.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="FillWithPattern.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Benchmarks
+namespace SixLabors.ImageSharp.Benchmarks
 {
     using System.Drawing;
     using System.Drawing.Drawing2D;
@@ -11,9 +11,9 @@ namespace ImageSharp.Benchmarks
 
     using BenchmarkDotNet.Attributes;
 
-    using ImageSharp.Drawing.Brushes;
+    using SixLabors.ImageSharp.Drawing.Brushes;
     using CoreBrushes = ImageSharp.Drawing.Brushes.Brushes;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     public class FillWithPattern
     {

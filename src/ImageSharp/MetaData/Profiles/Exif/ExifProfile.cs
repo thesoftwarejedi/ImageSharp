@@ -1,15 +1,15 @@
-﻿// <copyright file="ExifProfile.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="ExifProfile.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp
+namespace SixLabors.ImageSharp
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// Represents an EXIF profile providing access to the collection of values.

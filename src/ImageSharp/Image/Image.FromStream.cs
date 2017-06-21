@@ -1,16 +1,16 @@
-﻿// <copyright file="Image.FromStream.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="Image.FromStream.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp
+namespace SixLabors.ImageSharp
 {
     using System;
     using System.IO;
     using System.Text;
     using Formats;
 
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <content>
     /// Adds static methods allowing the creation of new image from a given stream.

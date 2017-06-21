@@ -1,16 +1,16 @@
-﻿// <copyright file="WuQuantizer{TPixel}.cs" company="James Jackson-South">
-// Copyright (c) James Jackson-South and contributors.
+﻿// <copyright file="WuQuantizer{TPixel}.cs" company="Six Labors">
+// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
 
-namespace ImageSharp.Quantizers
+namespace SixLabors.ImageSharp.Quantizers
 {
     using System;
     using System.Buffers;
     using System.Collections.Generic;
     using System.Numerics;
     using System.Runtime.CompilerServices;
-    using ImageSharp.PixelFormats;
+    using SixLabors.ImageSharp.PixelFormats;
 
     /// <summary>
     /// An implementation of Wu's color quantizer with alpha channel.
