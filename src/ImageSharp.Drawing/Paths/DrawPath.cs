@@ -19,14 +19,12 @@ namespace ImageSharp
         /// <summary>
         /// Draws the outline of the polygon with the provided pen.
         /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="pen">The pen.</param>
         /// <param name="path">The path.</param>
         /// <param name="options">The options.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Draw<TPixel>(this IImageOperations<TPixel> source, IPen<TPixel> pen, IPath path, GraphicsOptions options)
-           where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Draw(this IImageOperations source, Pen pen, IPath path, GraphicsOptions options)
         {
             return source.Fill(pen.StrokeFill, new ShapePath(path, pen), options);
         }
@@ -34,13 +32,11 @@ namespace ImageSharp
         /// <summary>
         /// Draws the outline of the polygon with the provided pen.
         /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="pen">The pen.</param>
         /// <param name="path">The path.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Draw<TPixel>(this IImageOperations<TPixel> source, IPen<TPixel> pen, IPath path)
-           where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Draw(this IImageOperations source, Pen pen, IPath path)
         {
             return source.Draw(pen, path, GraphicsOptions.Default);
         }
@@ -48,63 +44,28 @@ namespace ImageSharp
         /// <summary>
         /// Draws the outline of the polygon with the provided brush at the provided thickness.
         /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="brush">The brush.</param>
         /// <param name="thickness">The thickness.</param>
         /// <param name="path">The shape.</param>
         /// <param name="options">The options.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Draw<TPixel>(this IImageOperations<TPixel> source, IBrush<TPixel> brush, float thickness, IPath path, GraphicsOptions options)
-           where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Draw(this IImageOperations source, Brush brush, float thickness, IPath path, GraphicsOptions options)
         {
-            return source.Draw(new Pen<TPixel>(brush, thickness), path, options);
+            return source.Draw(new Pen(brush, thickness), path, options);
         }
 
         /// <summary>
         /// Draws the outline of the polygon with the provided brush at the provided thickness.
         /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="brush">The brush.</param>
         /// <param name="thickness">The thickness.</param>
         /// <param name="path">The path.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Draw<TPixel>(this IImageOperations<TPixel> source, IBrush<TPixel> brush, float thickness, IPath path)
-           where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Draw(this IImageOperations source, Brush brush, float thickness, IPath path)
         {
-            return source.Draw(new Pen<TPixel>(brush, thickness), path);
-        }
-
-        /// <summary>
-        /// Draws the outline of the polygon with the provided brush at the provided thickness.
-        /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
-        /// <param name="source">The image this method extends.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="thickness">The thickness.</param>
-        /// <param name="path">The path.</param>
-        /// <param name="options">The options.</param>
-        /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Draw<TPixel>(this IImageOperations<TPixel> source, TPixel color, float thickness, IPath path, GraphicsOptions options)
-           where TPixel : struct, IPixel<TPixel>
-        {
-            return source.Draw(new SolidBrush<TPixel>(color), thickness, path, options);
-        }
-
-        /// <summary>
-        /// Draws the outline of the polygon with the provided brush at the provided thickness.
-        /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
-        /// <param name="source">The image this method extends.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="thickness">The thickness.</param>
-        /// <param name="path">The path.</param>
-        /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Draw<TPixel>(this IImageOperations<TPixel> source, TPixel color, float thickness, IPath path)
-           where TPixel : struct, IPixel<TPixel>
-        {
-            return source.Draw(new SolidBrush<TPixel>(color), thickness, path);
+            return source.Draw(new Pen(brush, thickness), path);
         }
     }
 }

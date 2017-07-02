@@ -15,9 +15,7 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// The color matrix filter. Inherit from this class to perform operation involving color matrices.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal abstract class ColorMatrixProcessor<TPixel> : ImageProcessor<TPixel>, IColorMatrixFilter<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal abstract class ColorMatrixProcessor : ImageProcessor, IColorMatrixFilter
     {
         /// <inheritdoc/>
         public abstract Matrix4x4 Matrix { get; }
@@ -26,7 +24,7 @@ namespace ImageSharp.Processing.Processors
         public override bool Compand { get; set; } = true;
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             int startY = sourceRectangle.Y;
             int endY = sourceRectangle.Bottom;

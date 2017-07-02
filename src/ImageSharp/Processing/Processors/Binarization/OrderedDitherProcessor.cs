@@ -13,14 +13,12 @@ namespace ImageSharp.Processing.Processors
     using SixLabors.Primitives;
 
     /// <summary>
-    /// An <see cref="IImageProcessor{TPixel}"/> that dithers an image using error diffusion.
+    /// An <see cref="IImageProcessor"/> that dithers an image using error diffusion.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class OrderedDitherProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class OrderedDitherProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OrderedDitherProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="OrderedDitherProcessor"/> class.
         /// </summary>
         /// <param name="dither">The ordered ditherer.</param>
         /// <param name="index">The component index to test the threshold against. Must range from 0 to 3.</param>
@@ -29,18 +27,12 @@ namespace ImageSharp.Processing.Processors
             Guard.NotNull(dither, nameof(dither));
             Guard.MustBeBetweenOrEqualTo(index, 0, 3, nameof(index));
 
-            // Alpha8 only stores the pixel data in the alpha channel.
-            if (typeof(TPixel) == typeof(Alpha8))
-            {
-                index = 3;
-            }
-
             this.Dither = dither;
             this.Index = index;
 
             // Default to white/black for upper/lower.
-            this.UpperColor = NamedColors<TPixel>.White;
-            this.LowerColor = NamedColors<TPixel>.Black;
+            this.UpperColor = Color.White;
+            this.LowerColor = Color.Black;
         }
 
         /// <summary>
@@ -56,22 +48,30 @@ namespace ImageSharp.Processing.Processors
         /// <summary>
         /// Gets or sets the color to use for pixels that are above the threshold.
         /// </summary>
-        public TPixel UpperColor { get; set; }
+        public Color UpperColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color to use for pixels that fall below the threshold.
         /// </summary>
-        public TPixel LowerColor { get; set; }
+        public Color LowerColor { get; set; }
 
         /// <inheritdoc/>
-        protected override void BeforeApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void BeforeApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
-            new GrayscaleBt709Processor<TPixel>().Apply(source, sourceRectangle);
+            new GrayscaleBt709Processor().Apply(source, sourceRectangle);
         }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
+            int index = this.Index;
+
+            // Alpha8 only stores the pixel data in the alpha channel.
+            if (typeof(TPixel) == typeof(Alpha8))
+            {
+                index = 3;
+            }
+
             int startY = sourceRectangle.Y;
             int endY = sourceRectangle.Bottom;
             int startX = sourceRectangle.X;
@@ -94,6 +94,9 @@ namespace ImageSharp.Processing.Processors
                 startY = 0;
             }
 
+            TPixel upperColor = this.UpperColor.As<TPixel>();
+            TPixel lowerColor = this.LowerColor.As<TPixel>();
+
             byte[] bytes = new byte[4];
             for (int y = minY; y < maxY; y++)
             {
@@ -104,7 +107,7 @@ namespace ImageSharp.Processing.Processors
                 {
                     int offsetX = x - startX;
                     TPixel sourceColor = row[offsetX];
-                    this.Dither.Dither(source, sourceColor, this.UpperColor, this.LowerColor, bytes, this.Index, offsetX, offsetY, maxX, maxY);
+                    this.Dither.Dither(source, sourceColor, upperColor, lowerColor, bytes, index, offsetX, offsetY, maxX, maxY);
                 }
             }
         }

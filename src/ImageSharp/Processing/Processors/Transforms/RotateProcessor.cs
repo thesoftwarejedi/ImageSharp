@@ -15,9 +15,7 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Provides methods that allow the rotating of images.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class RotateProcessor<TPixel> : Matrix3x2Processor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class RotateProcessor : Matrix3x2Processor
     {
         /// <summary>
         /// The transform matrix to apply.
@@ -35,7 +33,7 @@ namespace ImageSharp.Processing.Processors
         public bool Expand { get; set; } = true;
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             if (this.OptimizedApply(source))
             {
@@ -72,7 +70,7 @@ namespace ImageSharp.Processing.Processors
         }
 
         /// <inheritdoc/>
-        protected override void BeforeApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void BeforeApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             if (MathF.Abs(this.Angle) < Constants.Epsilon || MathF.Abs(this.Angle - 90) < Constants.Epsilon || MathF.Abs(this.Angle - 180) < Constants.Epsilon || MathF.Abs(this.Angle - 270) < Constants.Epsilon)
             {
@@ -91,7 +89,9 @@ namespace ImageSharp.Processing.Processors
         /// </summary>
         /// <param name="source">The source image.</param>
         /// <returns>The <see cref="bool"/></returns>
-        private bool OptimizedApply(ImageBase<TPixel> source)
+        /// <typeparam name="TPixel">Pixel type</typeparam>
+        private bool OptimizedApply<TPixel>(ImageBase<TPixel> source)
+            where TPixel : struct, IPixel<TPixel>
         {
             if (MathF.Abs(this.Angle) < Constants.Epsilon)
             {
@@ -124,7 +124,9 @@ namespace ImageSharp.Processing.Processors
         /// Rotates the image 270 degrees clockwise at the centre point.
         /// </summary>
         /// <param name="source">The source image.</param>
-        private void Rotate270(ImageBase<TPixel> source)
+        /// <typeparam name="TPixel">Pixel type</typeparam>
+        private void Rotate270<TPixel>(ImageBase<TPixel> source)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = source.Width;
             int height = source.Height;
@@ -157,7 +159,9 @@ namespace ImageSharp.Processing.Processors
         /// Rotates the image 180 degrees clockwise at the centre point.
         /// </summary>
         /// <param name="source">The source image.</param>
-        private void Rotate180(ImageBase<TPixel> source)
+        /// <typeparam name="TPixel">Pixel type</typeparam>
+        private void Rotate180<TPixel>(ImageBase<TPixel> source)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = source.Width;
             int height = source.Height;
@@ -187,7 +191,9 @@ namespace ImageSharp.Processing.Processors
         /// Rotates the image 90 degrees clockwise at the centre point.
         /// </summary>
         /// <param name="source">The source image.</param>
-        private void Rotate90(ImageBase<TPixel> source)
+        /// <typeparam name="TPixel">Pixel type</typeparam>
+        private void Rotate90<TPixel>(ImageBase<TPixel> source)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = source.Width;
             int height = source.Height;

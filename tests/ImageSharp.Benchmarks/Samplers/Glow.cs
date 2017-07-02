@@ -17,17 +17,18 @@ namespace ImageSharp.Benchmarks
 
     using ImageSharp.Memory;
     using SixLabors.Primitives;
+    using CoreColor = ImageSharp.Color;
 
     public class Glow : BenchmarkBase
     {
-        private GlowProcessor<Rgba32> bulk;
-        private GlowProcessorParallel<Rgba32> parallel;
+        private GlowProcessor bulk;
+        private GlowProcessorParallel parallel;
 
         [GlobalSetup]
         public void Setup()
         {
-            this.bulk = new GlowProcessor<Rgba32>(NamedColors<Rgba32>.Beige, 800 * .5f, GraphicsOptions.Default);
-            this.parallel = new GlowProcessorParallel<Rgba32>(NamedColors<Rgba32>.Beige) { Radius = 800 * .5f, };
+            this.bulk = new GlowProcessor(CoreColor.Beige, 800 * .5f, GraphicsOptions.Default);
+            this.parallel = new GlowProcessorParallel(CoreColor.Beige) { Radius = 800 * .5f, };
 
         }
         [Benchmark(Description = "ImageSharp Glow - Bulk")]
@@ -50,14 +51,13 @@ namespace ImageSharp.Benchmarks
             }
         }
 
-        internal class GlowProcessorParallel<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+        internal class GlowProcessorParallel : ImageProcessor
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="GlowProcessorParallel{TPixel}" /> class.
             /// </summary>
             /// <param name="color">The color or the glow.</param>
-            public GlowProcessorParallel(TPixel color)
+            public GlowProcessorParallel(CoreColor color)
             {
                 this.GlowColor = color;
             }
@@ -65,7 +65,7 @@ namespace ImageSharp.Benchmarks
             /// <summary>
             /// Gets or sets the glow color to apply.
             /// </summary>
-            public TPixel GlowColor { get; set; }
+            public CoreColor GlowColor { get; set; }
 
             /// <summary>
             /// Gets or sets the the radius.
@@ -73,13 +73,13 @@ namespace ImageSharp.Benchmarks
             public float Radius { get; set; }
 
             /// <inheritdoc/>
-            protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+            protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
             {
                 int startY = sourceRectangle.Y;
                 int endY = sourceRectangle.Bottom;
                 int startX = sourceRectangle.X;
                 int endX = sourceRectangle.Right;
-                TPixel glowColor = this.GlowColor;
+                TPixel glowColor = this.GlowColor.As<TPixel>();
                 Vector2 centre = Rectangle.Center(sourceRectangle);
                 float maxDistance = this.Radius > 0 ? MathF.Min(this.Radius, sourceRectangle.Width * .5F) : sourceRectangle.Width * .5F;
 

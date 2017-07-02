@@ -19,13 +19,11 @@ namespace ImageSharp
         /// <summary>
         /// Rotates and flips an image by the given instructions.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to rotate, flip, or both.</param>
         /// <param name="rotateType">The <see cref="RotateType"/> to perform the rotation.</param>
         /// <param name="flipType">The <see cref="FlipType"/> to perform the flip.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public static IImageOperations<TPixel> RotateFlip<TPixel>(this IImageOperations<TPixel> source, RotateType rotateType, FlipType flipType)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations RotateFlip(this IImageOperations source, RotateType rotateType, FlipType flipType)
         {
             return source.Rotate(rotateType).Flip(flipType);
         }

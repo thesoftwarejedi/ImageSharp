@@ -21,14 +21,12 @@ namespace ImageSharp
         /// <summary>
         /// Flood fills the image in the shape of a Linear polygon described by the points
         /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="brush">The brush.</param>
         /// <param name="points">The points.</param>
         /// <param name="options">The options.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> FillPolygon<TPixel>(this IImageOperations<TPixel> source, IBrush<TPixel> brush, PointF[] points, GraphicsOptions options)
-           where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations FillPolygon(this IImageOperations source, Brush brush, PointF[] points, GraphicsOptions options)
         {
             return source.Fill(brush, new Polygon(new LinearLineSegment(points)), options);
         }
@@ -36,44 +34,13 @@ namespace ImageSharp
         /// <summary>
         /// Flood fills the image in the shape of a Linear polygon described by the points
         /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="brush">The brush.</param>
         /// <param name="points">The points.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> FillPolygon<TPixel>(this IImageOperations<TPixel> source, IBrush<TPixel> brush, PointF[] points)
-           where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations FillPolygon(this IImageOperations source, Brush brush, PointF[] points)
         {
             return source.Fill(brush, new Polygon(new LinearLineSegment(points)));
-        }
-
-        /// <summary>
-        /// Flood fills the image in the shape of a Linear polygon described by the points
-        /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
-        /// <param name="source">The image this method extends.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="points">The points.</param>
-        /// <param name="options">The options.</param>
-        /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> FillPolygon<TPixel>(this IImageOperations<TPixel> source, TPixel color, PointF[] points, GraphicsOptions options)
-           where TPixel : struct, IPixel<TPixel>
-        {
-            return source.Fill(new SolidBrush<TPixel>(color), new Polygon(new LinearLineSegment(points)), options);
-        }
-
-        /// <summary>
-        /// Flood fills the image in the shape of a Linear polygon described by the points
-        /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
-        /// <param name="source">The image this method extends.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="points">The points.</param>
-        /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> FillPolygon<TPixel>(this IImageOperations<TPixel> source, TPixel color, PointF[] points)
-           where TPixel : struct, IPixel<TPixel>
-        {
-            return source.Fill(new SolidBrush<TPixel>(color), new Polygon(new LinearLineSegment(points)));
         }
     }
 }

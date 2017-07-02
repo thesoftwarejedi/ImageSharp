@@ -44,7 +44,7 @@ namespace ImageSharp
         /// </summary>
         /// <param name="data">The byte array containing image data.</param>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>
-        public static Image<Rgba32> Load(byte[] data) => Load<Rgba32>(null, data);
+        public static IImage Load(byte[] data) => Load<Rgba32>(null, data);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{Rgba32}"/> class from the given byte array.
@@ -52,7 +52,7 @@ namespace ImageSharp
         /// <param name="data">The byte array containing image data.</param>
         /// <param name="format">The mime type of the decoded image.</param>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>
-        public static Image<Rgba32> Load(byte[] data, out IImageFormat format) => Load<Rgba32>(null, data, out format);
+        public static IImage Load(byte[] data, out IImageFormat format) => Load<Rgba32>(null, data, out format);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{Rgba32}"/> class from the given byte array.
@@ -60,7 +60,7 @@ namespace ImageSharp
         /// <param name="config">The config for the decoder.</param>
         /// <param name="data">The byte array containing image data.</param>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>
-        public static Image<Rgba32> Load(Configuration config, byte[] data) => Load<Rgba32>(config, data);
+        public static IImage Load(Configuration config, byte[] data) => Load<Rgba32>(config, data);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{Rgba32}"/> class from the given byte array.
@@ -69,7 +69,7 @@ namespace ImageSharp
         /// <param name="data">The byte array containing image data.</param>
         /// <param name="format">The mime type of the decoded image.</param>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>
-        public static Image<Rgba32> Load(Configuration config, byte[] data, out IImageFormat format) => Load<Rgba32>(config, data, out format);
+        public static IImage Load(Configuration config, byte[] data, out IImageFormat format) => Load<Rgba32>(config, data, out format);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{Rgba32}"/> class from the given byte array.
@@ -77,7 +77,7 @@ namespace ImageSharp
         /// <param name="data">The byte array containing image data.</param>
         /// <param name="decoder">The decoder.</param>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>
-        public static Image<Rgba32> Load(byte[] data, IImageDecoder decoder) => Load<Rgba32>(data, decoder);
+        public static IImage Load(byte[] data, IImageDecoder decoder) => Load<Rgba32>(data, decoder);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{Rgba32}"/> class from the given byte array.
@@ -86,7 +86,7 @@ namespace ImageSharp
         /// <param name="data">The byte array containing image data.</param>
         /// <param name="decoder">The decoder.</param>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>
-        public static Image<Rgba32> Load(Configuration config, byte[] data, IImageDecoder decoder) => Load<Rgba32>(config, data, decoder);
+        public static IImage Load(Configuration config, byte[] data, IImageDecoder decoder) => Load<Rgba32>(config, data, decoder);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{TPixel}"/> class from the given byte array.

@@ -20,26 +20,22 @@ namespace ImageSharp
         /// <summary>
         /// Alters the contrast component of the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="amount">The new contrast of the image. Must be between -100 and 100.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Contrast<TPixel>(this IImageOperations<TPixel> source, int amount)
-            where TPixel : struct, IPixel<TPixel>
-        => source.ApplyProcessor(new ContrastProcessor<TPixel>(amount));
+        public static IImageOperations Contrast(this IImageOperations source, int amount)
+        => source.ApplyProcessor(new ContrastProcessor(amount));
 
         /// <summary>
         /// Alters the contrast component of the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="amount">The new contrast of the image. Must be between -100 and 100.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Contrast<TPixel>(this IImageOperations<TPixel> source, int amount, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
-        => source.ApplyProcessor(new ContrastProcessor<TPixel>(amount), rectangle);
+        public static IImageOperations Contrast(this IImageOperations source, int amount, Rectangle rectangle)
+        => source.ApplyProcessor(new ContrastProcessor(amount), rectangle);
     }
 }

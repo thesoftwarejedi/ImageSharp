@@ -15,10 +15,8 @@ namespace ImageSharp.Processing.Processors
     /// The Laplacian of Gaussian operator filter.
     /// <see href="http://fourier.eng.hmc.edu/e161/lectures/gradient/node8.html"/>
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
     [SuppressMessage("ReSharper", "StaticMemberInGenericType", Justification = "We want to use only one instance of each array field for each generic type.")]
-    internal class LaplacianOfGaussianProcessor<TPixel> : EdgeDetectorProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class LaplacianOfGaussianProcessor : EdgeDetectorProcessor
     {
         /// <summary>
         /// The 2d gradient operator.
@@ -34,7 +32,7 @@ namespace ImageSharp.Processing.Processors
             };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LaplacianOfGaussianProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="LaplacianOfGaussianProcessor"/> class.
         /// </summary>
         public LaplacianOfGaussianProcessor()
             : base(LaplacianOfGaussianXY)

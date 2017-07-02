@@ -15,9 +15,7 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Provides methods that allow the skewing of images.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class SkewProcessor<TPixel> : Matrix3x2Processor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class SkewProcessor : Matrix3x2Processor
     {
         /// <summary>
         /// The transform matrix to apply.
@@ -40,7 +38,7 @@ namespace ImageSharp.Processing.Processors
         public bool Expand { get; set; } = true;
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             int height = this.CanvasRectangle.Height;
             int width = this.CanvasRectangle.Width;
@@ -72,7 +70,7 @@ namespace ImageSharp.Processing.Processors
         }
 
         /// <inheritdoc/>
-        protected override void BeforeApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void BeforeApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             this.processMatrix = Matrix3x2Extensions.CreateSkew(-this.AngleX, -this.AngleY, new Point(0, 0));
             if (this.Expand)

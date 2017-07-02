@@ -47,8 +47,8 @@ namespace ImageSharp.Tests
             where TPixelB : struct, IPixel<TPixelB>
         {
             // Draw identical shapes over the bounded and compare to ensure changes are constrained.
-            expected.Mutate(x => x.Fill(NamedColors<TPixelA>.HotPink, bounds));
-            actual.Mutate(x => x.Fill(NamedColors<TPixelB>.HotPink, bounds));
+            expected.Mutate(x => x.Fill(Color.HotPink, bounds));
+            actual.Mutate(x => x.Fill(Color.HotPink, bounds));
 
             CheckSimilarity(expected, actual, imageTheshold, segmentThreshold, scalingFactor);
         }

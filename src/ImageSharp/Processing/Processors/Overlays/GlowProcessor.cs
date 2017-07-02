@@ -14,33 +14,29 @@ namespace ImageSharp.Processing.Processors
     using SixLabors.Primitives;
 
     /// <summary>
-    /// An <see cref="IImageProcessor{TPixel}"/> that applies a radial glow effect an <see cref="Image{TPixel}"/>.
+    /// An <see cref="IImageProcessor"/> that applies a radial glow effect an <see cref="Image"/>.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class GlowProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class GlowProcessor : ImageProcessor
     {
         private readonly GraphicsOptions options;
-        private readonly PixelBlender<TPixel> blender;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GlowProcessor{TPixel}" /> class.
+        /// Initializes a new instance of the <see cref="GlowProcessor" /> class.
         /// </summary>
         /// <param name="color">The color or the glow.</param>
         /// <param name="radius">The radius of the glow.</param>
         /// <param name="options">The options effecting blending and composition.</param>
-        public GlowProcessor(TPixel color, ValueSize radius, GraphicsOptions options)
+        public GlowProcessor(Color color, ValueSize radius, GraphicsOptions options)
         {
             this.options = options;
             this.GlowColor = color;
             this.Radius = radius;
-            this.blender = PixelOperations<TPixel>.Instance.GetPixelBlender(this.options.BlenderMode);
         }
 
         /// <summary>
         /// Gets or sets the glow color to apply.
         /// </summary>
-        public TPixel GlowColor { get; set; }
+        public Color GlowColor { get; set; }
 
         /// <summary>
         /// Gets or sets the the radius.
@@ -48,13 +44,15 @@ namespace ImageSharp.Processing.Processors
         public ValueSize Radius { get; set; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
+            var blender = PixelOperations<TPixel>.Instance.GetPixelBlender(this.options.BlenderMode);
+
             int startY = sourceRectangle.Y;
             int endY = sourceRectangle.Bottom;
             int startX = sourceRectangle.X;
             int endX = sourceRectangle.Right;
-            TPixel glowColor = this.GlowColor;
+            TPixel glowColor = this.GlowColor.As<TPixel>();
             Vector2 centre = Rectangle.Center(sourceRectangle);
 
             var finalRadius = this.Radius.Calculate(source.Bounds.Size);
@@ -104,7 +102,7 @@ namespace ImageSharp.Processing.Processors
 
                             Span<TPixel> destination = source.GetRowSpan(offsetY).Slice(offsetX, width);
 
-                            this.blender.Blend(destination, destination, rowColors, amounts);
+                            blender.Blend(destination, destination, rowColors, amounts);
                         }
                     });
             }

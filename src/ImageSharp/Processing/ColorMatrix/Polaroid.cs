@@ -21,11 +21,9 @@ namespace ImageSharp
         /// <summary>
         /// Alters the colors of the image recreating an old Polaroid camera effect.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Polaroid<TPixel>(this IImageOperations<TPixel> source)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Polaroid(this IImageOperations source)
         {
             return Polaroid(source, GraphicsOptions.Default);
         }
@@ -33,14 +31,12 @@ namespace ImageSharp
         /// <summary>
         /// Alters the colors of the image recreating an old Polaroid camera effect.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Polaroid<TPixel>(this IImageOperations<TPixel> source, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Polaroid(this IImageOperations source, Rectangle rectangle)
         {
             return Polaroid(source, rectangle, GraphicsOptions.Default);
         }
@@ -48,31 +44,27 @@ namespace ImageSharp
         /// <summary>
         /// Alters the colors of the image recreating an old Polaroid camera effect.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="options">The options effecting pixel blending.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Polaroid<TPixel>(this IImageOperations<TPixel> source, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Polaroid(this IImageOperations source, GraphicsOptions options)
         {
-            source.ApplyProcessor(new PolaroidProcessor<TPixel>(options));
+            source.ApplyProcessor(new PolaroidProcessor(options));
             return source;
         }
 
         /// <summary>
         /// Alters the colors of the image recreating an old Polaroid camera effect.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <param name="options">The options effecting pixel blending.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Polaroid<TPixel>(this IImageOperations<TPixel> source, Rectangle rectangle, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Polaroid(this IImageOperations source, Rectangle rectangle, GraphicsOptions options)
         {
-            source.ApplyProcessor(new PolaroidProcessor<TPixel>(options), rectangle);
+            source.ApplyProcessor(new PolaroidProcessor(options), rectangle);
             return source;
         }
     }

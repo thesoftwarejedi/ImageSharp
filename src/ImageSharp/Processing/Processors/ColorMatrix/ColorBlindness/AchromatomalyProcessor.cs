@@ -13,9 +13,7 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Converts the colors of the image recreating Achromatomaly (Color desensitivity) color blindness.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class AchromatomalyProcessor<TPixel> : ColorMatrixProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class AchromatomalyProcessor : ColorMatrixProcessor
     {
         /// <inheritdoc/>
         public override Matrix4x4 Matrix => new Matrix4x4()

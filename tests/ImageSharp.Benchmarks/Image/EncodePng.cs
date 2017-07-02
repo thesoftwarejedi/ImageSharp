@@ -66,10 +66,7 @@ namespace ImageSharp.Benchmarks.Image
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                Quantizer<Rgba32> quantizer = this.UseOctreeQuantizer
-                ? (Quantizer<Rgba32>)
-                new OctreeQuantizer<Rgba32>()
-                : new PaletteQuantizer<Rgba32>();
+                IQuantizer quantizer = this.UseOctreeQuantizer ? (IQuantizer)new OctreeQuantizer() : new PaletteQuantizer();
 
                 PngEncoder options = new PngEncoder() { Quantizer = quantizer };
                 this.bmpCore.SaveAsPng(memoryStream, options);

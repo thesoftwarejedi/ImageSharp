@@ -14,8 +14,8 @@ namespace ImageSharp.Tests.Drawing.Paths
     public class FillPathCollection : IDisposable
     {
         GraphicsOptions noneDefault = new GraphicsOptions();
-        Rgba32 color = Rgba32.HotPink;
-        SolidBrush<Rgba32> brush = Brushes.Solid(Rgba32.HotPink);
+        Color color = Color.HotPink;
+        SolidBrush brush = Brushes.Solid(Color.HotPink);
         IPath path1 = new SixLabors.Shapes.Path(new LinearLineSegment(new SixLabors.Primitives.PointF[] {
                     new Vector2(10,10),
                     new Vector2(20,10),
@@ -52,7 +52,7 @@ namespace ImageSharp.Tests.Drawing.Paths
             Assert.Equal(2, img.ProcessorApplications.Count);
             for (var i = 0; i < 2; i++)
             {
-                FillRegionProcessor<Rgba32> processor = Assert.IsType<FillRegionProcessor<Rgba32>>(img.ProcessorApplications[i].processor);
+                FillRegionProcessor processor = Assert.IsType<FillRegionProcessor>(img.ProcessorApplications[i].processor);
 
                 Assert.Equal(GraphicsOptions.Default, processor.Options);
 
@@ -74,7 +74,7 @@ namespace ImageSharp.Tests.Drawing.Paths
             Assert.Equal(2, img.ProcessorApplications.Count);
             for (var i = 0; i < 2; i++)
             {
-                FillRegionProcessor<Rgba32> processor = Assert.IsType<FillRegionProcessor<Rgba32>>(img.ProcessorApplications[i].processor);
+                FillRegionProcessor processor = Assert.IsType<FillRegionProcessor>(img.ProcessorApplications[i].processor);
 
                 Assert.Equal(noneDefault, processor.Options);
 
@@ -94,7 +94,7 @@ namespace ImageSharp.Tests.Drawing.Paths
             Assert.Equal(2, img.ProcessorApplications.Count);
             for (var i = 0; i < 2; i++)
             {
-                FillRegionProcessor<Rgba32> processor = Assert.IsType<FillRegionProcessor<Rgba32>>(img.ProcessorApplications[i].processor);
+                FillRegionProcessor processor = Assert.IsType<FillRegionProcessor>(img.ProcessorApplications[i].processor);
 
                 Assert.Equal(GraphicsOptions.Default, processor.Options);
 
@@ -102,7 +102,7 @@ namespace ImageSharp.Tests.Drawing.Paths
                 Polygon polygon = Assert.IsType<Polygon>(region.Shape);
                 LinearLineSegment segments = Assert.IsType<LinearLineSegment>(polygon.LineSegments[0]);
 
-                SolidBrush<Rgba32> brush = Assert.IsType<SolidBrush<Rgba32>>(processor.Brush);
+                SolidBrush brush = Assert.IsType<SolidBrush>(processor.Brush);
                 Assert.Equal(color, brush.Color);
             }
         }
@@ -115,7 +115,7 @@ namespace ImageSharp.Tests.Drawing.Paths
             Assert.Equal(2, img.ProcessorApplications.Count);
             for (var i = 0; i < 2; i++)
             {
-                FillRegionProcessor<Rgba32> processor = Assert.IsType<FillRegionProcessor<Rgba32>>(img.ProcessorApplications[i].processor);
+                FillRegionProcessor processor = Assert.IsType<FillRegionProcessor>(img.ProcessorApplications[i].processor);
 
                 Assert.Equal(noneDefault, processor.Options);
 
@@ -123,7 +123,7 @@ namespace ImageSharp.Tests.Drawing.Paths
                 Polygon polygon = Assert.IsType<Polygon>(region.Shape);
                 LinearLineSegment segments = Assert.IsType<LinearLineSegment>(polygon.LineSegments[0]);
 
-                SolidBrush<Rgba32> brush = Assert.IsType<SolidBrush<Rgba32>>(processor.Brush);
+                SolidBrush brush = Assert.IsType<SolidBrush>(processor.Brush);
                 Assert.Equal(color, brush.Color);
             }
         }

@@ -16,9 +16,7 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Defines a sampler that detects edges within an image using a eight two dimensional matrices.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal abstract class EdgeDetectorCompassProcessor<TPixel> : ImageProcessor<TPixel>, IEdgeDetectorProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal abstract class EdgeDetectorCompassProcessor : ImageProcessor, IEdgeDetectorProcessor
     {
         /// <summary>
         /// Gets the North gradient operator
@@ -64,16 +62,16 @@ namespace ImageSharp.Processing.Processors
         public bool Grayscale { get; set; }
 
         /// <inheritdoc/>
-        protected override void BeforeApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void BeforeApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             if (this.Grayscale)
             {
-                new GrayscaleBt709Processor<TPixel>().Apply(source, sourceRectangle);
+                new GrayscaleBt709Processor().Apply(source, sourceRectangle);
             }
         }
 
         /// <inheritdoc />
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             Fast2DArray<float>[] kernels = { this.North, this.NorthWest, this.West, this.SouthWest, this.South, this.SouthEast, this.East, this.NorthEast };
 
@@ -91,7 +89,7 @@ namespace ImageSharp.Processing.Processors
             // we need a clean copy for each pass to start from
             using (ImageBase<TPixel> cleanCopy = new Image<TPixel>(source))
             {
-                new ConvolutionProcessor<TPixel>(kernels[0]).Apply(source, sourceRectangle);
+                new ConvolutionProcessor(kernels[0]).Apply(source, sourceRectangle);
 
                 if (kernels.Length == 1)
                 {
@@ -118,7 +116,7 @@ namespace ImageSharp.Processing.Processors
                 {
                     using (ImageBase<TPixel> pass = new Image<TPixel>(cleanCopy))
                     {
-                        new ConvolutionProcessor<TPixel>(kernels[i]).Apply(pass, sourceRectangle);
+                        new ConvolutionProcessor(kernels[i]).Apply(pass, sourceRectangle);
 
                         using (PixelAccessor<TPixel> passPixels = pass.Lock())
                         using (PixelAccessor<TPixel> targetPixels = source.Lock())

@@ -52,8 +52,8 @@ namespace ImageSharp.Tests
             public override Image<TPixel> GetImage()
             {
                 Image<TPixel> image = base.GetImage();
-                TPixel color = default(TPixel);
-                color.PackFromRgba32(new Rgba32(this.r, this.g, this.b, this.a));
+
+                var color = new Color(this.r, this.g, this.b, this.a);
 
                 image.Mutate(x => x.Fill(color));
                 return image;

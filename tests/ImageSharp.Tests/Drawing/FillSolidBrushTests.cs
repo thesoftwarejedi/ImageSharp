@@ -25,7 +25,7 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .Fill(Rgba32.HotPink));
+                    .Fill(Color.HotPink));
                 image
                     .Save($"{path}/DefaultBack.png");
 
@@ -45,8 +45,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .Fill(Rgba32.HotPink));
+                    .BackgroundColor(Color.Blue)
+                    .Fill(Color.HotPink));
                 image.Save($"{path}/Simple.png");
 
                 using (PixelAccessor<Rgba32> sourcePixels = image.Lock())
@@ -64,10 +64,10 @@ namespace ImageSharp.Tests.Drawing
             string path = this.CreateOutputDirectory("Fill", "SolidBrush");
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
-                Rgba32 color = new Rgba32(Rgba32.HotPink.R, Rgba32.HotPink.G, Rgba32.HotPink.B, 150);
+                Color color = Color.HotPink.WithOpacity(150);
 
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
+                    .BackgroundColor(Color.Blue)
                     .Fill(color));
                 image.Save($"{path}/Opacity.png");
 

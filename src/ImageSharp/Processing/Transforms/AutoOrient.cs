@@ -17,11 +17,9 @@ namespace ImageSharp
         /// <summary>
         /// Adjusts an image so that its orientation is suitable for viewing. Adjustments are based on EXIF metadata embedded in the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to auto rotate.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public static IImageOperations<TPixel> AutoOrient<TPixel>(this IImageOperations<TPixel> source)
-            where TPixel : struct, IPixel<TPixel>
-            => source.ApplyProcessor(new Processing.Processors.AutoRotateProcessor<TPixel>());
+        public static IImageOperations AutoOrient(this IImageOperations source)
+            => source.ApplyProcessor(new Processing.Processors.AutoRotateProcessor());
     }
 }

@@ -14,9 +14,7 @@ namespace ImageSharp.Processing
     /// <summary>
     /// Allows the application of processors to images.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal abstract class ImageProcessor<TPixel> : IImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal abstract class ImageProcessor : IImageProcessor
     {
         /// <inheritdoc/>
         public virtual ParallelOptions ParallelOptions { get; set; }
@@ -25,7 +23,8 @@ namespace ImageSharp.Processing
         public virtual bool Compand { get; set; } = false;
 
         /// <inheritdoc/>
-        public void Apply(Image<TPixel> source, Rectangle sourceRectangle)
+        public void Apply<TPixel>(Image<TPixel> source, Rectangle sourceRectangle)
+            where TPixel : struct, IPixel<TPixel>
         {
             if (this.ParallelOptions == null)
             {
@@ -67,7 +66,9 @@ namespace ImageSharp.Processing
         /// </summary>
         /// <param name="source">the source image</param>
         /// <param name="sourceRectangle">the target</param>
-        public void Apply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
+        public void Apply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
+            where TPixel : struct, IPixel<TPixel>
         {
             if (this.ParallelOptions == null)
             {
@@ -99,7 +100,9 @@ namespace ImageSharp.Processing
         /// <param name="sourceRectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to draw.
         /// </param>
-        protected virtual void BeforeImageApply(Image<TPixel> source, Rectangle sourceRectangle)
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
+        protected virtual void BeforeImageApply<TPixel>(Image<TPixel> source, Rectangle sourceRectangle)
+            where TPixel : struct, IPixel<TPixel>
         {
         }
 
@@ -110,7 +113,9 @@ namespace ImageSharp.Processing
         /// <param name="sourceRectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to draw.
         /// </param>
-        protected virtual void BeforeApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
+        protected virtual void BeforeApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
+            where TPixel : struct, IPixel<TPixel>
         {
         }
 
@@ -122,7 +127,9 @@ namespace ImageSharp.Processing
         /// <param name="sourceRectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to draw.
         /// </param>
-        protected abstract void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle);
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
+        protected abstract void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
+            where TPixel : struct, IPixel<TPixel>;
 
         /// <summary>
         /// This method is called after the process is applied to prepare the processor.
@@ -131,7 +138,9 @@ namespace ImageSharp.Processing
         /// <param name="sourceRectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to draw.
         /// </param>
-        protected virtual void AfterApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
+        protected virtual void AfterApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
+            where TPixel : struct, IPixel<TPixel>
         {
         }
 
@@ -142,7 +151,9 @@ namespace ImageSharp.Processing
         /// <param name="sourceRectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to draw.
         /// </param>
-        protected virtual void AfterImageApply(Image<TPixel> source, Rectangle sourceRectangle)
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
+        protected virtual void AfterImageApply<TPixel>(Image<TPixel> source, Rectangle sourceRectangle)
+            where TPixel : struct, IPixel<TPixel>
         {
         }
     }

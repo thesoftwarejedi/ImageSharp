@@ -74,7 +74,7 @@ namespace ImageSharp.Tests
                 image.Save(file);
             }
 
-            using (Image<Rgba32> img = Image.Load(file, out var mime))
+            using (IImage img = Image.Load(file, out var mime))
             {
                 Assert.Equal("image/png", mime.DefaultMimeType);
             }
@@ -87,7 +87,7 @@ namespace ImageSharp.Tests
             NotSupportedException ex = Assert.Throws<NotSupportedException>(
                 () =>
                     {
-                        using (Image<Rgba32> image = new Image<Rgba32>(10, 10))
+                        using (IImage image = new Image<Rgba32>(10, 10))
                         {
                             image.Save(file);
                         }
@@ -103,7 +103,7 @@ namespace ImageSharp.Tests
             {
                 image.Save(file, new PngEncoder());
             }
-            using (Image<Rgba32> img = Image.Load(file, out var mime))
+            using (IImage img = Image.Load(file, out var mime))
             {
                 Assert.Equal("image/png", mime.DefaultMimeType);
             }

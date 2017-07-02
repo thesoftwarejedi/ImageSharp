@@ -14,12 +14,10 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Provides methods to allow the cropping of an image.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class CropProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class CropProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CropProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="CropProcessor"/> class.
         /// </summary>
         /// <param name="cropRectangle">The target cropped rectangle.</param>
         public CropProcessor(Rectangle cropRectangle)
@@ -33,7 +31,7 @@ namespace ImageSharp.Processing.Processors
         public Rectangle CropRectangle { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             if (this.CropRectangle == sourceRectangle)
             {

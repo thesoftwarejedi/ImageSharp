@@ -541,11 +541,11 @@ namespace ImageSharp.Formats
 
             if (this.quantizer == null)
             {
-                this.quantizer = new WuQuantizer<TPixel>();
+                this.quantizer = new WuQuantizer();
             }
 
             // Quantize the image returning a palette. This boxing is icky.
-            QuantizedImage<TPixel> quantized = ((IQuantizer<TPixel>)this.quantizer).Quantize(image, this.paletteSize);
+            QuantizedImage<TPixel> quantized = ((IQuantizer)this.quantizer).Quantize(image, this.paletteSize);
 
             // Grab the palette and write it to the stream.
             TPixel[] palette = quantized.Palette;

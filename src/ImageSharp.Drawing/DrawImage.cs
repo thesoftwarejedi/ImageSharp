@@ -19,13 +19,11 @@ namespace ImageSharp
         /// </summary>
         /// <param name="source">The image this method extends.</param>
         /// <param name="image">The image to blend with the currently processing image.</param>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="size">The size to draw the blended image.</param>
         /// <param name="location">The location to draw the blended image.</param>
         /// <param name="options">The options.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> DrawImage<TPixel>(this IImageOperations<TPixel> source, Image<TPixel> image, Size size, Point location, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations DrawImage(this IImageOperations source, IImage image, Size size, Point location, GraphicsOptions options)
         {
             if (size == default(Size))
             {
@@ -37,20 +35,18 @@ namespace ImageSharp
                 location = Point.Empty;
             }
 
-            source.ApplyProcessor(new DrawImageProcessor<TPixel>(image, size, location, options));
+            source.ApplyProcessor(new DrawImageProcessor(image, size, location, options));
             return source;
         }
 
         /// <summary>
         /// Draws the given image together with the current one by blending their pixels.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="image">The image to blend with the currently processing image.</param>
         /// <param name="percent">The opacity of the image image to blend. Must be between 0 and 1.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Blend<TPixel>(this IImageOperations<TPixel> source, Image<TPixel> image, float percent)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Blend(this IImageOperations source, IImage image, float percent)
         {
             GraphicsOptions options = GraphicsOptions.Default;
             options.BlendPercentage = percent;
@@ -60,14 +56,12 @@ namespace ImageSharp
         /// <summary>
         /// Draws the given image together with the current one by blending their pixels.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="image">The image to blend with the currently processing image.</param>
         /// <param name="blender">The blending mode.</param>
         /// <param name="percent">The opacity of the image image to blend. Must be between 0 and 1.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Blend<TPixel>(this IImageOperations<TPixel> source, Image<TPixel> image, PixelBlenderMode blender, float percent)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Blend(this IImageOperations source, IImage image, PixelBlenderMode blender, float percent)
         {
             GraphicsOptions options = GraphicsOptions.Default;
             options.BlendPercentage = percent;
@@ -78,13 +72,11 @@ namespace ImageSharp
         /// <summary>
         /// Draws the given image together with the current one by blending their pixels.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="image">The image to blend with the currently processing image.</param>
         /// <param name="options">The options, including the blending type and belnding amount.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Blend<TPixel>(this IImageOperations<TPixel> source, Image<TPixel> image, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Blend(this IImageOperations source, IImage image, GraphicsOptions options)
         {
             return DrawImage(source, image, default(Size), default(Point), options);
         }
@@ -94,13 +86,11 @@ namespace ImageSharp
         /// </summary>
         /// <param name="source">The image this method extends.</param>
         /// <param name="image">The image to blend with the currently processing image.</param>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="percent">The opacity of the image image to blend. Must be between 0 and 1.</param>
         /// <param name="size">The size to draw the blended image.</param>
         /// <param name="location">The location to draw the blended image.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> DrawImage<TPixel>(this IImageOperations<TPixel> source, Image<TPixel> image, float percent, Size size, Point location)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations DrawImage(this IImageOperations source, IImage image, float percent, Size size, Point location)
         {
             GraphicsOptions options = GraphicsOptions.Default;
             options.BlendPercentage = percent;
@@ -112,14 +102,12 @@ namespace ImageSharp
         /// </summary>
         /// <param name="source">The image this method extends.</param>
         /// <param name="image">The image to blend with the currently processing image.</param>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="blender">The type of bending to apply.</param>
         /// <param name="percent">The opacity of the image image to blend. Must be between 0 and 1.</param>
         /// <param name="size">The size to draw the blended image.</param>
         /// <param name="location">The location to draw the blended image.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> DrawImage<TPixel>(this IImageOperations<TPixel> source, Image<TPixel> image, PixelBlenderMode blender, float percent, Size size, Point location)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations DrawImage(this IImageOperations source, IImage image, PixelBlenderMode blender, float percent, Size size, Point location)
         {
             GraphicsOptions options = GraphicsOptions.Default;
             options.BlenderMode = blender;

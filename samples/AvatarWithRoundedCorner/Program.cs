@@ -35,11 +35,11 @@ namespace AvatarWithRoundedCorner
             }
         }
 
-        public static void ApplyRoundedCourners(Image<Rgba32> img, float cornerRadius)
+        public static void ApplyRoundedCourners(IImage img, float cornerRadius)
         {
             var corners = BuildCorners(img.Width, img.Height, cornerRadius);
             // now we have our corners time to draw them
-            img.Mutate(x => x.Fill(Rgba32.Transparent, corners, new GraphicsOptions(true)
+            img.Mutate(x => x.Fill(Color.Transparent, corners, new GraphicsOptions(true)
             {
                 BlenderMode = ImageSharp.PixelFormats.PixelBlenderMode.Src // enforces that any part of this shape that has color is punched out of the background
             }));

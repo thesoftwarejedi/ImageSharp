@@ -19,13 +19,11 @@ namespace ImageSharp
         /// <summary>
         /// Skews an image by the given angles in degrees, expanding the image to fit the skewed result.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to skew.</param>
         /// <param name="degreesX">The angle in degrees to perform the rotation along the x-axis.</param>
         /// <param name="degreesY">The angle in degrees to perform the rotation along the y-axis.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public static IImageOperations<TPixel> Skew<TPixel>(this IImageOperations<TPixel> source, float degreesX, float degreesY)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Skew(this IImageOperations source, float degreesX, float degreesY)
         {
             return Skew(source, degreesX, degreesY, true);
         }
@@ -33,14 +31,12 @@ namespace ImageSharp
         /// <summary>
         /// Skews an image by the given angles in degrees.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to skew.</param>
         /// <param name="degreesX">The angle in degrees to perform the rotation along the x-axis.</param>
         /// <param name="degreesY">The angle in degrees to perform the rotation along the y-axis.</param>
         /// <param name="expand">Whether to expand the image to fit the skewed result.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public static IImageOperations<TPixel> Skew<TPixel>(this IImageOperations<TPixel> source, float degreesX, float degreesY, bool expand)
-            where TPixel : struct, IPixel<TPixel>
-        => source.ApplyProcessor(new SkewProcessor<TPixel> { AngleX = degreesX, AngleY = degreesY, Expand = expand });
+        public static IImageOperations Skew(this IImageOperations source, float degreesX, float degreesY, bool expand)
+        => source.ApplyProcessor(new SkewProcessor { AngleX = degreesX, AngleY = degreesY, Expand = expand });
     }
 }

@@ -22,7 +22,7 @@ namespace ImageSharp.Tests.Drawing.Paths
         {
         }
 
-        public override void ApplyProcessor(IImageProcessor<Rgba32> processor, Rectangle rectangle)
+        public override void ApplyProcessor(IImageProcessor processor, Rectangle rectangle)
         {
             this.ProcessorApplications.Add(new ProcessorDetails
             {
@@ -33,7 +33,7 @@ namespace ImageSharp.Tests.Drawing.Paths
 
         public struct ProcessorDetails
         {
-            public IImageProcessor<Rgba32> processor;
+            public IImageProcessor processor;
             public Rectangle rectangle;
         }
     }

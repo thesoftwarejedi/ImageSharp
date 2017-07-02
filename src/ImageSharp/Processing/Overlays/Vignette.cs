@@ -18,11 +18,9 @@ namespace ImageSharp
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Vignette(this IImageOperations source)
         {
             return Vignette(source, GraphicsOptions.Default);
         }
@@ -30,12 +28,10 @@ namespace ImageSharp
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="color">The color to set as the vignette.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, TPixel color)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Vignette(this IImageOperations source, Color color)
         {
             return Vignette(source, color, GraphicsOptions.Default);
         }
@@ -43,13 +39,11 @@ namespace ImageSharp
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="radiusX">The the x-radius.</param>
         /// <param name="radiusY">The the y-radius.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, float radiusX, float radiusY)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Vignette(this IImageOperations source, float radiusX, float radiusY)
         {
             return Vignette(source, radiusX, radiusY, GraphicsOptions.Default);
         }
@@ -57,14 +51,12 @@ namespace ImageSharp
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Vignette(this IImageOperations source, Rectangle rectangle)
         {
             return Vignette(source, rectangle, GraphicsOptions.Default);
         }
@@ -72,7 +64,6 @@ namespace ImageSharp
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="color">The color to set as the vignette.</param>
         /// <param name="radiusX">The the x-radius.</param>
@@ -81,64 +72,54 @@ namespace ImageSharp
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, TPixel color, float radiusX, float radiusY, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Vignette(this IImageOperations source, Color color, float radiusX, float radiusY, Rectangle rectangle)
          => source.Vignette(color, radiusX, radiusY, rectangle, GraphicsOptions.Default);
 
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="options">The options effecting pixel blending.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
-         => source.Vignette(NamedColors<TPixel>.Black, ValueSize.PercentageOfWidth(.5f), ValueSize.PercentageOfHeight(.5f), options);
+        public static IImageOperations Vignette(this IImageOperations source, GraphicsOptions options)
+         => source.Vignette(Color.Black, ValueSize.PercentageOfWidth(.5f), ValueSize.PercentageOfHeight(.5f), options);
 
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="color">The color to set as the vignette.</param>
         /// <param name="options">The options effecting pixel blending.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, TPixel color, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Vignette(this IImageOperations source, Color color, GraphicsOptions options)
          => source.Vignette(color, 0, 0, options);
 
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="radiusX">The the x-radius.</param>
         /// <param name="radiusY">The the y-radius.</param>
         /// <param name="options">The options effecting pixel blending.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, float radiusX, float radiusY, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
-         => source.Vignette(NamedColors<TPixel>.Black, radiusX, radiusY, options);
+        public static IImageOperations Vignette(this IImageOperations source, float radiusX, float radiusY, GraphicsOptions options)
+         => source.Vignette(Color.Black, radiusX, radiusY, options);
 
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <param name="options">The options effecting pixel blending.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, Rectangle rectangle, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
-         => source.Vignette(NamedColors<TPixel>.Black, 0, 0, rectangle, options);
+        public static IImageOperations Vignette(this IImageOperations source, Rectangle rectangle, GraphicsOptions options)
+         => source.Vignette(Color.Black, 0, 0, rectangle, options);
 
         /// <summary>
         /// Applies a radial vignette effect to an image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="color">The color to set as the vignette.</param>
         /// <param name="radiusX">The the x-radius.</param>
@@ -148,16 +129,13 @@ namespace ImageSharp
         /// </param>
         /// <param name="options">The options effecting pixel blending.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, TPixel color, float radiusX, float radiusY, Rectangle rectangle, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Vignette(this IImageOperations source, Color color, float radiusX, float radiusY, Rectangle rectangle, GraphicsOptions options)
          => source.Vignette(color, radiusX, radiusY, rectangle, options);
 
-        private static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, TPixel color, ValueSize radiusX, ValueSize radiusY, Rectangle rectangle, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
-            => source.ApplyProcessor(new VignetteProcessor<TPixel>(color, radiusX, radiusY, options), rectangle);
+        private static IImageOperations Vignette(this IImageOperations source, Color color, ValueSize radiusX, ValueSize radiusY, Rectangle rectangle, GraphicsOptions options)
+            => source.ApplyProcessor(new VignetteProcessor(color, radiusX, radiusY, options), rectangle);
 
-        private static IImageOperations<TPixel> Vignette<TPixel>(this IImageOperations<TPixel> source, TPixel color, ValueSize radiusX, ValueSize radiusY, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
-            => source.ApplyProcessor(new VignetteProcessor<TPixel>(color, radiusX, radiusY, options));
+        private static IImageOperations Vignette(this IImageOperations source, Color color, ValueSize radiusX, ValueSize radiusY, GraphicsOptions options)
+            => source.ApplyProcessor(new VignetteProcessor(color, radiusX, radiusY, options));
     }
 }

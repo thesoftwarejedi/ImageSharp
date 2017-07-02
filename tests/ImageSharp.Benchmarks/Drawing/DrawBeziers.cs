@@ -13,6 +13,7 @@ namespace ImageSharp.Benchmarks
     using BenchmarkDotNet.Attributes;
 
     using ImageSharp.PixelFormats;
+    using CoreColor = ImageSharp.Color;
 
     public class DrawBeziers : BenchmarkBase
     {
@@ -48,7 +49,7 @@ namespace ImageSharp.Benchmarks
             using (Image<Rgba32> image = new Image<Rgba32>(800, 800))
             {
                 image.Mutate(x => x.DrawBeziers(
-                    Rgba32.HotPink,
+                    CoreColor.HotPink,
                     10,
                     new SixLabors.Primitives.PointF[] {
                         new Vector2(10, 500),

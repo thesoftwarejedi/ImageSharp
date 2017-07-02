@@ -15,18 +15,16 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Sets the background color of the image.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class BackgroundColorProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class BackgroundColorProcessor : ImageProcessor
     {
         private readonly GraphicsOptions options;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BackgroundColorProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="BackgroundColorProcessor"/> class.
         /// </summary>
-        /// <param name="color">The <typeparamref name="TPixel"/> to set the background color to.</param>
+        /// <param name="color">The Color to set the background color to.</param>
         /// <param name="options">The options defining blending algorithum and amount.</param>
-        public BackgroundColorProcessor(TPixel color, GraphicsOptions options)
+        public BackgroundColorProcessor(Color color, GraphicsOptions options)
         {
             this.Value = color;
             this.options = options;
@@ -35,10 +33,10 @@ namespace ImageSharp.Processing.Processors
         /// <summary>
         /// Gets the background color value.
         /// </summary>
-        public TPixel Value { get; }
+        public Color Value { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             int startY = sourceRectangle.Y;
             int endY = sourceRectangle.Bottom;
@@ -62,6 +60,7 @@ namespace ImageSharp.Processing.Processors
                 startY = 0;
             }
 
+            TPixel color = this.Value.As<TPixel>();
             int width = maxX - minX;
 
             using (var colors = new Buffer<TPixel>(width))
@@ -69,7 +68,7 @@ namespace ImageSharp.Processing.Processors
             {
                 for (int i = 0; i < width; i++)
                 {
-                    colors[i] = this.Value;
+                    colors[i] = color;
                     amount[i] = this.options.BlendPercentage;
                 }
 

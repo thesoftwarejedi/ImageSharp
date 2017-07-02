@@ -15,12 +15,10 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Provides methods that allow the flipping of an image around its center point.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class FlipProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class FlipProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FlipProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="FlipProcessor"/> class.
         /// </summary>
         /// <param name="flipType">The <see cref="FlipType"/> used to perform flipping.</param>
         public FlipProcessor(FlipType flipType)
@@ -34,7 +32,7 @@ namespace ImageSharp.Processing.Processors
         public FlipType FlipType { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             switch (this.FlipType)
             {
@@ -53,7 +51,9 @@ namespace ImageSharp.Processing.Processors
         /// at half the height of the image.
         /// </summary>
         /// <param name="source">The source image to apply the process to.</param>
-        private void FlipX(ImageBase<TPixel> source)
+        /// <typeparam name="TPixel">The pixel type</typeparam>
+        private void FlipX<TPixel>(ImageBase<TPixel> source)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = source.Width;
             int height = source.Height;
@@ -86,7 +86,9 @@ namespace ImageSharp.Processing.Processors
         /// at half of the width of the image.
         /// </summary>
         /// <param name="source">The source image to apply the process to.</param>
-        private void FlipY(ImageBase<TPixel> source)
+        /// <typeparam name="TPixel">The pixel type</typeparam>
+        private void FlipY<TPixel>(ImageBase<TPixel> source)
+            where TPixel : struct, IPixel<TPixel>
         {
             int width = source.Width;
             int height = source.Height;

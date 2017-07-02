@@ -20,26 +20,22 @@ namespace ImageSharp
         /// <summary>
         /// Crops an image to the given width and height.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="width">The target image width.</param>
         /// <param name="height">The target image height.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public static IImageOperations<TPixel> Crop<TPixel>(this IImageOperations<TPixel> source, int width, int height)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Crop(this IImageOperations source, int width, int height)
         => Crop(source, new Rectangle(0, 0, width, height));
 
         /// <summary>
         /// Crops an image to the given rectangle.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to crop.</param>
         /// <param name="cropRectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to retain.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public static IImageOperations<TPixel> Crop<TPixel>(this IImageOperations<TPixel> source, Rectangle cropRectangle)
-            where TPixel : struct, IPixel<TPixel>
-        => source.ApplyProcessor(new CropProcessor<TPixel>(cropRectangle));
+        public static IImageOperations Crop(this IImageOperations source, Rectangle cropRectangle)
+        => source.ApplyProcessor(new CropProcessor(cropRectangle));
     }
 }

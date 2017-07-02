@@ -82,7 +82,7 @@ namespace ImageSharp.Tests
             {
                 using (Image<TPixel> srcImage = provider.GetImage())
                 {
-                    srcImage.Mutate(x => x.Fill(NamedColors<TPixel>.Red, new Rectangle(4, 4, 8, 8)));
+                    srcImage.Mutate(x => x.Fill(Color.Red, new Rectangle(4, 4, 8, 8)));
                     using (PixelAccessor<TPixel> srcPixels = srcImage.Lock())
                     {
                         using (PixelArea<TPixel> area = new PixelArea<TPixel>(8, 8, order))
@@ -102,7 +102,7 @@ namespace ImageSharp.Tests
 
                 using (Image<TPixel> expectedImage = new Image<TPixel>(8, 8))
                 {
-                    expectedImage.Mutate(x => x.Fill(NamedColors<TPixel>.Red));
+                    expectedImage.Mutate(x => x.Fill(Color.Red));
                     Assert.True(destImage.IsEquivalentTo(expectedImage));
                 }
             }

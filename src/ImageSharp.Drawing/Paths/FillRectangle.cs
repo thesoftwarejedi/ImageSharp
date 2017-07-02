@@ -18,14 +18,12 @@ namespace ImageSharp
         /// <summary>
         /// Flood fills the image in the shape of the provided polygon with the specified brush..
         /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="brush">The brush.</param>
         /// <param name="shape">The shape.</param>
         /// <param name="options">The options.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Fill<TPixel>(this IImageOperations<TPixel> source, IBrush<TPixel> brush, RectangleF shape, GraphicsOptions options)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Fill(this IImageOperations source, Brush brush, RectangleF shape, GraphicsOptions options)
         {
             return source.Fill(brush, new SixLabors.Shapes.RectangularePolygon(shape.X, shape.Y, shape.Width, shape.Height), options);
         }
@@ -33,44 +31,13 @@ namespace ImageSharp
         /// <summary>
         /// Flood fills the image in the shape of the provided polygon with the specified brush..
         /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="brush">The brush.</param>
         /// <param name="shape">The shape.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Fill<TPixel>(this IImageOperations<TPixel> source, IBrush<TPixel> brush, RectangleF shape)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Fill(this IImageOperations source, Brush brush, RectangleF shape)
         {
             return source.Fill(brush, new SixLabors.Shapes.RectangularePolygon(shape.X, shape.Y, shape.Width, shape.Height));
-        }
-
-        /// <summary>
-        /// Flood fills the image in the shape of the provided polygon with the specified brush..
-        /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
-        /// <param name="source">The image this method extends.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="shape">The shape.</param>
-        /// <param name="options">The options.</param>
-        /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Fill<TPixel>(this IImageOperations<TPixel> source, TPixel color, RectangleF shape, GraphicsOptions options)
-          where TPixel : struct, IPixel<TPixel>
-        {
-            return source.Fill(new SolidBrush<TPixel>(color), shape, options);
-        }
-
-        /// <summary>
-        /// Flood fills the image in the shape of the provided polygon with the specified brush..
-        /// </summary>
-        /// <typeparam name="TPixel">The type of the color.</typeparam>
-        /// <param name="source">The image this method extends.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="shape">The shape.</param>
-        /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Fill<TPixel>(this IImageOperations<TPixel> source, TPixel color, RectangleF shape)
-            where TPixel : struct, IPixel<TPixel>
-        {
-            return source.Fill(new SolidBrush<TPixel>(color), shape);
         }
     }
 }

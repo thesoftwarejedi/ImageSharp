@@ -19,12 +19,10 @@ namespace ImageSharp
         /// <summary>
         /// Crops an image to the area of greatest entropy.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to crop.</param>
         /// <param name="threshold">The threshold for entropic density.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public static IImageOperations<TPixel> EntropyCrop<TPixel>(this IImageOperations<TPixel> source, float threshold = .5f)
-            where TPixel : struct, IPixel<TPixel>
-        => source.ApplyProcessor(new EntropyCropProcessor<TPixel>(threshold));
+        public static IImageOperations EntropyCrop(this IImageOperations source, float threshold = .5f)
+        => source.ApplyProcessor(new EntropyCropProcessor(threshold));
     }
 }

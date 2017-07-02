@@ -13,23 +13,21 @@ namespace ImageSharp
     /// <summary>
     /// The static collection of all the default image formats
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format</typeparam>
-    internal class ImageOperations<TPixel> : IImageOperations<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class ImageOperations : IImageOperations
     {
-        private readonly Image<TPixel> image;
+        private readonly IImage image;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImageOperations{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="ImageOperations"/> class.
         /// </summary>
         /// <param name="image">The image.</param>
-        public ImageOperations(Image<TPixel> image)
+        public ImageOperations(IImage image)
         {
             this.image = image;
         }
 
         /// <inheritdoc/>
-        public IImageOperations<TPixel> ApplyProcessor(IImageProcessor<TPixel> processor, Rectangle rectangle)
+        public IImageOperations ApplyProcessor(IImageProcessor processor, Rectangle rectangle)
         {
             // TODO : make this queue, and allow special processors managage the cloing operation for 'generate'
             // to allow things like resize to not need to retain an extra copy of image data in memory, and to
@@ -39,7 +37,7 @@ namespace ImageSharp
         }
 
         /// <inheritdoc/>
-        public IImageOperations<TPixel> ApplyProcessor(IImageProcessor<TPixel> processor)
+        public IImageOperations ApplyProcessor(IImageProcessor processor)
         {
             return this.ApplyProcessor(processor, this.image.Bounds);
         }
@@ -49,9 +47,9 @@ namespace ImageSharp
         /// </summary>
         /// <param name="processors">Processors to apply</param>
         /// <returns>this </returns>
-        public IImageOperations<TPixel> ApplyProcessors(IEnumerable<IImageProcessor<TPixel>> processors)
+        public IImageOperations ApplyProcessors(IEnumerable<IImageProcessor> processors)
         {
-            foreach (var processor in processors)
+            foreach (IImageProcessor processor in processors)
             {
                 return this.ApplyProcessor(processor);
             }

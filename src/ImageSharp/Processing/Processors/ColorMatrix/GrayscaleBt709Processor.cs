@@ -14,9 +14,7 @@ namespace ImageSharp.Processing.Processors
     /// Converts the colors of the image to Grayscale applying the formula as specified by ITU-R Recommendation BT.709
     /// <see href="https://en.wikipedia.org/wiki/Rec._709#Luma_coefficients"/>.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class GrayscaleBt709Processor<TPixel> : ColorMatrixProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class GrayscaleBt709Processor : ColorMatrixProcessor
     {
         /// <inheritdoc/>
         public override Matrix4x4 Matrix => new Matrix4x4()

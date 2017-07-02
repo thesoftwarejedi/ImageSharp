@@ -21,13 +21,11 @@ namespace ImageSharp
         /// <summary>
         /// Evenly pads an image to fit the new dimensions.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The source image to pad.</param>
         /// <param name="width">The new width.</param>
         /// <param name="height">The new height.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Pad<TPixel>(this IImageOperations<TPixel> source, int width, int height)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Pad(this IImageOperations source, int width, int height)
         {
             ResizeOptions options = new ResizeOptions
             {

@@ -19,11 +19,9 @@ namespace ImageSharp
         /// <summary>
         /// Applies <see cref="GrayscaleMode.Bt709"/> Grayscale toning to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Grayscale<TPixel>(this IImageOperations<TPixel> source)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Grayscale(this IImageOperations source)
         {
             return Grayscale(source, GrayscaleMode.Bt709);
         }
@@ -31,16 +29,14 @@ namespace ImageSharp
         /// <summary>
         /// Applies Grayscale toning to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="mode">The formula to apply to perform the operation.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Grayscale<TPixel>(this IImageOperations<TPixel> source, GrayscaleMode mode)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Grayscale(this IImageOperations source, GrayscaleMode mode)
         {
-            IImageProcessor<TPixel> processor = mode == GrayscaleMode.Bt709
-               ? (IImageProcessor<TPixel>)new GrayscaleBt709Processor<TPixel>()
-               : new GrayscaleBt601Processor<TPixel>();
+            IImageProcessor processor = mode == GrayscaleMode.Bt709
+               ? (IImageProcessor)new GrayscaleBt709Processor()
+               : new GrayscaleBt601Processor();
 
             source.ApplyProcessor(processor);
             return source;
@@ -49,14 +45,12 @@ namespace ImageSharp
         /// <summary>
         /// Applies <see cref="GrayscaleMode.Bt709"/> Grayscale toning to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Grayscale<TPixel>(this IImageOperations<TPixel> source, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Grayscale(this IImageOperations source, Rectangle rectangle)
         {
             return Grayscale(source, GrayscaleMode.Bt709, rectangle);
         }
@@ -64,19 +58,17 @@ namespace ImageSharp
         /// <summary>
         /// Applies Grayscale toning to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="mode">The formula to apply to perform the operation.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Grayscale<TPixel>(this IImageOperations<TPixel> source, GrayscaleMode mode, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Grayscale(this IImageOperations source, GrayscaleMode mode, Rectangle rectangle)
         {
-            IImageProcessor<TPixel> processor = mode == GrayscaleMode.Bt709
-                ? (IImageProcessor<TPixel>)new GrayscaleBt709Processor<TPixel>()
-                : new GrayscaleBt601Processor<TPixel>();
+            IImageProcessor processor = mode == GrayscaleMode.Bt709
+                ? (IImageProcessor)new GrayscaleBt709Processor()
+                : new GrayscaleBt601Processor();
 
             source.ApplyProcessor(processor, rectangle);
             return source;

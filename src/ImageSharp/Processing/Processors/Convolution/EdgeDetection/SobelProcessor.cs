@@ -15,10 +15,8 @@ namespace ImageSharp.Processing.Processors
     /// The Sobel operator filter.
     /// <see href="http://en.wikipedia.org/wiki/Sobel_operator"/>
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
     [SuppressMessage("ReSharper", "StaticMemberInGenericType", Justification = "We want to use only one instance of each array field for each generic type.")]
-    internal class SobelProcessor<TPixel> : EdgeDetector2DProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class SobelProcessor : EdgeDetector2DProcessor
     {
         /// <summary>
         /// The horizontal gradient operator.
@@ -43,7 +41,7 @@ namespace ImageSharp.Processing.Processors
             };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SobelProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="SobelProcessor"/> class.
         /// </summary>
         public SobelProcessor()
             : base(SobelX, SobelY)

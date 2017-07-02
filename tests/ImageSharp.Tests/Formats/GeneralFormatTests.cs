@@ -135,7 +135,7 @@ namespace ImageSharp.Tests
             foreach (TestFile file in Files)
             {
                 byte[] serialized;
-                using (Image<Rgba32> image = Image.Load(file.Bytes, out IImageFormat mimeType))
+                using (IImage image = Image.Load(file.Bytes, out IImageFormat mimeType))
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     image.Save(memoryStream, mimeType);
@@ -143,7 +143,7 @@ namespace ImageSharp.Tests
                     serialized = memoryStream.ToArray();
                 }
 
-                using (Image<Rgba32> image2 = Image.Load<Rgba32>(serialized))
+                using (IImage image2 = Image.Load<Rgba32>(serialized))
                 {
                     image2.Save($"{path}/{file.FileName}");
                 }

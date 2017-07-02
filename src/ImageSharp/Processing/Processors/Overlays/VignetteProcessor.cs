@@ -14,47 +14,42 @@ namespace ImageSharp.Processing.Processors
     using SixLabors.Primitives;
 
     /// <summary>
-    /// An <see cref="IImageProcessor{TPixel}"/> that applies a radial vignette effect to an <see cref="Image{TPixel}"/>.
+    /// An <see cref="IImageProcessor"/> that applies a radial vignette effect to an <see cref="Image"/>.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class VignetteProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class VignetteProcessor : ImageProcessor
     {
         private readonly GraphicsOptions options;
-        private readonly PixelBlender<TPixel> blender;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VignetteProcessor{TPixel}" /> class.
+        /// Initializes a new instance of the <see cref="VignetteProcessor" /> class.
         /// </summary>
         /// <param name="color">The color of the vignette.</param>
         /// <param name="radiusX">The x-radius.</param>
         /// <param name="radiusY">The y-radius.</param>
         /// <param name="options">The options effecting blending and composition.</param>
-        public VignetteProcessor(TPixel color, ValueSize radiusX, ValueSize radiusY, GraphicsOptions options)
+        public VignetteProcessor(Color color, ValueSize radiusX, ValueSize radiusY, GraphicsOptions options)
         {
             this.VignetteColor = color;
             this.RadiusX = radiusX;
             this.RadiusY = radiusY;
             this.options = options;
-            this.blender = PixelOperations<TPixel>.Instance.GetPixelBlender(this.options.BlenderMode);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VignetteProcessor{TPixel}" /> class.
+        /// Initializes a new instance of the <see cref="VignetteProcessor" /> class.
         /// </summary>
         /// <param name="color">The color of the vignette.</param>
         /// <param name="options">The options effecting blending and composition.</param>
-        public VignetteProcessor(TPixel color,  GraphicsOptions options)
+        public VignetteProcessor(Color color,  GraphicsOptions options)
         {
             this.VignetteColor = color;
             this.options = options;
-            this.blender = PixelOperations<TPixel>.Instance.GetPixelBlender(this.options.BlenderMode);
         }
 
         /// <summary>
         /// Gets or sets the vignette color to apply.
         /// </summary>
-        public TPixel VignetteColor { get; set; }
+        public Color VignetteColor { get; set; }
 
         /// <summary>
         /// Gets or sets the the x-radius.
@@ -67,13 +62,14 @@ namespace ImageSharp.Processing.Processors
         public ValueSize RadiusY { get; set; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
+            PixelBlender<TPixel> blender = PixelOperations<TPixel>.Instance.GetPixelBlender(this.options.BlenderMode);
             int startY = sourceRectangle.Y;
             int endY = sourceRectangle.Bottom;
             int startX = sourceRectangle.X;
             int endX = sourceRectangle.Right;
-            TPixel vignetteColor = this.VignetteColor;
+            TPixel vignetteColor = this.VignetteColor.As<TPixel>();
             Vector2 centre = Rectangle.Center(sourceRectangle);
 
             var finalradiusX = this.RadiusX.Calculate(source.Bounds.Size);
@@ -125,7 +121,7 @@ namespace ImageSharp.Processing.Processors
 
                                 Span<TPixel> destination = source.GetRowSpan(offsetY).Slice(offsetX, width);
 
-                                this.blender.Blend(destination, destination, rowColors, amounts);
+                                blender.Blend(destination, destination, rowColors, amounts);
                             }
                         });
             }

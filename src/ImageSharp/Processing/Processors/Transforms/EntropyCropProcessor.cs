@@ -14,12 +14,10 @@ namespace ImageSharp.Processing.Processors
     /// Provides methods to allow the cropping of an image to preserve areas of highest
     /// entropy.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class EntropyCropProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class EntropyCropProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntropyCropProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="EntropyCropProcessor"/> class.
         /// </summary>
         /// <param name="threshold">The threshold to split the image. Must be between 0 and 1.</param>
         /// <exception cref="System.ArgumentException">
@@ -37,15 +35,15 @@ namespace ImageSharp.Processing.Processors
         public float Value { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             using (ImageBase<TPixel> temp = new Image<TPixel>(source))
             {
                 // Detect the edges.
-                new SobelProcessor<TPixel>().Apply(temp, sourceRectangle);
+                new SobelProcessor().Apply(temp, sourceRectangle);
 
                 // Apply threshold binarization filter.
-                new BinaryThresholdProcessor<TPixel>(this.Value).Apply(temp, sourceRectangle);
+                new BinaryThresholdProcessor(this.Value).Apply(temp, sourceRectangle);
 
                 // Search for the first white pixels
                 Rectangle rectangle = ImageMaths.GetFilteredBoundingRectangle(temp, 0);
@@ -55,7 +53,7 @@ namespace ImageSharp.Processing.Processors
                     return;
                 }
 
-                new CropProcessor<TPixel>(rectangle).Apply(source, sourceRectangle);
+                new CropProcessor(rectangle).Apply(source, sourceRectangle);
             }
         }
     }

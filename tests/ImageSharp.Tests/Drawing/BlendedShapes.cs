@@ -28,8 +28,8 @@ namespace ImageSharp.Tests.Drawing
                 var scaleX = (img.Width / 100);
                 var scaleY = (img.Height / 100);
                 img.Mutate(x=>x
-                            .Fill(NamedColors<TPixel>.DarkBlue, new Rectangle(0 * scaleX, 40 * scaleY, 100 * scaleX, 20 * scaleY))
-                            .Fill(NamedColors<TPixel>.HotPink, new Rectangle(20 * scaleX, 0 * scaleY, 30 * scaleX, 100 * scaleY), new ImageSharp.GraphicsOptions(true)
+                            .Fill(Color.DarkBlue, new Rectangle(0 * scaleX, 40 * scaleY, 100 * scaleX, 20 * scaleY))
+                            .Fill(Color.HotPink, new Rectangle(20 * scaleX, 0 * scaleY, 30 * scaleX, 100 * scaleY), new ImageSharp.GraphicsOptions(true)
                             {
                                 BlenderMode = mode
                             }));
@@ -46,12 +46,12 @@ namespace ImageSharp.Tests.Drawing
             {
                 var scaleX = (img.Width / 100);
                 var scaleY = (img.Height / 100);
-                img.Mutate(x=>x.Fill(NamedColors<TPixel>.DarkBlue, new Rectangle(0* scaleX, 40 * scaleY, 100 * scaleX, 20 * scaleY)));
-                img.Mutate(x => x.Fill(NamedColors<TPixel>.HotPink, new Rectangle(20 * scaleX, 0 * scaleY, 30 * scaleX, 100 * scaleY), new ImageSharp.GraphicsOptions(true)
+                img.Mutate(x=>x.Fill(Color.DarkBlue, new Rectangle(0* scaleX, 40 * scaleY, 100 * scaleX, 20 * scaleY)));
+                img.Mutate(x => x.Fill(Color.HotPink, new Rectangle(20 * scaleX, 0 * scaleY, 30 * scaleX, 100 * scaleY), new ImageSharp.GraphicsOptions(true)
                 {
                     BlenderMode = mode
                 }));
-                img.Mutate(x => x.Fill(NamedColors<TPixel>.Transparent, new SixLabors.Shapes.EllipsePolygon(40 * scaleX, 50 * scaleY, 50 * scaleX, 50 * scaleY), new ImageSharp.GraphicsOptions(true)
+                img.Mutate(x => x.Fill(Color.Transparent, new SixLabors.Shapes.EllipsePolygon(40 * scaleX, 50 * scaleY, 50 * scaleX, 50 * scaleY), new ImageSharp.GraphicsOptions(true)
                 {
                     BlenderMode = mode
                 }));
@@ -68,17 +68,15 @@ namespace ImageSharp.Tests.Drawing
             {
                 var scaleX = (img.Width / 100);
                 var scaleY = (img.Height / 100);
-                img.Mutate(x=>x.Fill(NamedColors<TPixel>.DarkBlue, new Rectangle(0 * scaleX, 40, 100 * scaleX, 20* scaleY)));
-                img.Mutate(x => x.Fill(NamedColors<TPixel>.HotPink, new Rectangle(20 * scaleX, 0, 30 * scaleX, 100 * scaleY), new ImageSharp.GraphicsOptions(true)
+                img.Mutate(x=>x.Fill(Color.DarkBlue, new Rectangle(0 * scaleX, 40, 100 * scaleX, 20* scaleY)));
+                img.Mutate(x => x.Fill(Color.HotPink, new Rectangle(20 * scaleX, 0, 30 * scaleX, 100 * scaleY), new ImageSharp.GraphicsOptions(true)
                 {
                     BlenderMode = mode
                 }));
-                var c = NamedColors<TPixel>.Red.ToVector4();
-                c.W *= 0.5f;
-                TPixel pixel = default(TPixel);
-                pixel.PackFromVector4(c);
 
-                img.Mutate(x => x.Fill(pixel, new SixLabors.Shapes.EllipsePolygon(40 * scaleX, 50 * scaleY, 50 * scaleX, 50 * scaleY), new ImageSharp.GraphicsOptions(true)
+                var c = Color.Red.WithOpacity(128);
+
+                img.Mutate(x => x.Fill(c, new SixLabors.Shapes.EllipsePolygon(40 * scaleX, 50 * scaleY, 50 * scaleX, 50 * scaleY), new ImageSharp.GraphicsOptions(true)
                 {
                     BlenderMode = mode
                 }));
@@ -97,8 +95,8 @@ namespace ImageSharp.Tests.Drawing
             {
                 var scaleX = (img.Width / 100);
                 var scaleY = (img.Height / 100);
-                img.Mutate(x => x.Fill(NamedColors<TPixel>.DarkBlue, new Rectangle(0 * scaleX, 40* scaleY, 100 * scaleX, 20 * scaleY)));
-                img.Mutate(x => x.Fill(NamedColors<TPixel>.Black, new SixLabors.Shapes.EllipsePolygon(40 * scaleX, 50 * scaleY, 50 * scaleX, 50 * scaleY), new ImageSharp.GraphicsOptions(true)
+                img.Mutate(x => x.Fill(Color.DarkBlue, new Rectangle(0 * scaleX, 40* scaleY, 100 * scaleX, 20 * scaleY)));
+                img.Mutate(x => x.Fill(Color.Black, new SixLabors.Shapes.EllipsePolygon(40 * scaleX, 50 * scaleY, 50 * scaleX, 50 * scaleY), new ImageSharp.GraphicsOptions(true)
                 {
                     BlenderMode = mode
                 }));

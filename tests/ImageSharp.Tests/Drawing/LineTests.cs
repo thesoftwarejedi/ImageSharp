@@ -24,8 +24,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .DrawLines(Rgba32.HotPink, 5,
+                    .BackgroundColor(Color.Blue)
+                    .DrawLines(Color.HotPink, 5,
                     new SixLabors.Primitives.PointF[]{
                             new Vector2(10, 10),
                             new Vector2(200, 150),
@@ -51,8 +51,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .DrawLines(Rgba32.HotPink, 5,
+                    .BackgroundColor(Color.Blue)
+                    .DrawLines(Color.HotPink, 5,
                     new SixLabors.Primitives.PointF[] {
                             new Vector2(10, 10),
                             new Vector2(200, 150),
@@ -79,8 +79,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .DrawLines(Pens.Dash(Rgba32.HotPink, 5),
+                    .BackgroundColor(Color.Blue)
+                    .DrawLines(Pens.Dash(Color.HotPink, 5),
                     new SixLabors.Primitives.PointF[] {
                             new Vector2(10, 10),
                             new Vector2(200, 150),
@@ -97,8 +97,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .DrawLines(Pens.Dot(Rgba32.HotPink, 5),
+                    .BackgroundColor(Color.Blue)
+                    .DrawLines(Pens.Dot(Color.HotPink, 5),
                     new SixLabors.Primitives.PointF[] {
                             new Vector2(10, 10),
                             new Vector2(200, 150),
@@ -115,8 +115,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .DrawLines(Pens.DashDot(Rgba32.HotPink, 5),
+                    .BackgroundColor(Color.Blue)
+                    .DrawLines(Pens.DashDot(Color.HotPink, 5),
                     new SixLabors.Primitives.PointF[] {
                             new Vector2(10, 10),
                             new Vector2(200, 150),
@@ -133,8 +133,8 @@ namespace ImageSharp.Tests.Drawing
             Image<Rgba32> image = new Image<Rgba32>(500, 500);
 
             image.Mutate(x => x
-                .BackgroundColor(Rgba32.Blue)
-                .DrawLines(Pens.DashDotDot(Rgba32.HotPink, 5), new SixLabors.Primitives.PointF[] {
+                .BackgroundColor(Color.Blue)
+                .DrawLines(Pens.DashDotDot(Color.HotPink, 5), new SixLabors.Primitives.PointF[] {
                             new Vector2(10, 10),
                             new Vector2(200, 150),
                             new Vector2(50, 300)
@@ -147,12 +147,12 @@ namespace ImageSharp.Tests.Drawing
         {
             string path = this.CreateOutputDirectory("Drawing", "Lines");
 
-            Rgba32 color = new Rgba32(Rgba32.HotPink.R, Rgba32.HotPink.G, Rgba32.HotPink.B, 150);
+            Color color = Color.HotPink.WithOpacity(150);
 
             Image<Rgba32> image = new Image<Rgba32>(500, 500);
 
             image.Mutate(x => x
-                .BackgroundColor(Rgba32.Blue)
+                .BackgroundColor(Color.Blue)
                 .DrawLines(color, 10, new SixLabors.Primitives.PointF[] {
                             new Vector2(10, 10),
                             new Vector2(200, 150),
@@ -181,8 +181,8 @@ namespace ImageSharp.Tests.Drawing
             Image<Rgba32> image = new Image<Rgba32>(500, 500);
 
             image.Mutate(x => x
-                .BackgroundColor(Rgba32.Blue)
-                .DrawLines(Rgba32.HotPink, 10, new SixLabors.Primitives.PointF[] {
+                .BackgroundColor(Color.Blue)
+                .DrawLines(Color.HotPink, 10, new SixLabors.Primitives.PointF[] {
                             new Vector2(10, 10),
                             new Vector2(200, 10),
                             new Vector2(200, 150),

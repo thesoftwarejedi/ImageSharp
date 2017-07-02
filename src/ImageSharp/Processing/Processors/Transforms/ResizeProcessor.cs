@@ -16,12 +16,10 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Provides methods that allow the resizing of images using various algorithms.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class ResizeProcessor<TPixel> : ResamplingWeightedProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class ResizeProcessor : ResamplingWeightedProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResizeProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="ResizeProcessor"/> class.
         /// </summary>
         /// <param name="sampler">The sampler to perform the resize operation.</param>
         /// <param name="width">The target width.</param>
@@ -32,7 +30,7 @@ namespace ImageSharp.Processing.Processors
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResizeProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="ResizeProcessor"/> class.
         /// </summary>
         /// <param name="sampler">The sampler to perform the resize operation.</param>
         /// <param name="width">The target width.</param>
@@ -46,7 +44,7 @@ namespace ImageSharp.Processing.Processors
         }
 
         /// <inheritdoc/>
-        protected override unsafe void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override unsafe void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             // Jump out, we'll deal with that later.
             if (source.Width == this.Width && source.Height == this.Height && sourceRectangle == this.ResizeRectangle)

@@ -46,7 +46,7 @@ namespace ImageSharp.Benchmarks
             using (Image<Rgba32> image = new Image<Rgba32>(800, 800))
             {
                 image.Mutate(x => x.DrawLines(
-                    Rgba32.HotPink,
+                    ImageSharp.Color.HotPink,
                     10,
                     new SixLabors.Primitives.PointF[] {
                         new Vector2(10, 10),

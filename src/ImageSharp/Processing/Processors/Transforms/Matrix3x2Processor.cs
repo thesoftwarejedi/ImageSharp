@@ -13,9 +13,7 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Provides methods to transform an image using a <see cref="Matrix3x2"/>.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal abstract class Matrix3x2Processor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal abstract class Matrix3x2Processor : ImageProcessor
     {
         /// <summary>
         /// Gets the rectangle designating the target canvas.
@@ -43,7 +41,7 @@ namespace ImageSharp.Processing.Processors
         /// <returns>
         /// The <see cref="Matrix3x2"/>.
         /// </returns>
-        protected Matrix3x2 GetCenteredMatrix(ImageBase<TPixel> source, Matrix3x2 matrix)
+        protected Matrix3x2 GetCenteredMatrix(IImageBase source, Matrix3x2 matrix)
         {
             var translationToTargetCenter = Matrix3x2.CreateTranslation(-this.CanvasRectangle.Width * .5F, -this.CanvasRectangle.Height * .5F);
             var translateToSourceCenter = Matrix3x2.CreateTranslation(source.Width * .5F, source.Height * .5F);

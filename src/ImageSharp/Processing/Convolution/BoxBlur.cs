@@ -20,26 +20,22 @@ namespace ImageSharp
         /// <summary>
         /// Applies a box blur to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="radius">The 'radius' value representing the size of the area to sample.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> BoxBlur<TPixel>(this IImageOperations<TPixel> source, int radius = 7)
-            where TPixel : struct, IPixel<TPixel>
-            => source.ApplyProcessor(new BoxBlurProcessor<TPixel>(radius));
+        public static IImageOperations BoxBlur(this IImageOperations source, int radius = 7)
+            => source.ApplyProcessor(new BoxBlurProcessor(radius));
 
         /// <summary>
         /// Applies a box blur to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="radius">The 'radius' value representing the size of the area to sample.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> BoxBlur<TPixel>(this IImageOperations<TPixel> source, int radius, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
-            => source.ApplyProcessor(new BoxBlurProcessor<TPixel>(radius), rectangle);
+        public static IImageOperations BoxBlur(this IImageOperations source, int radius, Rectangle rectangle)
+            => source.ApplyProcessor(new BoxBlurProcessor(radius), rectangle);
     }
 }

@@ -14,9 +14,7 @@ namespace ImageSharp.Processing.Processors
     /// Encapsulates properties and methods for creating processors that utilize a matrix to
     /// alter the image pixels.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal interface IColorMatrixFilter<TPixel> : IImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal interface IColorMatrixFilter : IImageProcessor
     {
         /// <summary>
         /// Gets the <see cref="Matrix4x4"/> used to alter the image.

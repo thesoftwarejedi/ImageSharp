@@ -16,12 +16,10 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Defines a sampler that uses a 2 dimensional matrix to perform convolution against an image.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class ConvolutionProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class ConvolutionProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConvolutionProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="ConvolutionProcessor"/> class.
         /// </summary>
         /// <param name="kernelXY">The 2d gradient operator.</param>
         public ConvolutionProcessor(Fast2DArray<float> kernelXY)
@@ -35,7 +33,7 @@ namespace ImageSharp.Processing.Processors
         public Fast2DArray<float> KernelXY { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             int kernelLength = this.KernelXY.Height;
             int radius = kernelLength >> 1;

@@ -48,7 +48,7 @@ namespace ImageSharp
         /// Thrown if the stream is not readable nor seekable.
         /// </exception>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>>
-        public static Image<Rgba32> Load(Stream stream, out IImageFormat format) => Load<Rgba32>(stream, out format);
+        public static IImage Load(Stream stream, out IImageFormat format) => Load<Rgba32>(stream, out format);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{Rgba32}"/> class from the given stream.
@@ -58,7 +58,7 @@ namespace ImageSharp
         /// Thrown if the stream is not readable nor seekable.
         /// </exception>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>>
-        public static Image<Rgba32> Load(Stream stream) => Load<Rgba32>(stream);
+        public static IImage Load(Stream stream) => Load<Rgba32>(stream);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{Rgba32}"/> class from the given stream.
@@ -69,7 +69,7 @@ namespace ImageSharp
         /// Thrown if the stream is not readable nor seekable.
         /// </exception>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>>
-        public static Image<Rgba32> Load(Stream stream, IImageDecoder decoder) => Load<Rgba32>(stream, decoder);
+        public static IImage Load(Stream stream, IImageDecoder decoder) => Load<Rgba32>(stream, decoder);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{Rgba32}"/> class from the given stream.
@@ -80,7 +80,7 @@ namespace ImageSharp
         /// Thrown if the stream is not readable nor seekable.
         /// </exception>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>>
-        public static Image<Rgba32> Load(Configuration config, Stream stream) => Load<Rgba32>(config, stream);
+        public static IImage Load(Configuration config, Stream stream) => Load<Rgba32>(config, stream);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{Rgba32}"/> class from the given stream.
@@ -92,7 +92,7 @@ namespace ImageSharp
         /// Thrown if the stream is not readable nor seekable.
         /// </exception>
         /// <returns>A new <see cref="Image{Rgba32}"/>.</returns>>
-        public static Image<Rgba32> Load(Configuration config, Stream stream, out IImageFormat format) => Load<Rgba32>(config, stream, out format);
+        public static IImage Load(Configuration config, Stream stream, out IImageFormat format) => Load<Rgba32>(config, stream, out format);
 
         /// <summary>
         /// Create a new instance of the <see cref="Image{TPixel}"/> class from the given stream.

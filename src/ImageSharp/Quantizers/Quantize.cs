@@ -19,27 +19,25 @@ namespace ImageSharp
         /// <summary>
         /// Applies quantization to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="mode">The quantization mode to apply to perform the operation.</param>
         /// <param name="maxColors">The maximum number of colors to return. Defaults to 256.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Quantize<TPixel>(this IImageOperations<TPixel> source, Quantization mode = Quantization.Octree, int maxColors = 256)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Quantize(this IImageOperations source, Quantization mode = Quantization.Octree, int maxColors = 256)
         {
-            IQuantizer<TPixel> quantizer;
+            IQuantizer quantizer;
             switch (mode)
             {
                 case Quantization.Wu:
-                    quantizer = new WuQuantizer<TPixel>();
+                    quantizer = new WuQuantizer();
                     break;
 
                 case Quantization.Palette:
-                    quantizer = new PaletteQuantizer<TPixel>();
+                    quantizer = new PaletteQuantizer();
                     break;
 
                 default:
-                    quantizer = new OctreeQuantizer<TPixel>();
+                    quantizer = new OctreeQuantizer();
                     break;
             }
 
@@ -49,39 +47,13 @@ namespace ImageSharp
         /// <summary>
         /// Applies quantization to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="quantizer">The quantizer to apply to perform the operation.</param>
         /// <param name="maxColors">The maximum number of colors to return.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Quantize<TPixel>(this IImageOperations<TPixel> source, IQuantizer<TPixel> quantizer, int maxColors)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Quantize(this IImageOperations source, IQuantizer quantizer, int maxColors)
         {
-            return source.Run(img =>
-            {
-                // TODO : move helper logic into the processor
-                QuantizedImage<TPixel> quantized = quantizer.Quantize(img, maxColors);
-                int palleteCount = quantized.Palette.Length - 1;
-
-                using (PixelAccessor<TPixel> pixels = new PixelAccessor<TPixel>(quantized.Width, quantized.Height))
-                {
-                    Parallel.For(
-                        0,
-                        pixels.Height,
-                        img.Configuration.ParallelOptions,
-                        y =>
-                        {
-                            for (int x = 0; x < pixels.Width; x++)
-                            {
-                                int i = x + (y * pixels.Width);
-                                TPixel color = quantized.Palette[Math.Min(palleteCount, quantized.Pixels[i])];
-                                pixels[x, y] = color;
-                            }
-                        });
-
-                    img.SwapPixelsBuffers(pixels);
-                }
-            });
+            return source.ApplyProcessor(new QuantizeProcessor(quantizer, maxColors));
         }
     }
 }

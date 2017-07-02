@@ -13,14 +13,12 @@ namespace ImageSharp.Processing.Processors
     using SixLabors.Primitives;
 
     /// <summary>
-    /// An <see cref="IImageProcessor{TPixel}"/> to pixelate the colors of an <see cref="Image{TPixel}"/>.
+    /// An <see cref="IImageProcessor"/> to pixelate the colors of an <see cref="Image{TPixel}"/>.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class PixelateProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class PixelateProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PixelateProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="PixelateProcessor"/> class.
         /// </summary>
         /// <param name="size">The size of the pixels. Must be greater than 0.</param>
         /// <exception cref="System.ArgumentException">
@@ -38,7 +36,7 @@ namespace ImageSharp.Processing.Processors
         public int Size { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             if (this.Size <= 0 || this.Size > source.Height || this.Size > source.Width)
             {

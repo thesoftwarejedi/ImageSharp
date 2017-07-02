@@ -13,15 +13,13 @@ namespace ImageSharp.Processing.Processors
     using SixLabors.Primitives;
 
     /// <summary>
-    /// An <see cref="IImageProcessor{TPixel}"/> to apply an oil painting effect to an <see cref="Image{TPixel}"/>.
+    /// An <see cref="IImageProcessor"/> to apply an oil painting effect to an <see cref="Image{TPixel}"/>.
     /// </summary>
     /// <remarks>Adapted from <see href="https://softwarebydefault.com/2013/06/29/oil-painting-cartoon-filter/"/> by Dewald Esterhuizen.</remarks>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class OilPaintingProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class OilPaintingProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OilPaintingProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="OilPaintingProcessor"/> class.
         /// </summary>
         /// <param name="levels">
         /// The number of intensity levels. Higher values result in a broader range of color intensities forming part of the result image.
@@ -49,7 +47,7 @@ namespace ImageSharp.Processing.Processors
         public int BrushSize { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             if (this.BrushSize <= 0 || this.BrushSize > source.Height || this.BrushSize > source.Width)
             {

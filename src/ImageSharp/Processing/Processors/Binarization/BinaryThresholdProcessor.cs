@@ -12,15 +12,13 @@ namespace ImageSharp.Processing.Processors
     using SixLabors.Primitives;
 
     /// <summary>
-    /// An <see cref="IImageProcessor{TPixel}"/> to perform binary threshold filtering against an
+    /// An <see cref="IImageProcessor"/> to perform binary threshold filtering against an
     /// <see cref="Image{TPixel}"/>. The image will be converted to grayscale before thresholding occurs.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class BinaryThresholdProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class BinaryThresholdProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BinaryThresholdProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="BinaryThresholdProcessor"/> class.
         /// </summary>
         /// <param name="threshold">The threshold to split the image. Must be between 0 and 1.</param>
         public BinaryThresholdProcessor(float threshold)
@@ -30,8 +28,8 @@ namespace ImageSharp.Processing.Processors
             this.Threshold = threshold;
 
             // Default to white/black for upper/lower.
-            this.UpperColor = NamedColors<TPixel>.White;
-            this.LowerColor = NamedColors<TPixel>.Black;
+            this.UpperColor = Color.White;
+            this.LowerColor = Color.Black;
         }
 
         /// <summary>
@@ -42,25 +40,25 @@ namespace ImageSharp.Processing.Processors
         /// <summary>
         /// Gets or sets the color to use for pixels that are above the threshold.
         /// </summary>
-        public TPixel UpperColor { get; set; }
+        public Color UpperColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color to use for pixels that fall below the threshold.
         /// </summary>
-        public TPixel LowerColor { get; set; }
+        public Color LowerColor { get; set; }
 
         /// <inheritdoc/>
-        protected override void BeforeApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void BeforeApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
-            new GrayscaleBt709Processor<TPixel>().Apply(source, sourceRectangle);
+            new GrayscaleBt709Processor().Apply(source, sourceRectangle);
         }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             float threshold = this.Threshold;
-            TPixel upper = this.UpperColor;
-            TPixel lower = this.LowerColor;
+            TPixel upper = this.UpperColor.As<TPixel>();
+            TPixel lower = this.LowerColor.As<TPixel>();
 
             int startY = sourceRectangle.Y;
             int endY = sourceRectangle.Bottom;

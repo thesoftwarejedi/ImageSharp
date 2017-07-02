@@ -19,13 +19,11 @@ namespace ImageSharp
         /// <summary>
         /// Resizes an image in accordance with the given <see cref="ResizeOptions"/>.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="options">The resize options.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
         /// <remarks>Passing zero for one of height or width within the resize options will automatically preserve the aspect ratio of the original image</remarks>
-        public static IImageOperations<TPixel> Resize<TPixel>(this IImageOperations<TPixel> source, ResizeOptions options)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Resize(this IImageOperations source, ResizeOptions options)
         {
             return source.Run(img =>
             {
@@ -51,13 +49,11 @@ namespace ImageSharp
         /// <summary>
         /// Resizes an image to the given <see cref="Size"/>.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="size">The target image size.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
         /// <remarks>Passing zero for one of height or width will automatically preserve the aspect ratio of the original image</remarks>
-        public static IImageOperations<TPixel> Resize<TPixel>(this IImageOperations<TPixel> source, Size size)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Resize(this IImageOperations source, Size size)
         {
             return Resize(source, size.Width, size.Height, new BicubicResampler(), false);
         }
@@ -65,14 +61,12 @@ namespace ImageSharp
         /// <summary>
         /// Resizes an image to the given <see cref="Size"/>.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="size">The target image size.</param>
         /// <param name="compand">Whether to compress and expand the image color-space to gamma correct the image during processing.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
         /// <remarks>Passing zero for one of height or width will automatically preserve the aspect ratio of the original image</remarks>
-        public static IImageOperations<TPixel> Resize<TPixel>(this IImageOperations<TPixel> source, Size size, bool compand)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Resize(this IImageOperations source, Size size, bool compand)
         {
             return Resize(source, size.Width, size.Height, new BicubicResampler(), compand);
         }
@@ -80,14 +74,12 @@ namespace ImageSharp
         /// <summary>
         /// Resizes an image to the given width and height.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="width">The target image width.</param>
         /// <param name="height">The target image height.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
         /// <remarks>Passing zero for one of height or width will automatically preserve the aspect ratio of the original image</remarks>
-        public static IImageOperations<TPixel> Resize<TPixel>(this IImageOperations<TPixel> source, int width, int height)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Resize(this IImageOperations source, int width, int height)
         {
             return Resize(source, width, height, new BicubicResampler(), false);
         }
@@ -95,15 +87,13 @@ namespace ImageSharp
         /// <summary>
         /// Resizes an image to the given width and height.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="width">The target image width.</param>
         /// <param name="height">The target image height.</param>
         /// <param name="compand">Whether to compress and expand the image color-space to gamma correct the image during processing.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
         /// <remarks>Passing zero for one of height or width will automatically preserve the aspect ratio of the original image</remarks>
-        public static IImageOperations<TPixel> Resize<TPixel>(this IImageOperations<TPixel> source, int width, int height, bool compand)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Resize(this IImageOperations source, int width, int height, bool compand)
         {
             return Resize(source, width, height, new BicubicResampler(), compand);
         }
@@ -111,15 +101,13 @@ namespace ImageSharp
         /// <summary>
         /// Resizes an image to the given width and height with the given sampler.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="width">The target image width.</param>
         /// <param name="height">The target image height.</param>
         /// <param name="sampler">The <see cref="IResampler"/> to perform the resampling.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
         /// <remarks>Passing zero for one of height or width will automatically preserve the aspect ratio of the original image</remarks>
-        public static IImageOperations<TPixel> Resize<TPixel>(this IImageOperations<TPixel> source, int width, int height, IResampler sampler)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Resize(this IImageOperations source, int width, int height, IResampler sampler)
         {
             return Resize(source, width, height, sampler, false);
         }
@@ -127,7 +115,6 @@ namespace ImageSharp
         /// <summary>
         /// Resizes an image to the given width and height with the given sampler.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="width">The target image width.</param>
         /// <param name="height">The target image height.</param>
@@ -135,8 +122,7 @@ namespace ImageSharp
         /// <param name="compand">Whether to compress and expand the image color-space to gamma correct the image during processing.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
         /// <remarks>Passing zero for one of height or width will automatically preserve the aspect ratio of the original image</remarks>
-        public static IImageOperations<TPixel> Resize<TPixel>(this IImageOperations<TPixel> source, int width, int height, IResampler sampler, bool compand)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Resize(this IImageOperations source, int width, int height, IResampler sampler, bool compand)
         {
             return Resize(source, width, height, sampler, new Rectangle(0, 0, width, height), compand);
         }
@@ -145,7 +131,6 @@ namespace ImageSharp
         /// Resizes an image to the given width and height with the given sampler and
         /// source rectangle.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="width">The target image width.</param>
         /// <param name="height">The target image height.</param>
@@ -159,8 +144,7 @@ namespace ImageSharp
         /// <param name="compand">Whether to compress and expand the image color-space to gamma correct the image during processing.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
         /// <remarks>Passing zero for one of height or width will automatically preserve the aspect ratio of the original image</remarks>
-        public static IImageOperations<TPixel> Resize<TPixel>(this IImageOperations<TPixel> source, int width, int height, IResampler sampler, Rectangle sourceRectangle, Rectangle targetRectangle, bool compand)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Resize(this IImageOperations source, int width, int height, IResampler sampler, Rectangle sourceRectangle, Rectangle targetRectangle, bool compand)
         {
             return source.Run(img =>
              {
@@ -180,7 +164,7 @@ namespace ImageSharp
                  Guard.MustBeGreaterThan(width, 0, nameof(width));
                  Guard.MustBeGreaterThan(height, 0, nameof(height));
 
-                 img.Mutate(x => x.ApplyProcessor(new ResizeProcessor<TPixel>(sampler, width, height, targetRectangle) { Compand = compand }, sourceRectangle));
+                 img.Mutate(x => x.ApplyProcessor(new ResizeProcessor(sampler, width, height, targetRectangle) { Compand = compand }, sourceRectangle));
              });
         }
 
@@ -188,7 +172,6 @@ namespace ImageSharp
         /// Resizes an image to the given width and height with the given sampler and
         /// source rectangle.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to resize.</param>
         /// <param name="width">The target image width.</param>
         /// <param name="height">The target image height.</param>
@@ -199,8 +182,7 @@ namespace ImageSharp
         /// <param name="compand">Whether to compress and expand the image color-space to gamma correct the image during processing.</param>
         /// <returns>The <see cref="Image{TPixel}"/></returns>
         /// <remarks>Passing zero for one of height or width will automatically preserve the aspect ratio of the original image</remarks>
-        public static IImageOperations<TPixel> Resize<TPixel>(this IImageOperations<TPixel> source, int width, int height, IResampler sampler, Rectangle targetRectangle, bool compand)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Resize(this IImageOperations source, int width, int height, IResampler sampler, Rectangle targetRectangle, bool compand)
         {
             return source.Run(img =>
             {
@@ -220,7 +202,7 @@ namespace ImageSharp
                 Guard.MustBeGreaterThan(width, 0, nameof(width));
                 Guard.MustBeGreaterThan(height, 0, nameof(height));
 
-                img.Mutate(x => x.ApplyProcessor(new ResizeProcessor<TPixel>(sampler, width, height, targetRectangle) { Compand = compand }));
+                img.Mutate(x => x.ApplyProcessor(new ResizeProcessor(sampler, width, height, targetRectangle) { Compand = compand }));
             });
         }
     }

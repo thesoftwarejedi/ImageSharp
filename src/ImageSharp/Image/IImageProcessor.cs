@@ -14,9 +14,7 @@ namespace ImageSharp.Processing
     /// <summary>
     /// Encapsulates methods to alter the pixels of an image.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    public interface IImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    public interface IImageProcessor
     {
         /// <summary>
         /// Gets or sets the parallel options for processing tasks in parallel.
@@ -36,12 +34,14 @@ namespace ImageSharp.Processing
         /// <param name="sourceRectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to draw.
         /// </param>
+        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <exception cref="System.ArgumentNullException">
         /// <paramref name="source"/> is null.
         /// </exception>
         /// <exception cref="System.ArgumentException">
         /// <paramref name="sourceRectangle"/> doesnt fit the dimension of the image.
         /// </exception>
-        void Apply(Image<TPixel> source, Rectangle sourceRectangle);
+        void Apply<TPixel>(Image<TPixel> source, Rectangle sourceRectangle)
+            where TPixel : struct, IPixel<TPixel>;
     }
 }

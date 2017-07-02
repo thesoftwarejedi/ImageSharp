@@ -39,7 +39,7 @@ namespace ImageSharp.Benchmarks
         {
             using (Image<Rgba32> image = new Image<Rgba32>(800, 800))
             {
-            	image.Mutate(x => x.Fill(Rgba32.HotPink, new CoreRectangle(10, 10, 190, 140)));
+            	image.Mutate(x => x.Fill(ImageSharp.Color.HotPink, new CoreRectangle(10, 10, 190, 140)));
 
                 return new CoreSize(image.Width, image.Height);
             }
@@ -51,7 +51,7 @@ namespace ImageSharp.Benchmarks
             using (Image<Rgba32> image = new Image<Rgba32>(800, 800))
             {
                 image.Mutate(x => x.FillPolygon(
-                    Rgba32.HotPink,
+                    ImageSharp.Color.HotPink,
                     new SixLabors.Primitives.PointF[] {
 		                new Vector2(10, 10),
 		                new Vector2(200, 10),

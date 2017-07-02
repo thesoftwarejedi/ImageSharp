@@ -14,12 +14,10 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Defines a sampler that detects edges within an image using a single two dimensional matrix.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal abstract class EdgeDetectorProcessor<TPixel> : ImageProcessor<TPixel>, IEdgeDetectorProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal abstract class EdgeDetectorProcessor : ImageProcessor, IEdgeDetectorProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EdgeDetectorProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="EdgeDetectorProcessor"/> class.
         /// </summary>
         /// <param name="kernelXY">The 2d gradient operator.</param>
         protected EdgeDetectorProcessor(Fast2DArray<float> kernelXY)
@@ -36,18 +34,18 @@ namespace ImageSharp.Processing.Processors
         public Fast2DArray<float> KernelXY { get; }
 
         /// <inheritdoc/>
-        protected override void BeforeApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void BeforeApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             if (this.Grayscale)
             {
-                new GrayscaleBt709Processor<TPixel>().Apply(source, sourceRectangle);
+                new GrayscaleBt709Processor().Apply(source, sourceRectangle);
             }
         }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
-            new ConvolutionProcessor<TPixel>(this.KernelXY).Apply(source, sourceRectangle);
+            new ConvolutionProcessor(this.KernelXY).Apply(source, sourceRectangle);
         }
     }
 }

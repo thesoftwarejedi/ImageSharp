@@ -24,8 +24,8 @@ namespace ImageSharp.Tests.Drawing
             string path = this.CreateOutputDirectory("Drawing", "BezierLine");
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
-                image.Mutate(x => x.BackgroundColor(Rgba32.Blue)
-                    .DrawBeziers(Rgba32.HotPink, 5,
+                image.Mutate(x => x.BackgroundColor(Color.Blue)
+                    .DrawBeziers(Color.HotPink, 5,
                         new SixLabors.Primitives.PointF[] {
                                 new Vector2(10, 400),
                                 new Vector2(30, 10),
@@ -59,11 +59,11 @@ namespace ImageSharp.Tests.Drawing
         {
             string path = this.CreateOutputDirectory("Drawing", "BezierLine");
 
-            Rgba32 color = new Rgba32(Rgba32.HotPink.R, Rgba32.HotPink.G, Rgba32.HotPink.B, 150);
+            Color color = Color.HotPink.WithOpacity(150);
 
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
-                image.Mutate(x => x.BackgroundColor(Rgba32.Blue)
+                image.Mutate(x => x.BackgroundColor(Color.Blue)
                     .DrawBeziers(color,
                     10,
                     new SixLabors.Primitives.PointF[]{

@@ -21,55 +21,50 @@ namespace ImageSharp
         /// <summary>
         /// Applies the given colorblindness simulator to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="colorBlindness">The type of color blindness simulator to apply.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> ColorBlindness<TPixel>(this IImageOperations<TPixel> source, ColorBlindness colorBlindness)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations ColorBlindness(this IImageOperations source, ColorBlindness colorBlindness)
         {
-            source.ApplyProcessor(GetProcessor<TPixel>(colorBlindness));
+            source.ApplyProcessor(GetProcessor(colorBlindness));
             return source;
         }
 
         /// <summary>
         /// Applies the given colorblindness simulator to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="colorBlindness">The type of color blindness simulator to apply.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> ColorBlindness<TPixel>(this IImageOperations<TPixel> source, ColorBlindness colorBlindness, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations ColorBlindness(this IImageOperations source, ColorBlindness colorBlindness, Rectangle rectangle)
         {
-            source.ApplyProcessor(GetProcessor<TPixel>(colorBlindness), rectangle);
+            source.ApplyProcessor(GetProcessor(colorBlindness), rectangle);
             return source;
         }
 
-        private static IImageProcessor<TPixel> GetProcessor<TPixel>(ColorBlindness colorBlindness)
-            where TPixel : struct, IPixel<TPixel>
+        private static IImageProcessor GetProcessor(ColorBlindness colorBlindness)
         {
             switch (colorBlindness)
             {
                 case ImageSharp.Processing.ColorBlindness.Achromatomaly:
-                    return new AchromatomalyProcessor<TPixel>();
+                    return new AchromatomalyProcessor();
                 case ImageSharp.Processing.ColorBlindness.Achromatopsia:
-                    return new AchromatopsiaProcessor<TPixel>();
+                    return new AchromatopsiaProcessor();
                 case ImageSharp.Processing.ColorBlindness.Deuteranomaly:
-                    return new DeuteranomalyProcessor<TPixel>();
+                    return new DeuteranomalyProcessor();
                 case ImageSharp.Processing.ColorBlindness.Deuteranopia:
-                    return new DeuteranopiaProcessor<TPixel>();
+                    return new DeuteranopiaProcessor();
                 case ImageSharp.Processing.ColorBlindness.Protanomaly:
-                    return new ProtanomalyProcessor<TPixel>();
+                    return new ProtanomalyProcessor();
                 case ImageSharp.Processing.ColorBlindness.Protanopia:
-                    return new ProtanopiaProcessor<TPixel>();
+                    return new ProtanopiaProcessor();
                 case ImageSharp.Processing.ColorBlindness.Tritanomaly:
-                    return new TritanomalyProcessor<TPixel>();
+                    return new TritanomalyProcessor();
                 default:
-                    return new TritanopiaProcessor<TPixel>();
+                    return new TritanopiaProcessor();
             }
         }
     }

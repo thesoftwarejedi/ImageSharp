@@ -21,29 +21,25 @@ namespace ImageSharp
         /// <summary>
         /// Alters the colors of the image recreating an old Kodachrome camera effect.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Kodachrome<TPixel>(this IImageOperations<TPixel> source)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Kodachrome(this IImageOperations source)
         {
-            source.ApplyProcessor(new KodachromeProcessor<TPixel>());
+            source.ApplyProcessor(new KodachromeProcessor());
             return source;
         }
 
         /// <summary>
         /// Alters the colors of the image recreating an old Kodachrome camera effect.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> Kodachrome<TPixel>(this IImageOperations<TPixel> source, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations Kodachrome(this IImageOperations source, Rectangle rectangle)
         {
-            source.ApplyProcessor(new KodachromeProcessor<TPixel>(), rectangle);
+            source.ApplyProcessor(new KodachromeProcessor(), rectangle);
             return source;
         }
     }

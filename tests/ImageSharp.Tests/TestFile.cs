@@ -138,7 +138,7 @@ namespace ImageSharp.Tests
         /// <returns>
         /// The <see cref="Image"/>.
         /// </returns>
-        public Image<Rgba32> CreateImage(IImageDecoder decoder)
+        public IImage CreateImage(IImageDecoder decoder)
         {
             return Image.Load(this.image.Configuration, this.Bytes, decoder);
         }

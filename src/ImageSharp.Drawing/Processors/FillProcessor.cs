@@ -10,7 +10,7 @@ namespace ImageSharp.Drawing.Processors
     using System.Threading.Tasks;
 
     using Drawing;
-
+    using ImageSharp.Drawing.Brushes;
     using ImageSharp.Memory;
     using ImageSharp.PixelFormats;
     using ImageSharp.Processing;
@@ -19,29 +19,27 @@ namespace ImageSharp.Drawing.Processors
     /// <summary>
     /// Using the bursh as a source of pixels colors blends the brush color with source.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class FillProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class FillProcessor : ImageProcessor
     {
         /// <summary>
         /// The brush.
         /// </summary>
-        private readonly IBrush<TPixel> brush;
+        private readonly Brush brush;
         private readonly GraphicsOptions options;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FillProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="FillProcessor"/> class.
         /// </summary>
         /// <param name="brush">The brush to source pixel colors from.</param>
         /// <param name="options">The options</param>
-        public FillProcessor(IBrush<TPixel> brush, GraphicsOptions options)
+        public FillProcessor(Brush brush, GraphicsOptions options)
         {
             this.brush = brush;
             this.options = options;
         }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             int startX = sourceRectangle.X;
             int endX = sourceRectangle.Right;

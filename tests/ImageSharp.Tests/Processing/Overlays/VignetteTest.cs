@@ -30,7 +30,7 @@ namespace ImageSharp.Tests.Processing.Overlays
         {
             using (Image<TPixel> image = provider.GetImage())
             {
-                image.Mutate(x => x.Vignette(NamedColors<TPixel>.Orange));
+                image.Mutate(x => x.Vignette(Color.Orange));
                 image.DebugSave(provider, null, Extensions.Bmp);
             }
         }

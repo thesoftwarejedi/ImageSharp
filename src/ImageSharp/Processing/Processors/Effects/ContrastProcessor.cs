@@ -13,14 +13,12 @@ namespace ImageSharp.Processing.Processors
     using SixLabors.Primitives;
 
     /// <summary>
-    /// An <see cref="IImageProcessor{TPixel}"/> to change the contrast of an <see cref="Image{TPixel}"/>.
+    /// An <see cref="IImageProcessor"/> to change the contrast of an <see cref="Image{TPixel}"/>.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class ContrastProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class ContrastProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContrastProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="ContrastProcessor"/> class.
         /// </summary>
         /// <param name="contrast">The new contrast of the image. Must be between -100 and 100.</param>
         /// <exception cref="System.ArgumentException">
@@ -38,7 +36,7 @@ namespace ImageSharp.Processing.Processors
         public int Value { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             float contrast = (100F + this.Value) / 100F;
 

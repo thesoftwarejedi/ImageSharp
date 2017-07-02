@@ -14,9 +14,7 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Applies a Box blur sampler to the image.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class BoxBlurProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class BoxBlurProcessor : ImageProcessor
     {
         /// <summary>
         /// The maximum size of the kernel in either direction.
@@ -24,7 +22,7 @@ namespace ImageSharp.Processing.Processors
         private readonly int kernelSize;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxBlurProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="BoxBlurProcessor"/> class.
         /// </summary>
         /// <param name="radius">
         /// The 'radius' value representing the size of the area to sample.
@@ -47,9 +45,9 @@ namespace ImageSharp.Processing.Processors
         public Fast2DArray<float> KernelY { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
-            new Convolution2PassProcessor<TPixel>(this.KernelX, this.KernelY).Apply(source, sourceRectangle);
+            new Convolution2PassProcessor(this.KernelX, this.KernelY).Apply(source, sourceRectangle);
         }
 
         /// <summary>

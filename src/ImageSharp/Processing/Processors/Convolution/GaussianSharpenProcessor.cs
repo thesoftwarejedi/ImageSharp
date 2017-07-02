@@ -14,9 +14,7 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Applies a Gaussian sharpening sampler to the image.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class GaussianSharpenProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class GaussianSharpenProcessor : ImageProcessor
     {
         /// <summary>
         /// The maximum size of the kernel in either direction.
@@ -29,7 +27,7 @@ namespace ImageSharp.Processing.Processors
         private readonly float sigma;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GaussianSharpenProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="GaussianSharpenProcessor"/> class.
         /// </summary>
         /// <param name="sigma">
         /// The 'sigma' value representing the weight of the sharpening.
@@ -43,7 +41,7 @@ namespace ImageSharp.Processing.Processors
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GaussianSharpenProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="GaussianSharpenProcessor"/> class.
         /// </summary>
         /// <param name="radius">
         /// The 'radius' value representing the size of the area to sample.
@@ -57,7 +55,7 @@ namespace ImageSharp.Processing.Processors
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GaussianSharpenProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="GaussianSharpenProcessor"/> class.
         /// </summary>
         /// <param name="sigma">
         /// The 'sigma' value representing the weight of the sharpen.
@@ -85,9 +83,9 @@ namespace ImageSharp.Processing.Processors
         public Fast2DArray<float> KernelY { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
-            new Convolution2PassProcessor<TPixel>(this.KernelX, this.KernelY).Apply(source, sourceRectangle);
+            new Convolution2PassProcessor(this.KernelX, this.KernelY).Apply(source, sourceRectangle);
         }
 
         /// <summary>

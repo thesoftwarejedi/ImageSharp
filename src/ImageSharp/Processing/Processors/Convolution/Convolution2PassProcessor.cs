@@ -16,12 +16,10 @@ namespace ImageSharp.Processing.Processors
     /// <summary>
     /// Defines a sampler that uses two one-dimensional matrices to perform two-pass convolution against an image.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class Convolution2PassProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class Convolution2PassProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Convolution2PassProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="Convolution2PassProcessor"/> class.
         /// </summary>
         /// <param name="kernelX">The horizontal gradient operator.</param>
         /// <param name="kernelY">The vertical gradient operator.</param>
@@ -42,7 +40,7 @@ namespace ImageSharp.Processing.Processors
         public Fast2DArray<float> KernelY { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             int width = source.Width;
             int height = source.Height;
@@ -65,7 +63,9 @@ namespace ImageSharp.Processing.Processors
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to draw.
         /// </param>
         /// <param name="kernel">The kernel operator.</param>
-        private void ApplyConvolution(PixelAccessor<TPixel> targetPixels, PixelAccessor<TPixel> sourcePixels, Rectangle sourceRectangle, Fast2DArray<float> kernel)
+        /// <typeparam name="TPixel">Pixel type</typeparam>
+        private void ApplyConvolution<TPixel>(PixelAccessor<TPixel> targetPixels, PixelAccessor<TPixel> sourcePixels, Rectangle sourceRectangle, Fast2DArray<float> kernel)
+            where TPixel : struct, IPixel<TPixel>
         {
             int kernelHeight = kernel.Height;
             int kernelWidth = kernel.Width;

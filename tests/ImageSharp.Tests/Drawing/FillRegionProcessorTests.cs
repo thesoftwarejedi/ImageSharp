@@ -11,6 +11,7 @@ namespace ImageSharp.Tests.Drawing
     using System;
     using ImageSharp.Drawing.Pens;
     using System.Numerics;
+    using ImageSharp.Drawing.Brushes;
 
     public class FillRegionProcessorTests
     {
@@ -25,7 +26,7 @@ namespace ImageSharp.Tests.Drawing
         {
             SixLabors.Primitives.Rectangle bounds = new SixLabors.Primitives.Rectangle(0, 0, 1, 1);
 
-            Mock<IBrush<Rgba32>> brush = new Mock<IBrush<Rgba32>>();
+            Mock<Brush> brush = new Mock<Brush>();
             Mock<Region> region = new Mock<Region>();
             region.Setup(x => x.Bounds).Returns(bounds);
 
@@ -33,7 +34,7 @@ namespace ImageSharp.Tests.Drawing
             {
                 AntialiasSubpixelDepth = 1
             };
-            FillRegionProcessor<Rgba32> processor = new FillRegionProcessor<Rgba32>(brush.Object, region.Object, options);
+            FillRegionProcessor processor = new FillRegionProcessor(brush.Object, region.Object, options);
             Image<Rgba32> img = new Image<Rgba32>(1, 1);
             processor.Apply(img, bounds);
 
@@ -46,7 +47,7 @@ namespace ImageSharp.Tests.Drawing
 
             SixLabors.Primitives.Rectangle bounds = new SixLabors.Primitives.Rectangle(-100, -10, 10, 10);
 
-            Mock<IBrush<Rgba32>> brush = new Mock<IBrush<Rgba32>>();
+            Mock<Brush> brush = new Mock<Brush>();
             Mock<Region> region = new Mock<Region>();
             region.Setup(x => x.Bounds).Returns(bounds);
 
@@ -66,7 +67,7 @@ namespace ImageSharp.Tests.Drawing
             GraphicsOptions options = new GraphicsOptions(true)
             {
             };
-            FillRegionProcessor<Rgba32> processor = new FillRegionProcessor<Rgba32>(brush.Object, region.Object, options);
+            FillRegionProcessor processor = new FillRegionProcessor(brush.Object, region.Object, options);
             Image<Rgba32> img = new Image<Rgba32>(10, 10);
             processor.Apply(img, bounds);
         }
@@ -77,7 +78,7 @@ namespace ImageSharp.Tests.Drawing
 
             using (var img = new Image<Rgba32>(10, 10))
             {
-                img.Mutate(x => x.DrawLines(new Pen<Rgba32>(Rgba32.Black, 10), new SixLabors.Primitives.PointF[] {
+                img.Mutate(x => x.DrawLines(new Pen(Color.Black, 10), new SixLabors.Primitives.PointF[] {
                     new Vector2(-10, 5),
                     new Vector2(20, 5),
                 }));

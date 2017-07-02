@@ -86,7 +86,7 @@ namespace ImageSharp.Formats
             Guard.NotNull(image, nameof(image));
             Guard.NotNull(stream, nameof(stream));
 
-            this.quantizer = this.quantizer ?? new OctreeQuantizer<TPixel>();
+            this.quantizer = this.quantizer ?? new OctreeQuantizer();
 
             // Do not use IDisposable pattern here as we want to preserve the stream.
             var writer = new EndianBinaryWriter(Endianness.LittleEndian, stream);
@@ -101,7 +101,7 @@ namespace ImageSharp.Formats
             this.hasFrames = image.Frames.Any();
 
             // Dithering when animating gifs is a bad idea as we introduce pixel tearing across frames.
-            var ditheredQuantizer = (IQuantizer<TPixel>)this.quantizer;
+            var ditheredQuantizer = (IQuantizer)this.quantizer;
             ditheredQuantizer.Dither = !this.hasFrames;
 
             // Quantize the image returning a palette.

@@ -13,14 +13,12 @@ namespace ImageSharp.Processing.Processors
     using SixLabors.Primitives;
 
     /// <summary>
-    /// An <see cref="IImageProcessor{TPixel}"/> to change the alpha component of an <see cref="Image{TPixel}"/>.
+    /// An <see cref="IImageProcessor"/> to change the alpha component of an <see cref="Image{TPixel}"/>.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class AlphaProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class AlphaProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AlphaProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="AlphaProcessor"/> class.
         /// </summary>
         /// <param name="percent">The percentage to adjust the opacity of the image. Must be between 0 and 1.</param>
         /// <exception cref="System.ArgumentException">
@@ -38,7 +36,7 @@ namespace ImageSharp.Processing.Processors
         public float Value { get; }
 
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             int startY = sourceRectangle.Y;
             int endY = sourceRectangle.Bottom;

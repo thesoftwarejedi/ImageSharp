@@ -21,29 +21,25 @@ namespace ImageSharp
         /// <summary>
         /// Applies black and white toning to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> BlackWhite<TPixel>(this IImageOperations<TPixel> source)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations BlackWhite(this IImageOperations source)
         {
-            source.ApplyProcessor(new BlackWhiteProcessor<TPixel>());
+            source.ApplyProcessor(new BlackWhiteProcessor());
             return source;
         }
 
         /// <summary>
         /// Applies black and white toning to the image.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> BlackWhite<TPixel>(this IImageOperations<TPixel> source, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations BlackWhite(this IImageOperations source, Rectangle rectangle)
         {
-            source.ApplyProcessor(new BlackWhiteProcessor<TPixel>(), rectangle);
+            source.ApplyProcessor(new BlackWhiteProcessor(), rectangle);
             return source;
         }
     }

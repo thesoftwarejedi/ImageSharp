@@ -14,6 +14,7 @@ namespace ImageSharp
     using System.Threading.Tasks;
 
     using Formats;
+    using ImageSharp.Common;
     using ImageSharp.PixelFormats;
     using ImageSharp.Processing;
     using SixLabors.Primitives;
@@ -26,6 +27,8 @@ namespace ImageSharp
     public class Image<TPixel> : ImageBase<TPixel>, IImage
         where TPixel : struct, IPixel<TPixel>
     {
+        private Common.FramesList<TPixel> frameCollection = new Common.FramesList<TPixel>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Image{TPixel}"/> class
         /// with the height and the width of the image.
@@ -98,6 +101,9 @@ namespace ImageSharp
             this.MetaData = metadata ?? new ImageMetaData();
         }
 
+        /// <inheritdoc/>
+        public Type PixelFormat => typeof(TPixel);
+
         /// <summary>
         /// Gets the meta data of the image.
         /// </summary>
@@ -131,14 +137,16 @@ namespace ImageSharp
         /// Gets the other frames for the animation.
         /// </summary>
         /// <value>The list of frame images.</value>
-        public IList<ImageFrame<TPixel>> Frames { get; } = new List<ImageFrame<TPixel>>();
+        public IList<ImageFrame<TPixel>> Frames => this.frameCollection;
+
+        IList<IImageFrame> IImage.Frames => frameCollection;
 
         /// <summary>
         /// Applies the processor to the image.
         /// </summary>
         /// <param name="processor">The processor to apply to the image.</param>
         /// <param name="rectangle">The <see cref="Rectangle" /> structure that specifies the portion of the image object to draw.</param>
-        public virtual void ApplyProcessor(IImageProcessor<TPixel> processor, Rectangle rectangle)
+        public virtual void ApplyProcessor(IImageProcessor processor, Rectangle rectangle)
         {
             // we want to put this on on here as it gives us a really go place to test/verify processor settings
             processor.Apply(this, rectangle);
@@ -150,8 +158,7 @@ namespace ImageSharp
         /// <param name="stream">The stream to save the image to.</param>
         /// <param name="format">The format to save the image to.</param>
         /// <exception cref="System.ArgumentNullException">Thrown if the stream is null.</exception>
-        /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public Image<TPixel> Save(Stream stream, IImageFormat format)
+        public void Save(Stream stream, IImageFormat format)
         {
             Guard.NotNull(format, nameof(format));
             IImageEncoder encoder = this.Configuration.FindEncoder(format);
@@ -169,7 +176,7 @@ namespace ImageSharp
                 throw new NotSupportedException(stringBuilder.ToString());
             }
 
-            return this.Save(stream, encoder);
+            this.Save(stream, encoder);
         }
 
         /// <summary>
@@ -178,17 +185,12 @@ namespace ImageSharp
         /// <param name="stream">The stream to save the image to.</param>
         /// <param name="encoder">The encoder to save the image with.</param>
         /// <exception cref="System.ArgumentNullException">Thrown if the stream or encoder is null.</exception>
-        /// <returns>
-        /// The <see cref="Image{TPixel}"/>.
-        /// </returns>
-        public Image<TPixel> Save(Stream stream, IImageEncoder encoder)
+        public void Save(Stream stream, IImageEncoder encoder)
         {
             Guard.NotNull(stream, nameof(stream));
             Guard.NotNull(encoder, nameof(encoder));
 
             encoder.Encode(this, stream);
-
-            return this;
         }
 
 #if !NETSTANDARD1_1
@@ -197,8 +199,7 @@ namespace ImageSharp
         /// </summary>
         /// <param name="filePath">The file path to save the image to.</param>
         /// <exception cref="System.ArgumentNullException">Thrown if the stream is null.</exception>
-        /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public Image<TPixel> Save(string filePath)
+        public void Save(string filePath)
         {
             Guard.NotNullOrEmpty(filePath, nameof(filePath));
 
@@ -230,7 +231,7 @@ namespace ImageSharp
                 throw new NotSupportedException(stringBuilder.ToString());
             }
 
-            return this.Save(filePath, encoder);
+            this.Save(filePath, encoder);
         }
 
         /// <summary>
@@ -239,13 +240,12 @@ namespace ImageSharp
         /// <param name="filePath">The file path to save the image to.</param>
         /// <param name="encoder">The encoder to save the image with.</param>
         /// <exception cref="System.ArgumentNullException">Thrown if the encoder is null.</exception>
-        /// <returns>The <see cref="Image{TPixel}"/></returns>
-        public Image<TPixel> Save(string filePath, IImageEncoder encoder)
+        public void Save(string filePath, IImageEncoder encoder)
         {
             Guard.NotNull(encoder, nameof(encoder));
             using (Stream fs = this.Configuration.FileSystem.Create(filePath))
             {
-                return this.Save(fs, encoder);
+                this.Save(fs, encoder);
             }
         }
 #endif
@@ -269,6 +269,20 @@ namespace ImageSharp
                 this.Save(stream, format);
                 stream.Flush();
                 return $"data:{format.DefaultMimeType};base64,{Convert.ToBase64String(stream.ToArray())}";
+            }
+        }
+
+        /// <inheritdoc/>
+        Image<TPixel2> IImage.As<TPixel2>()
+        {
+            if (typeof(TPixel) == typeof(TPixel2))
+            {
+                return this as Image<TPixel2>;
+            }
+            else
+            {
+                // TODO shoud this return a slower interface that translates between the 2 color spaces as they work
+                return this.To<TPixel2>();
             }
         }
 

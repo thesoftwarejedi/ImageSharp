@@ -35,8 +35,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .Draw(Rgba32.HotPink, 5, simplePath.Clip(hole1)));
+                    .BackgroundColor(Color.Blue)
+                    .Draw(Color.HotPink, 5, simplePath.Clip(hole1)));
                 image.Save($"{path}/Simple.png");
 
                 using (PixelAccessor<Rgba32> sourcePixels = image.Lock())
@@ -82,8 +82,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .Draw(Rgba32.HotPink, 5, simplePath.Clip(hole1)));
+                    .BackgroundColor(Color.Blue)
+                    .Draw(Color.HotPink, 5, simplePath.Clip(hole1)));
                 image.Save($"{path}/SimpleVanishHole.png");
 
                 using (PixelAccessor<Rgba32> sourcePixels = image.Lock())
@@ -130,8 +130,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .Draw(Rgba32.HotPink, 5, simplePath.Clip(hole1)));
+                    .BackgroundColor(Color.Blue)
+                    .Draw(Color.HotPink, 5, simplePath.Clip(hole1)));
                 image.Save($"{path}/SimpleOverlapping.png");
 
                 using (PixelAccessor<Rgba32> sourcePixels = image.Lock())
@@ -173,8 +173,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .Draw(Pens.Dash(Rgba32.HotPink, 5), simplePath.Clip(hole1)));
+                    .BackgroundColor(Color.Blue)
+                    .Draw(Pens.Dash(Color.HotPink, 5), simplePath.Clip(hole1)));
                 image.Save($"{path}/Dashed.png");
             }
         }
@@ -193,12 +193,13 @@ namespace ImageSharp.Tests.Drawing
                             new Vector2(37, 85),
                             new Vector2(93, 85),
                             new Vector2(65, 137)));
-            Rgba32 color = new Rgba32(Rgba32.HotPink.R, Rgba32.HotPink.G, Rgba32.HotPink.B, 150);
+
+            Color color = Color.HotPink.WithOpacity(150);
 
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
+                    .BackgroundColor(Color.Blue)
                     .Draw(color, 5, simplePath.Clip(hole1)));
                 image.Save($"{path}/Opacity.png");
 

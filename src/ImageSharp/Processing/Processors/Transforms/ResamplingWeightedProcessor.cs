@@ -15,12 +15,10 @@ namespace ImageSharp.Processing.Processors
     /// Provides methods that allow the resizing of images using various algorithms.
     /// Adapted from <see href="http://www.realtimerendering.com/resources/GraphicsGems/gemsiii/filter_rcg.c"/>
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal abstract partial class ResamplingWeightedProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal abstract partial class ResamplingWeightedProcessor : ImageProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResamplingWeightedProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="ResamplingWeightedProcessor"/> class.
         /// </summary>
         /// <param name="sampler">The sampler to perform the resize operation.</param>
         /// <param name="width">The target width.</param>
@@ -140,7 +138,7 @@ namespace ImageSharp.Processing.Processors
         }
 
         /// <inheritdoc/>
-        protected override void BeforeApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void BeforeApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             if (!(this.Sampler is NearestNeighborResampler))
             {
@@ -155,7 +153,7 @@ namespace ImageSharp.Processing.Processors
         }
 
         /// <inheritdoc />
-        protected override void AfterApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void AfterApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
             base.AfterApply(source, sourceRectangle);
             this.HorizontalWeights?.Dispose();

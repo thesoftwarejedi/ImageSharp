@@ -20,31 +20,27 @@ namespace ImageSharp
         /// <summary>
         /// Applies binarization to the image splitting the pixels at the given threshold.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="threshold">The threshold to apply binarization of the image. Must be between 0 and 1.</param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> BinaryThreshold<TPixel>(this IImageOperations<TPixel> source, float threshold)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations BinaryThreshold(this IImageOperations source, float threshold)
         {
-            source.ApplyProcessor(new BinaryThresholdProcessor<TPixel>(threshold));
+            source.ApplyProcessor(new BinaryThresholdProcessor(threshold));
             return source;
         }
 
         /// <summary>
         /// Applies binarization to the image splitting the pixels at the given threshold.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image this method extends.</param>
         /// <param name="threshold">The threshold to apply binarization of the image. Must be between 0 and 1.</param>
         /// <param name="rectangle">
         /// The <see cref="Rectangle"/> structure that specifies the portion of the image object to alter.
         /// </param>
         /// <returns>The <see cref="Image{TPixel}"/>.</returns>
-        public static IImageOperations<TPixel> BinaryThreshold<TPixel>(this IImageOperations<TPixel> source, float threshold, Rectangle rectangle)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImageOperations BinaryThreshold(this IImageOperations source, float threshold, Rectangle rectangle)
         {
-            source.ApplyProcessor(new BinaryThresholdProcessor<TPixel>(threshold), rectangle);
+            source.ApplyProcessor(new BinaryThresholdProcessor(threshold), rectangle);
             return source;
         }
     }

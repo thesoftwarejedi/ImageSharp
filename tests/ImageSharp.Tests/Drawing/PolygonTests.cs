@@ -26,8 +26,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .DrawPolygon(Rgba32.HotPink, 5,
+                    .BackgroundColor(Color.Blue)
+                    .DrawPolygon(Color.HotPink, 5,
                     new SixLabors.Primitives.PointF[] {
                             new Vector2(10, 10),
                             new Vector2(200, 150),
@@ -58,12 +58,12 @@ namespace ImageSharp.Tests.Drawing
                             new Vector2(50, 300)
             };
 
-            Rgba32 color = new Rgba32(Rgba32.HotPink.R, Rgba32.HotPink.G, Rgba32.HotPink.B, 150);
+            Color color = Color.HotPink.WithOpacity(150);
 
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
+                    .BackgroundColor(Color.Blue)
                     .DrawPolygon(color, 10, simplePath));
                 image.Save($"{path}/Opacity.png");
 
@@ -91,8 +91,8 @@ namespace ImageSharp.Tests.Drawing
             using (Image<Rgba32> image = new Image<Rgba32>(500, 500))
             {
                 image.Mutate(x => x
-                    .BackgroundColor(Rgba32.Blue)
-                    .Draw(Rgba32.HotPink, 10, new Rectangle(10, 10, 190, 140)));
+                    .BackgroundColor(Color.Blue)
+                    .Draw(Color.HotPink, 10, new Rectangle(10, 10, 190, 140)));
                 image.Save($"{path}/Rectangle.png");
 
                 using (PixelAccessor<Rgba32> sourcePixels = image.Lock())

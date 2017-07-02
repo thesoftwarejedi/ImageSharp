@@ -42,13 +42,13 @@ namespace ImageSharp.Tests.Processing.Transforms
         // [Fact]
         public void PrintWeightsData()
         {
-            var proc = new ResizeProcessor<Rgba32>(new BicubicResampler(), 200, 200);
+            var proc = new ResizeProcessor(new BicubicResampler(), 200, 200);
 
-            ResamplingWeightedProcessor<Rgba32>.WeightsBuffer weights = proc.PrecomputeWeights(200, 500);
+            ResamplingWeightedProcessor.WeightsBuffer weights = proc.PrecomputeWeights(200, 500);
 
             var bld = new StringBuilder();
 
-            foreach (ResamplingWeightedProcessor<Rgba32>.WeightsWindow window in weights.Weights)
+            foreach (ResamplingWeightedProcessor.WeightsWindow window in weights.Weights)
             {
                 Span<float> span = window.GetWindowSpan();
                 for (int i = 0; i < window.Length; i++)

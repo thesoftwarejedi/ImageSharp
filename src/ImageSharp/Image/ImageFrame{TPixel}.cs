@@ -116,5 +116,19 @@ namespace ImageSharp
 
             this.MetaData = new ImageFrameMetaData(other.MetaData);
         }
+
+        /// <inheritdoc/>
+        public ImageFrame<TPixel1> As<TPixel1>()
+            where TPixel1 : struct, IPixel<TPixel1>
+        {
+            if (typeof(TPixel) == typeof(TPixel1))
+            {
+                return this as ImageFrame<TPixel1>;
+            }
+            else
+            {
+                return this.To<TPixel1>();
+            }
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace ImageSharp.Benchmarks
             using (Image<Rgba32> image = new Image<Rgba32>(800, 800))
             {
                 image.Mutate(x => x.FillPolygon(
-                    Rgba32.HotPink,
+                    ImageSharp.Color.HotPink,
                     new SixLabors.Primitives.PointF[] {
                         new Vector2(10, 10),
                         new Vector2(550, 50),
@@ -76,7 +76,7 @@ namespace ImageSharp.Benchmarks
             using (Image<Rgba32> image = new Image<Rgba32>(800, 800))
             {
                 image.Mutate(x => x.Fill(
-                    Rgba32.HotPink,
+                    ImageSharp.Color.HotPink,
                     this.shape));
 
                 using (MemoryStream ms = new MemoryStream())

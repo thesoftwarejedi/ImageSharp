@@ -17,33 +17,29 @@ namespace ImageSharp.Drawing.Processors
     /// <summary>
     /// Combines two images together by blending the pixels.
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
-    internal class DrawImageProcessor<TPixel> : ImageProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class DrawImageProcessor : ImageProcessor
     {
-        private readonly PixelBlender<TPixel> blender;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="DrawImageProcessor{TPixel}"/> class.
+        /// Initializes a new instance of the <see cref="DrawImageProcessor"/> class.
         /// </summary>
         /// <param name="image">The image to blend with the currently processing image.</param>
         /// <param name="size">The size to draw the blended image.</param>
         /// <param name="location">The location to draw the blended image.</param>
         /// <param name="options">The opacity of the image to blend. Between 0 and 100.</param>
-        public DrawImageProcessor(Image<TPixel> image, Size size, Point location, GraphicsOptions options)
+        public DrawImageProcessor(IImage image, Size size, Point location, GraphicsOptions options)
         {
             Guard.MustBeBetweenOrEqualTo(options.BlendPercentage, 0, 1, nameof(options.BlendPercentage));
             this.Image = image;
             this.Size = size;
+            this.BlenderMode = options.BlenderMode;
             this.Alpha = options.BlendPercentage;
-            this.blender = PixelOperations<TPixel>.Instance.GetPixelBlender(options.BlenderMode);
             this.Location = location;
         }
 
         /// <summary>
         /// Gets the image to blend.
         /// </summary>
-        public Image<TPixel> Image { get; private set; }
+        public IImage Image { get; private set; }
 
         /// <summary>
         /// Gets the alpha percentage value.
@@ -60,17 +56,24 @@ namespace ImageSharp.Drawing.Processors
         /// </summary>
         public Point Location { get; }
 
+        /// <summary>
+        /// Gets the blending mode to draw the blended image.
+        /// </summary>
+        public PixelBlenderMode BlenderMode { get; private set; }
+
         /// <inheritdoc/>
-        protected override void OnApply(ImageBase<TPixel> source, Rectangle sourceRectangle)
+        protected override void OnApply<TPixel>(ImageBase<TPixel> source, Rectangle sourceRectangle)
         {
+            PixelBlender<TPixel> blender = PixelOperations<TPixel>.Instance.GetPixelBlender(this.BlenderMode);
+
             Image<TPixel> disposableImage = null;
-            Image<TPixel> targetImage = this.Image;
+            Image<TPixel> targetImage = this.Image.As<TPixel>();
 
             try
             {
                 if (targetImage.Bounds.Size != this.Size)
                 {
-                    targetImage = disposableImage = this.Image.Generate(x => x.Resize(this.Size.Width, this.Size.Height));
+                    targetImage = disposableImage = targetImage.Generate(x => x.Resize(this.Size.Width, this.Size.Height));
                 }
 
                 // Align start/end positions.
@@ -102,7 +105,7 @@ namespace ImageSharp.Drawing.Processors
                             {
                                 Span<TPixel> background = sourcePixels.GetRowSpan(y).Slice(minX, width);
                                 Span<TPixel> foreground = toBlendPixels.GetRowSpan(y - this.Location.Y).Slice(0, width);
-                                this.blender.Blend(background, background, foreground, amount);
+                                blender.Blend(background, background, foreground, amount);
                             });
                 }
             }

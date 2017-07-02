@@ -15,10 +15,8 @@ namespace ImageSharp.Processing.Processors
     /// The Kirsch operator filter.
     /// <see href="http://www.tutorialspoint.com/dip/Robinson_Compass_Mask.htm"/>
     /// </summary>
-    /// <typeparam name="TPixel">The pixel format.</typeparam>
     [SuppressMessage("ReSharper", "StaticMemberInGenericType", Justification = "We want to use only one instance of each array field for each generic type.")]
-    internal class RobinsonProcessor<TPixel> : EdgeDetectorCompassProcessor<TPixel>
-        where TPixel : struct, IPixel<TPixel>
+    internal class RobinsonProcessor : EdgeDetectorCompassProcessor
     {
         /// <summary>
         /// The North gradient operator
