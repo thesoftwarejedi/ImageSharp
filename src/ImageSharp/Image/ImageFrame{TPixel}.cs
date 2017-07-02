@@ -95,6 +95,20 @@ namespace ImageSharp
             return target;
         }
 
+        /// <inheritdoc/>
+        public ImageFrame<TPixel1> As<TPixel1>()
+            where TPixel1 : struct, IPixel<TPixel1>
+        {
+            if (typeof(TPixel) == typeof(TPixel1))
+            {
+                return this as ImageFrame<TPixel1>;
+            }
+            else
+            {
+                return this.To<TPixel1>();
+            }
+        }
+
         /// <summary>
         /// Clones the current instance.
         /// </summary>
@@ -115,20 +129,6 @@ namespace ImageSharp
             base.CopyProperties(other);
 
             this.MetaData = new ImageFrameMetaData(other.MetaData);
-        }
-
-        /// <inheritdoc/>
-        public ImageFrame<TPixel1> As<TPixel1>()
-            where TPixel1 : struct, IPixel<TPixel1>
-        {
-            if (typeof(TPixel) == typeof(TPixel1))
-            {
-                return this as ImageFrame<TPixel1>;
-            }
-            else
-            {
-                return this.To<TPixel1>();
-            }
         }
     }
 }

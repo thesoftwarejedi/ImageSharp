@@ -2,11 +2,10 @@
 // Copyright (c) James Jackson-South and contributors.
 // Licensed under the Apache License, Version 2.0.
 // </copyright>
-
-using ImageSharp.PixelFormats;
-
 namespace ImageSharp
 {
+    using ImageSharp.PixelFormats;
+
     /// <summary>
     /// Encapsulates the basic properties and methods required to manipulate images.
     /// </summary>

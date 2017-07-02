@@ -139,7 +139,8 @@ namespace ImageSharp
         /// <value>The list of frame images.</value>
         public IList<ImageFrame<TPixel>> Frames => this.frameCollection;
 
-        IList<IImageFrame> IImage.Frames => frameCollection;
+        /// <inheritdoc/>
+        IList<IImageFrame> IImage.Frames => this.frameCollection;
 
         /// <summary>
         /// Applies the processor to the image.

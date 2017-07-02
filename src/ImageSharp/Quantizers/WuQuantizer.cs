@@ -35,7 +35,7 @@ namespace ImageSharp.Quantizers
     public sealed class WuQuantizer : IQuantizer
     {
         /// <inheritdoc/>
-        public bool Dither { get; set; }
+        public bool Dither { get; set; } = true;
 
         /// <inheritdoc/>
         public IErrorDiffuser DitherType { get; set; }

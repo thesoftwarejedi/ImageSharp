@@ -131,7 +131,7 @@ namespace ImageSharp.Tests
 
             TestFile testFile = TestFile.Create(TestImages.Jpeg.Baseline.Floorplan);
 
-            using (Image<Rgba32> image = testFile.CreateImage(decoder))
+            using (IImage image = testFile.CreateImage(decoder))
             {
                 Assert.NotNull(image.MetaData.ExifProfile);
             }
@@ -147,7 +147,7 @@ namespace ImageSharp.Tests
 
             TestFile testFile = TestFile.Create(TestImages.Jpeg.Baseline.Floorplan);
 
-            using (Image<Rgba32> image = testFile.CreateImage(options))
+            using (IImage image = testFile.CreateImage(options))
             {
                 Assert.Null(image.MetaData.ExifProfile);
             }

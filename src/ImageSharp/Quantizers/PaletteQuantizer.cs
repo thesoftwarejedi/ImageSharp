@@ -18,7 +18,7 @@ namespace ImageSharp.Quantizers
     public class PaletteQuantizer : IQuantizer
     {
         /// <inheritdoc/>
-        public bool Dither { get; set; }
+        public bool Dither { get; set; } = true;
 
         /// <inheritdoc/>
         public IErrorDiffuser DitherType { get; set; }
