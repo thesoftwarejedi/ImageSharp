@@ -81,5 +81,11 @@ namespace ImageSharp
         /// <returns>Returns self if alread in correct pixel format otherwise it converts it to the correctpixel format and returns that instead.</returns>
         Image<TPixel> As<TPixel>()
             where TPixel : struct, IPixel<TPixel>;
+
+        /// <summary>
+        /// Clones this image.
+        /// </summary>
+        /// <returns>Returns a new instance of IImage.</returns>
+        IImage Clone();
     }
 }

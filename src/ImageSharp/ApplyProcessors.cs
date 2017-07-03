@@ -66,15 +66,13 @@ namespace ImageSharp
         /// <summary>
         /// Mutates the image by applying the operations to it.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to rotate, flip, or both.</param>
         /// <param name="operations">The operations to perform on the source.</param>
         /// <returns>Anew Image which has teh data from the <paramref name="source"/> but with the <paramref name="operations"/> applied.</returns>
-        public static Image<TPixel> Generate<TPixel>(this IImage source, Action<IImageOperations> operations)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImage Generate(this IImage source, Action<IImageOperations> operations)
         {
             Guard.NotNull(operations, nameof(operations));
-            var generated = new Image<TPixel>(source.As<TPixel>());
+            var generated = source.Clone();
 
             // TODO: add parameter to Configuration to configure how this is created, create an IImageOperationsFactory that cna be used to switch this out with a fake for testing
             var operationsRunner = new ImageOperations(generated);
@@ -85,15 +83,13 @@ namespace ImageSharp
         /// <summary>
         /// Mutates the image by applying the operations to it.
         /// </summary>
-        /// <typeparam name="TPixel">The pixel format.</typeparam>
         /// <param name="source">The image to rotate, flip, or both.</param>
         /// <param name="operations">The operations to perform on the source.</param>
         /// <returns>Anew Image which has teh data from the <paramref name="source"/> but with the <paramref name="operations"/> applied.</returns>
-        public static Image<TPixel> Generate<TPixel>(this IImage source, params IImageProcessor[] operations)
-            where TPixel : struct, IPixel<TPixel>
+        public static IImage Generate(this IImage source, params IImageProcessor[] operations)
         {
             Guard.NotNull(operations, nameof(operations));
-            var generated = new Image<TPixel>(source.As<TPixel>());
+            var generated = source.Clone();
 
             // TODO: add parameter to Configuration to configure how this is created, create an IImageOperationsFactory that cna be used to switch this out with a fake for testing
             var operationsRunner = new ImageOperations(generated);

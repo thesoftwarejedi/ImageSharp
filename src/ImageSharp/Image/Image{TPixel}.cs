@@ -287,6 +287,12 @@ namespace ImageSharp
             }
         }
 
+        /// <inheritdoc/>
+        IImage IImage.Clone()
+        {
+            return new Image<TPixel>(this);
+        }
+
         /// <summary>
         /// Returns a copy of the image in the given pixel format.
         /// </summary>
