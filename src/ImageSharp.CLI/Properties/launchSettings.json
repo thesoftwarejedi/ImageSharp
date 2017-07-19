@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ImageSharp.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "**\\*.json",
+      "workingDirectory": "C:\\Source\\ImageSharp.TestImages"
+    }
+  }
+}
