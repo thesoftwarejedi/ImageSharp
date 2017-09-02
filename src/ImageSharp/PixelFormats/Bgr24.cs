@@ -39,9 +39,9 @@ namespace SixLabors.ImageSharp.PixelFormats
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Bgr24(byte r, byte g, byte b)
         {
-            this.B = b;
-            this.G = g;
             this.R = r;
+            this.G = g;
+            this.B = b;
         }
 
         /// <inheritdoc/>
@@ -51,7 +51,7 @@ namespace SixLabors.ImageSharp.PixelFormats
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(Bgr24 other)
         {
-            return this.B == other.B && this.G == other.G && this.R == other.R;
+            return this.R == other.R && this.G == other.G && this.B == other.B;
         }
 
         /// <inheritdoc/>
@@ -118,17 +118,15 @@ namespace SixLabors.ImageSharp.PixelFormats
         /// <inheritdoc/>
         public void ToBgr24(ref Bgr24 dest)
         {
-            dest.B = this.B;
-            dest.G = this.G;
-            dest.R = this.R;
+            dest = this;
         }
 
         /// <inheritdoc/>
         public void ToBgra32(ref Bgra32 dest)
         {
-            dest.B = this.B;
-            dest.G = this.G;
             dest.R = this.R;
+            dest.G = this.G;
+            dest.B = this.B;
             dest.A = 255;
         }
     }
