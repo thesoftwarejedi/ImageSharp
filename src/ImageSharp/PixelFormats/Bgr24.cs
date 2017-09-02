@@ -33,11 +33,11 @@ namespace SixLabors.ImageSharp.PixelFormats
         /// <summary>
         /// Initializes a new instance of the <see cref="Bgr24"/> struct.
         /// </summary>
-        /// <param name="b">The blue component.</param>
-        /// <param name="g">The green component.</param>
         /// <param name="r">The red component.</param>
+        /// <param name="g">The green component.</param>
+        /// <param name="b">The blue component.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bgr24(byte b, byte g, byte r)
+        public Bgr24(byte r, byte g, byte b)
         {
             this.B = b;
             this.G = g;
@@ -118,7 +118,9 @@ namespace SixLabors.ImageSharp.PixelFormats
         /// <inheritdoc/>
         public void ToBgr24(ref Bgr24 dest)
         {
-            dest = this;
+            dest.B = this.B;
+            dest.G = this.G;
+            dest.R = this.R;
         }
 
         /// <inheritdoc/>

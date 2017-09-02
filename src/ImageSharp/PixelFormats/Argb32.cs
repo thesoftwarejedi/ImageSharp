@@ -53,14 +53,14 @@ namespace SixLabors.ImageSharp.PixelFormats
         /// <summary>
         /// Initializes a new instance of the <see cref="Argb32"/> struct.
         /// </summary>
-        /// <param name="a">The alpha component.</param>
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
         /// <param name="b">The blue component.</param>
+        /// <param name="a">The alpha component.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Argb32(byte a, byte r, byte g, byte b)
+        public Argb32(byte r, byte g, byte b, byte a)
         {
-            this.PackedValue = Pack(a, r, g, b);
+            this.PackedValue = Pack(r, g, b, a);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace SixLabors.ImageSharp.PixelFormats
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Argb32(byte r, byte g, byte b)
         {
-            this.PackedValue = Pack(255, r, g, b);
+            this.PackedValue = Pack(r, g, b, 255);
         }
 
         /// <summary>
@@ -81,21 +81,10 @@ namespace SixLabors.ImageSharp.PixelFormats
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
         /// <param name="b">The blue component.</param>
-        public Argb32(float r, float g, float b)
-        {
-            this.PackedValue = Pack(1, r, g, b);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Argb32"/> struct.
-        /// </summary>
         /// <param name="a">The alpha component.</param>
-        /// <param name="r">The red component.</param>
-        /// <param name="g">The green component.</param>
-        /// <param name="b">The blue component.</param>
-        public Argb32(float a, float r, float g, float b)
+        public Argb32(float r, float g, float b, float a = 1)
         {
-            this.PackedValue = Pack(a, r, g, b);
+            this.PackedValue = Pack(r, g, b, a);
         }
 
         /// <summary>
@@ -347,7 +336,7 @@ namespace SixLabors.ImageSharp.PixelFormats
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint Pack(byte x, byte y, byte z, byte w)
         {
-            return (uint)(x << AlphaShift | y << RedShift | z << GreenShift | w << BlueShift);
+            return (uint)(x << RedShift | y << GreenShift | z << BlueShift | w << AlphaShift);
         }
 
         /// <summary>
@@ -358,7 +347,7 @@ namespace SixLabors.ImageSharp.PixelFormats
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint Pack(ref Vector3 vector)
         {
-            var value = new Vector4(1, vector.X, vector.Y, vector.Z);
+            var value = new Vector4(vector, 1);
             return Pack(ref value);
         }
 

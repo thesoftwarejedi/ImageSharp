@@ -30,6 +30,7 @@ namespace SixLabors.ImageSharp.Tests.PixelFormats
             Assert.Equal(255, new MonoAlpha8(1234F).PackedValue);
         }
 
+        [Fact]
         public void PackedValueIsCorrect()
         {
             // Test ordering
@@ -91,6 +92,17 @@ namespace SixLabors.ImageSharp.Tests.PixelFormats
 
             new Alpha8(.5F).ToZyxwBytes(bgra, 0);
             Assert.Equal(bgra, new byte[] { 0, 0, 0, 128 });
+        }
+
+        [Fact]
+        public void ToRgb24IsCorrect()
+        {
+            var alpha8 = new Alpha8(1);
+            var rgb = default(Rgb24);
+
+            alpha8.ToRgb24(ref rgb);
+
+            Assert.Equal(new Rgb24(0, 0, 0), rgb);
         }
 
         [Fact]
