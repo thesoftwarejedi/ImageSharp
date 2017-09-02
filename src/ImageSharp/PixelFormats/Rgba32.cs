@@ -201,7 +201,7 @@ namespace SixLabors.ImageSharp
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                return new Bgr24(this.R, this.G, this.B);
+                return new Bgr24(this.B, this.G, this.R);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
