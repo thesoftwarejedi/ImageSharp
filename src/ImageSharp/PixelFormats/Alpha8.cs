@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using System;
+using System.Globalization;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
@@ -87,7 +88,9 @@ namespace SixLabors.ImageSharp.PixelFormats
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ToRgb24(ref Rgb24 dest)
         {
-            dest = default(Rgb24);
+            dest.R = 0;
+            dest.G = 0;
+            dest.B = 0;
         }
 
         /// <inheritdoc />
@@ -104,7 +107,9 @@ namespace SixLabors.ImageSharp.PixelFormats
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ToBgr24(ref Bgr24 dest)
         {
-            dest = default(Bgr24);
+            dest.R = 0;
+            dest.G = 0;
+            dest.B = 0;
         }
 
         /// <inheritdoc />
@@ -127,11 +132,7 @@ namespace SixLabors.ImageSharp.PixelFormats
             return (obj is Alpha8) && this.Equals((Alpha8)obj);
         }
 
-        /// <summary>
-        /// Compares another Alpha8 packed vector with the packed vector.
-        /// </summary>
-        /// <param name="other">The Alpha8 packed vector to compare.</param>
-        /// <returns>True if the packed vectors are equal.</returns>
+        /// <inheritdoc />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(Alpha8 other)
         {
@@ -144,7 +145,7 @@ namespace SixLabors.ImageSharp.PixelFormats
         /// <returns>A string representation of the packed vector.</returns>
         public override string ToString()
         {
-            return (this.PackedValue / 255F).ToString();
+            return (this.PackedValue / 255F).ToString(CultureInfo.InvariantCulture);
         }
 
         /// <inheritdoc />
