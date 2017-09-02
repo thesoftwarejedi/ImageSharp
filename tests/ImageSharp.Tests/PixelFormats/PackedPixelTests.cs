@@ -19,47 +19,6 @@ namespace SixLabors.ImageSharp.Tests.Colors
     public class PackedPixelTests
     {
         [Fact]
-        public void Alpha8()
-        {
-            // Test the limits.
-            Assert.Equal(0x0, new Alpha8(0F).PackedValue);
-            Assert.Equal(0xFF, new Alpha8(1F).PackedValue);
-
-            // Test clamping.
-            Assert.Equal(0x0, new Alpha8(-1234F).PackedValue);
-            Assert.Equal(0xFF, new Alpha8(1234F).PackedValue);
-
-            // Test ordering
-            Assert.Equal(124, new Alpha8(124F / 0xFF).PackedValue);
-            Assert.Equal(26, new Alpha8(0.1F).PackedValue);
-
-            // Test ordering
-            Vector4 vector = new Alpha8(.5F).ToVector4();
-
-            Assert.Equal(0, vector.X);
-            Assert.Equal(0, vector.Y);
-            Assert.Equal(0, vector.Z);
-            Assert.Equal(.5F, vector.W, 2);
-
-            byte[] rgb = new byte[3];
-            byte[] rgba = new byte[4];
-            byte[] bgr = new byte[3];
-            byte[] bgra = new byte[4];
-
-            new Alpha8(.5F).ToXyzBytes(rgb, 0);
-            Assert.Equal(rgb, new byte[] { 0, 0, 0 });
-
-            new Alpha8(.5F).ToXyzwBytes(rgba, 0);
-            Assert.Equal(rgba, new byte[] { 0, 0, 0, 128 });
-
-            new Alpha8(.5F).ToZyxBytes(bgr, 0);
-            Assert.Equal(bgr, new byte[] { 0, 0, 0 });
-
-            new Alpha8(.5F).ToZyxwBytes(bgra, 0);
-            Assert.Equal(bgra, new byte[] { 0, 0, 0, 128 });
-        }
-
-        [Fact]
         public void Argb32()
         {
             // Test the limits.
