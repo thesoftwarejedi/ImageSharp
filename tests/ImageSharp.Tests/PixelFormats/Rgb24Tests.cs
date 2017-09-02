@@ -126,7 +126,7 @@ namespace SixLabors.ImageSharp.Tests
 
             rgb.ToBgr24(ref bgr);
 
-            Assert.Equal(new Bgr24(3, 2, 1), bgr);
+            Assert.Equal(new Bgr24(1, 2, 3), bgr);
         }
 
         [Fact]
