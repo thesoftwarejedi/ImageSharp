@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 
-using System;
+#if !NETCOREAPP2_0
 using System.Runtime.CompilerServices;
 
-namespace SixLabors.ImageSharp
+namespace System
 {
     /// <summary>
     /// Provides single-precision floating point constants and static methods for trigonometric, logarithmic, and other common mathematical functions.
@@ -85,19 +85,6 @@ namespace SixLabors.ImageSharp
         }
 
         /// <summary>
-        /// Converts a degree (360-periodic) angle to a radian (2*Pi-periodic) angle.
-        /// </summary>
-        /// <param name="degree">The angle in degrees.</param>
-        /// <returns>
-        /// The <see cref="float"/> representing the degree as radians.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float DegreeToRadian(float degree)
-        {
-            return degree * (PI / 180F);
-        }
-
-        /// <summary>
         /// Returns e raised to the specified power.
         /// </summary>
         /// <param name="f">A number specifying a power.</param>
@@ -172,19 +159,6 @@ namespace SixLabors.ImageSharp
         }
 
         /// <summary>
-        /// Converts a radian (2*Pi-periodic) angle to a degree (360-periodic) angle.
-        /// </summary>
-        /// <param name="radian">The angle in radians.</param>
-        /// <returns>
-        /// The <see cref="float"/> representing the degree as radians.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float RadianToDegree(float radian)
-        {
-            return radian / (PI / 180F);
-        }
-
-        /// <summary>
         /// Rounds a single-precision floating-point value to the nearest integral value.
         /// </summary>
         /// <param name="f">A single-precision floating-point number to be rounded.</param>
@@ -234,26 +208,6 @@ namespace SixLabors.ImageSharp
         }
 
         /// <summary>
-        /// Returns the result of a normalized sine cardinal function for the given value.
-        /// SinC(x) = sin(pi*x)/(pi*x).
-        /// </summary>
-        /// <param name="f">A single-precision floating-point number to calculate the result for.</param>
-        /// <returns>
-        /// The sine cardinal of <paramref name="f" />.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float SinC(float f)
-        {
-            if (Abs(f) > Constants.Epsilon)
-            {
-                f *= PI;
-                return Clean(Sin(f) / f);
-            }
-
-            return 1F;
-        }
-
-        /// <summary>
         /// Returns the square root of a specified number.
         /// </summary>
         /// <param name="f">The number whose square root is to be found.</param>
@@ -269,23 +223,6 @@ namespace SixLabors.ImageSharp
         {
             return (float)Math.Sqrt(f);
         }
-
-        /// <summary>
-        /// Ensures that any passed float is correctly rounded to zero
-        /// </summary>
-        /// <param name="x">The value to clean.</param>
-        /// <returns>
-        /// The <see cref="float"/>
-        /// </returns>.
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float Clean(float x)
-        {
-            if (Abs(x) < Constants.Epsilon)
-            {
-                return 0F;
-            }
-
-            return x;
-        }
     }
 }
+#endif

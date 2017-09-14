@@ -22,7 +22,7 @@ namespace SixLabors.ImageSharp.ColorSpaces.Conversion.Implementation.CieLchuvCol
             float l = input.L, a = input.U, b = input.V;
             float c = MathF.Sqrt((a * a) + (b * b));
             float hRadians = MathF.Atan2(b, a);
-            float hDegrees = MathF.RadianToDegree(hRadians);
+            float hDegrees = ImageMaths.RadianToDegree(hRadians);
 
             // Wrap the angle round at 360.
             hDegrees = hDegrees % 360;

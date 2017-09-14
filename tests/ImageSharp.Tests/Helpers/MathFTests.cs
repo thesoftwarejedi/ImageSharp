@@ -99,7 +99,7 @@ namespace SixLabors.ImageSharp.Tests.Helpers
                 expected = Math.Abs(sinC) < Constants.Epsilon ? 0F : sinC;
             }
             
-            Assert.Equal(MathF.SinC(1.2345F), expected);
+            Assert.Equal(ImageMaths.SinC(1.2345F), expected);
         }
 
         [Fact]
@@ -111,13 +111,13 @@ namespace SixLabors.ImageSharp.Tests.Helpers
         [Fact]
         public void Convert_Degree_To_Radian()
         {
-            Assert.Equal((float)(Math.PI / 2D), MathF.DegreeToRadian(90F), new FloatRoundingComparer(6));
+            Assert.Equal((float)(Math.PI / 2D), ImageMaths.DegreeToRadian(90F), new FloatRoundingComparer(6));
         }
 
         [Fact]
         public void Convert_Radian_To_Degree()
         {
-            Assert.Equal(60F, MathF.RadianToDegree((float)(Math.PI / 3D)), new FloatRoundingComparer(5));
+            Assert.Equal(60F, ImageMaths.RadianToDegree((float)(Math.PI / 3D)), new FloatRoundingComparer(5));
         }
     }
 }

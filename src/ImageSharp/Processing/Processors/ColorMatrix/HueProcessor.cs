@@ -30,7 +30,7 @@ namespace SixLabors.ImageSharp.Processing.Processors
 
             this.Angle = angle;
 
-            float radians = MathF.DegreeToRadian(angle);
+            float radians = ImageMaths.DegreeToRadian(angle);
             float cosradians = MathF.Cos(radians);
             float sinradians = MathF.Sin(radians);
 

@@ -16,6 +16,52 @@ namespace SixLabors.ImageSharp
     internal static class ImageMaths
     {
         /// <summary>
+        /// Converts a degree (360-periodic) angle to a radian (2*Pi-periodic) angle.
+        /// </summary>
+        /// <param name="degree">The angle in degrees.</param>
+        /// <returns>
+        /// The <see cref="float"/> representing the degree as radians.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float DegreeToRadian(float degree)
+        {
+            return degree * (MathF.PI / 180F);
+        }
+
+        /// <summary>
+        /// Converts a radian (2*Pi-periodic) angle to a degree (360-periodic) angle.
+        /// </summary>
+        /// <param name="radian">The angle in radians.</param>
+        /// <returns>
+        /// The <see cref="float"/> representing the degree as radians.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float RadianToDegree(float radian)
+        {
+            return radian / (MathF.PI / 180F);
+        }
+
+        /// <summary>
+        /// Returns the result of a normalized sine cardinal function for the given value.
+        /// SinC(x) = sin(pi*x)/(pi*x).
+        /// </summary>
+        /// <param name="f">A single-precision floating-point number to calculate the result for.</param>
+        /// <returns>
+        /// The sine cardinal of <paramref name="f" />.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float SinC(float f)
+        {
+            if (!(MathF.Abs(f) > Constants.Epsilon))
+            {
+                return 1F;
+            }
+
+            f *= MathF.PI;
+            return Clean(MathF.Sin(f) / f);
+        }
+
+        /// <summary>
         /// Returns the absolute value of a 32-bit signed integer. Uses bit shifting to speed up the operation.
         /// </summary>
         /// <param name="x">
@@ -250,6 +296,19 @@ namespace SixLabors.ImageSharp
             bottomRight.X = (GetMaxX(bitmap) + 1).Clamp(0, width);
 
             return GetBoundingRectangle(topLeft, bottomRight);
+        }
+
+        /// <summary>
+        /// Ensures that any passed float is correctly rounded to zero
+        /// </summary>
+        /// <param name="x">The value to clean.</param>
+        /// <returns>
+        /// The <see cref="float"/>
+        /// </returns>.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static float Clean(float x)
+        {
+            return MathF.Abs(x) < Constants.Epsilon ? 0F : x;
         }
     }
 }
